@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/03/11 14:37:51 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 14:51:27 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ namespace ft
 		typedef	const value_type&						const_reference;
 	 	typedef Allocator::pointer						pointer	
 		typedef Allocator::const_pointer 				const_pointer 
-		// typedef ???		iterator;
+		// typedef ???	random access iterator	iterator;
 		// typedef ???		const_iterator;	
 		typedef	std::reverse_iterator<iterator>			reverse_iterator;
 		typedef	std::reverse_iterator<const_iterator>	const_reverse_iterator;
