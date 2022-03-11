@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/01/15 17:42:09 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/03/11 14:37:51 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,21 @@
 namespace ft 
 {
 
-
-	template <typename T, class Allocator = std::allocator<T>>
+	template < class T, class Allocator = std::allocator<T>>
 	class vector
 	{
 		public:
 
-		typedef	T					value_type;
-		typedef	Allocator			allocator_type;
-		typedef	std::size_t			size_type;
-		typedef	std::ptrdiff_t		difference_type;
-		typedef	value_type&			reference;
-		typedef	const value_type&	const_reference;
-
+		typedef	T										value_type;
+		typedef	Allocator								allocator_type;
+		typedef	std::size_t								size_type;
+		typedef	std::ptrdiff_t							difference_type;
+		typedef	value_type&								reference;
+		typedef	const value_type&						const_reference;
+	 	typedef Allocator::pointer						pointer	
+		typedef Allocator::const_pointer 				const_pointer 
 		// typedef ???		iterator;
 		// typedef ???		const_iterator;	
-
 		typedef	std::reverse_iterator<iterator>			reverse_iterator;
 		typedef	std::reverse_iterator<const_iterator>	const_reverse_iterator;
 		
@@ -47,7 +46,7 @@ namespace ft
 
 		}
 		
-		// (3) Constructs the container with count copies of elements with value value.
+		// (3) Constructs the container with count cop`ies of elements with value value.
 		explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
 		{
 
@@ -118,92 +117,6 @@ namespace ft
 ## Non-member function overloads
 - [x] `relational operators`: Relational operators for vector
 - [x] `swap`: Exchange contents of vectors
-
-
-
-
-
-# Map
-
-## Member functions
-
-- [x] `(constructor)`: Construct map
-- [x] `(destructor)`: Map destructor
-- [x] `operator=`: Copy container content
-
-#### Iterators:
-- [x] `begin`: Return iterator to beginning
-- [x] `end`: Return iterator to end
-- [x] `rbegin`: Return reverse iterator to reverse beginning
-- [x] `rend`: Return reverse iterator to reverse end
-
-#### Capacity:
-- [x] `empty`: Test whether container is empty
-- [x] `size`: Return container size
-- [x] `max_size`: Return maximum size
-
-#### Element access:
-- [x] `operator[]`: Access element
-
-#### Modifiers:
-- [x] `insert`: Insert elements
-- [x] `erase`: Erase elements
-- [x] `swap`: Swap content
-- [x] `clear`: Clear content
-
-#### Observers:
-- [x] `key_comp`: Return key comparison object
-- [x] `value_comp`: Return value comparison object
-
-#### Operations:
-- [x] `find`: Get iterator to element
-- [x] `count`: Count elements with a specific key
-- [x] `lower_bound`: Return iterator to lower bound
-- [x] `upper_bound`: Return iterator to upper bound
-- [x] `equal_range`: Get range of equal elements
-
-#### Allocator:
-- [x] `get_allocator`: Get allocator
-- [x] `swap`: Exchange contents of maps
-
-
-
-
-
-
-
-# Stack
-
-## Member functions
-- [x] `(constructor)`: Construct stack
-- [x] `empty`: Test whether container is empty
-- [x] `size`: Return size
-- [x] `top`: Access next element
-- [x] `push`: Insert element
-- [x] `pop`: Remove top element
-
-## Non-member function overloads
-- [x] `relational operators`: Relational operators for stack
-
-# Others
-
-## Classes
-
-- [x] `iterators_traits`
-- [x] `reverse_iterator`
-
-## Structures
-
-- [x] `enable_if`
-- [x] `is_integral`
-- [x] `pair`
-
-## Functions
-
-- [x] `equal`
-- [x] `lexicographical_compare`
-- [x] `make_pair`
-
 
 */
 
