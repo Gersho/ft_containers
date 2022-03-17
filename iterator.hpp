@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/03/17 17:27:39 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/03/17 17:59:12 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -316,13 +316,32 @@ namespace ft
 	}
 
 	template <class Container>
+	class back_insert_iterator: output_iterator<Container>
+	{
+
+	}
+
+
+	template <class Container>
 	front_insert_iterator<Container> front_inserter (Container& x)
 	{
 
 	}
 
+	template <class Container>
+	class front_insert_iterator: output_iterator<Container>
+	{
+		
+	}
+
 	template <class Container, class Iterator>
 	insert_iterator<Container> inserter (Container& x, Iterator it)
+	{
+		
+	}
+
+	template <class Container>
+	class insert_iterator: output_iterator<Container>
 	{
 		
 	}
