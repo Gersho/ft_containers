@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/03/17 16:21:19 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/03/17 17:27:39 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,8 +223,61 @@ namespace ft
 		friend random_access_iterator<T>& operator-(const int & lhs, const random_access_iterator<T>& rhs);
 		friend void advance (InputIterator& it, Distance n);
 		friend typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last);
-	};
+	}; // class iterator end
 
+
+	template < class T >
+	class output_iterator : public ft::iterator<std::output_iterator_tag, T>
+	{
+		private:
+
+		T *it;
+		output_iterator(){}
+		protected:
+		
+		public:
+
+		output_iterator(const output_iterator<T> & src)
+		{
+			it = src.it;
+		}
+
+		~output_iterator(){}
+		
+		output_iterator<T> & operator=(const output_iterator<T> & rhs)
+		{
+			if ( this != &rhs )
+			{
+				it = rhs.it;
+			}
+			return *this;
+		}
+
+		T& operator*()
+		{
+			return *it;
+		}
+
+		T* operator->()
+		{
+			return it;
+		}
+
+		output_iterator<T>&	operator++( void ) {
+			this->it++;
+			return *this;
+		}
+
+		output_iterator<T>	operator++( int n ) {
+			( void ) n;
+			output_iterator	res;
+
+			res = ++*this;
+			return res;
+		}
+
+	};
+	
 //NON MEMBER FUNCTIONS
 	template <class T>
 	random_access_iterator<T>& operator+(const int & lhs, const random_access_iterator<T>& rhs)
@@ -255,7 +308,25 @@ namespace ft
 			d = d * -1;
 		return d;
 	}
-}
+
+	template <class Container>
+	back_insert_iterator<Container> back_inserter (Container& x)
+	{
+		
+	}
+
+	template <class Container>
+	front_insert_iterator<Container> front_inserter (Container& x)
+	{
+
+	}
+
+	template <class Container, class Iterator>
+	insert_iterator<Container> inserter (Container& x, Iterator it)
+	{
+		
+	}
+} // namespace ft end
 
 #endif
 
@@ -298,7 +369,12 @@ Supports offset dereference operator ([])		a[n]
 Supports compound assignment operations += and -=	a += n
 													a -= n
 
+
+**********************************************
 TODO
+**********************************************
+
+//iteratpr class 
 
 Output	Can be dereferenced as an lvalue
 (only for mutable iterator types)			*a = t
@@ -306,6 +382,15 @@ Output	Can be dereferenced as an lvalue
 
 
 Multi-pass: neither dereferencing nor incrementing affects dereferenceability	{ b=a; *a++; *b; }
+
+
+//back_insert_iterator
+
+//front_insert_iterator
+
+//insert_iterator
+
+
 
 											
 
