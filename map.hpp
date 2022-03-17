@@ -6,9 +6,17 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/03/03 15:25:17 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/03/17 15:39:57 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+#ifndef MAP_HPP
+# define MAP_HPP
+
+
+
+#endif
 
 /*
 

@@ -6,9 +6,12 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/03/16 11:38:46 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/03/17 15:38:46 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
+
+#ifndef VECTOR_HPP
+# define VECTOR_HPP
 
 #include <memory>
 #include "iterator.hpp"
@@ -72,6 +75,8 @@ namespace ft
 
 }
 
+
+#endif
 
 /*
 

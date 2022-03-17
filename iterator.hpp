@@ -6,9 +6,13 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/03/17 15:25:58 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/03/17 16:21:19 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+#ifndef ITERATOR_HPP
+# define ITERATOR_HPP
 
 namespace ft
 {
@@ -70,8 +74,12 @@ namespace ft
 	template < class T >
 	class random_access_iterator : public ft::iterator<std::random_access_iterator_tag, T>
 	{
+		private:
+
 		T *it;
 
+		protected:
+		
 		public:
 
 		random_access_iterator()
@@ -149,7 +157,6 @@ namespace ft
 			return p>=rhs.p;
 		}
 
-
 		T& operator*()
 		{
 			return *it;
@@ -211,9 +218,11 @@ namespace ft
 			return *this;
 		}
 
-
-		protected:
-		private:
+//friend for non member fonctions
+		friend random_access_iterator<T>& operator+(const int & lhs, const random_access_iterator<T>& rhs);
+		friend random_access_iterator<T>& operator-(const int & lhs, const random_access_iterator<T>& rhs);
+		friend void advance (InputIterator& it, Distance n);
+		friend typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last);
 	};
 
 //NON MEMBER FUNCTIONS
@@ -230,7 +239,25 @@ namespace ft
 		return lhs - rhs.it;
 	}
 
+	template <class InputIterator, class Distance>
+	void advance (InputIterator& it, Distance n)
+	{
+		it.it = it.it + n;
+	}
+
+	template<class InputIterator>
+	typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last)
+	{
+		distance d;
+
+		d = last.it - first.it;
+		if (d < 0)
+			d = d * -1;
+		return d;
+	}
 }
+
+#endif
 
 /*
 
