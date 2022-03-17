@@ -6,11 +6,12 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/03/11 14:51:27 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/03/16 11:38:46 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <memory>
+#include "iterator.hpp"
 
 namespace ft 
 {
@@ -30,8 +31,8 @@ namespace ft
 		typedef Allocator::const_pointer 				const_pointer 
 		// typedef ???	random access iterator	iterator;
 		// typedef ???		const_iterator;	
-		typedef	std::reverse_iterator<iterator>			reverse_iterator;
-		typedef	std::reverse_iterator<const_iterator>	const_reverse_iterator;
+		typedef	ft::reverse_iterator<iterator>			reverse_iterator;
+		typedef	ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 		
 
 		// (1) Default constructor. Constructs an empty container with a default-constructed allocator.
