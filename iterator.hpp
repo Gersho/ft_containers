@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/03/19 14:46:43 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/03/19 17:03:02 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,6 +250,171 @@ namespace ft
 			d = d * -1;
 		return d;
 	}
+
+
+//TODO RESTART REVERSE ITERATOR
+	template <class Iterator>
+	class __generic_reverse_iterator
+	{
+
+		typename Iterator											iterator_type
+		typename iterator_traits<Iterator>::iterator_category		iterator_category
+		typename iterator_traits<Iterator>::value_type				value_type
+		typename iterator_traits<Iterator>::difference_type			difference_type
+		typename iterator_traits<Iterator>::pointer					pointer
+		typename iterator_traits<Iterator>::reference				reference
+
+
+		private:
+
+		iterator_type *rev_it;
+		iterator_type *base_it;
+		
+		protected:
+		
+
+
+		/* Constructors */
+
+		public:
+
+		__generic_reverse_iterator()
+		{
+			rev_it = NULL;
+			base_it = NULL;
+		}
+
+		explicit __generic_reverse_iterator (iterator_type it)
+		{
+			base_it = it;
+			rev_it = it - 1; 
+		}
+
+		template <class Iter>
+		__generic_reverse_iterator (const __generic_reverse_iterator<iterator_type>& src)
+		{
+			rev_it = src.rev_it;
+			base_it = src.base_it;
+		}
+
+		iterator_type base() const
+		{
+			return base_it;
+		}
+
+		reference operator*() const
+		{
+			return *rev_it;
+		}
+
+		pointer operator->() const
+		{
+			return rev_it;
+		}
+
+		operator+()
+		{
+
+		}
+
+		operator++()
+		{
+
+		}
+
+		operator+=()
+		{
+
+		}
+
+		operator-()
+		{
+
+		}
+
+		operator--()
+		{
+
+		}
+
+		operator-=()
+		{
+
+		}
+
+
+
+		operator[]()
+		{
+
+		}
+
+  
+
+		protected:
+		
+		private:
+
+
+
+
+/*
+Non-member function overloads
+
+(1)	
+
+template <class Iterator>
+  bool operator== (const reverse_iterator<Iterator>& lhs,
+                   const reverse_iterator<Iterator>& rhs);
+
+(2)	
+
+template <class Iterator>
+  bool operator!= (const reverse_iterator<Iterator>& lhs,
+                   const reverse_iterator<Iterator>& rhs);
+
+(3)	
+
+template <class Iterator>
+  bool operator<  (const reverse_iterator<Iterator>& lhs,
+                   const reverse_iterator<Iterator>& rhs);
+
+(4)	
+
+template <class Iterator>
+  bool operator<= (const reverse_iterator<Iterator>& lhs,
+                   const reverse_iterator<Iterator>& rhs);
+
+(5)	
+
+template <class Iterator>
+  bool operator>  (const reverse_iterator<Iterator>& lhs,
+                   const reverse_iterator<Iterator>& rhs);
+
+(6)	
+
+template <class Iterator>
+  bool operator>= (const reverse_iterator<Iterator>& lhs,
+                   const reverse_iterator<Iterator>& rhs);
+
+Relational operators for reverse_iterator
+Performs the appropriate comparison operation between the reverse_iterator objects lhs and rhs.
+
+Internally, the function compares directly the base iterators using the reflexively equivalent relational operator:
+
+operator on
+reverse iterators	equivalent used on
+base iterators
+==	==
+!=	!=
+< 	>
+<=	>=
+> 	<
+>=	<=
+
+*/
+
+	}
 } // namespace ft end
 
 #endif
@@ -308,12 +473,7 @@ Output	Can be dereferenced as an lvalue
 Multi-pass: neither dereferencing nor incrementing affects dereferenceability	{ b=a; *a++; *b; }
 
 
-//back_insert_iterator
-
-//front_insert_iterator
-
-//insert_iterator
-
+reverse iterator
 
 
 											

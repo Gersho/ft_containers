@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/03/19 13:40:07 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/03/19 15:41:41 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,18 @@ namespace ft
 	{
 		public:
 
-		typedef	T										value_type;
-		typedef	Allocator								allocator_type;
-		typedef	std::size_t								size_type;
-		typedef	std::ptrdiff_t							difference_type;
-		typedef	value_type&								reference;
-		typedef	const value_type&						const_reference;
-	 	typedef Allocator::pointer						pointer	
-		typedef Allocator::const_pointer 				const_pointer 
-		typedef random_access_iterator<T>				iterator;
-		// typedef random_access_iterator<const T> ???	const_iterator;	
-		typedef	ft::reverse_iterator<iterator>			reverse_iterator;
-		typedef	ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+		typedef	T													value_type;
+		typedef	Allocator											allocator_type;
+		typedef	std::size_t											size_type;
+		typedef	std::ptrdiff_t										difference_type;
+		typedef	value_type&											reference;
+		typedef	const value_type&									const_reference;
+	 	typedef Allocator::pointer									pointer	
+		typedef Allocator::const_pointer 							const_pointer 
+		typedef ft::__generic_iterator<T>							iterator;
+		typedef ft::__generic_iterator<const T>						const_iterator;	
+		typedef	ft::__generic_reverse_iterator<iterator>			reverse_iterator;
+		typedef	ft::__generic_reverse_iterator<const_iterator>		const_reverse_iterator;
 		
 
 		// (1) Default constructor. Constructs an empty container with a default-constructed allocator.
