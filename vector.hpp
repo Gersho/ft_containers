@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/03/17 15:38:46 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/03/19 13:40:07 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ namespace ft
 		typedef	const value_type&						const_reference;
 	 	typedef Allocator::pointer						pointer	
 		typedef Allocator::const_pointer 				const_pointer 
-		// typedef ???	random access iterator	iterator;
-		// typedef ???		const_iterator;	
+		typedef random_access_iterator<T>				iterator;
+		// typedef random_access_iterator<const T> ???	const_iterator;	
 		typedef	ft::reverse_iterator<iterator>			reverse_iterator;
 		typedef	ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 		
@@ -41,7 +41,6 @@ namespace ft
 		// (1) Default constructor. Constructs an empty container with a default-constructed allocator.
 		vector()
 		{
-
 		}
 		
 		// (2) Constructs an empty container with the given allocator alloc.
@@ -74,7 +73,6 @@ namespace ft
 	};
 
 }
-
 
 #endif
 

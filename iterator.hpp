@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/03/17 17:59:12 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/03/19 14:46:43 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,7 @@
 
 namespace ft
 {
-	// template< class Iter >
-	// struct iterator_traits
-	// {
-	// 	typename	std::incrementable_traits<Iter>::difference_type  	difference_type
-	// 	typename	void 												value_type
-	// 	typename	void 												pointer
-	// 	typename	void 												reference
-	// 	typename	std::output_iterator_tag 							iterator_category
-	// };
+	struct random_access_iterator_tag {};
 
 	template< class Iter >
 	struct iterator_traits
@@ -43,7 +35,7 @@ namespace ft
 		typename	T								value_type
 		typename	T* 								pointer
 		typename	T& 								reference
-		typename	std::random_access_iterator_tag iterator_category
+		typename	ft::random_access_iterator_tag	iterator_category
 	};
 
 	template< class T >
@@ -53,7 +45,7 @@ namespace ft
 		typename	T 									value_type
 		typename	const T* 							pointer
 		typename	const T& 							reference
-		typename	std::random_access_iterator_tag 	iterator_category	
+		typename	ft::random_access_iterator_tag		iterator_category	
 	};
 
 	template <
@@ -72,7 +64,7 @@ namespace ft
 	};
 
 	template < class T >
-	class random_access_iterator : public ft::iterator<std::random_access_iterator_tag, T>
+	class __generic_iterator : public ft::iterator<ft::random_access_iterator_tag, T>
 	{
 		private:
 
@@ -82,17 +74,23 @@ namespace ft
 		
 		public:
 
-		random_access_iterator()
+		__generic_iterator()
 		{
 			it = NULL;
 		}
-		random_access_iterator(const random_access_iterator<T> & src)
+
+		__generic_iterator(T *ptr)
+		{
+			it = ptr;
+		}
+
+		__generic_iterator(const __generic_iterator<T> & src)
 		{
 			it = src.it;
 		}
-		~random_access_iterator(){}
+		~__generic_iterator(){}
 
-		random_access_iterator<T> & operator=(const random_access_iterator<T> & rhs)
+		__generic_iterator<T> & operator=(const __generic_iterator<T> & rhs)
 		{
 			if ( this != &rhs )
 			{
@@ -101,58 +99,58 @@ namespace ft
 			return *this;
 		}
 
-		bool operator==( const random_access_iterator<T> & rhs) const
+		bool operator==( const __generic_iterator<T> & rhs) const
 		{
 			return p==rhs.p;
 		}
 
-		bool operator !=(const random_access_iterator<T> & rhs) const
+		bool operator !=(const __generic_iterator<T> & rhs) const
 		{
 			return p!=rhs.p;
 		}
 
-		random_access_iterator<T>&	operator++( void ) {
+		__generic_iterator<T>&	operator++( void ) {
 			this->it++;
 			return *this;
 		}
 
-		random_access_iterator<T>	operator++( int n ) {
+		__generic_iterator<T>	operator++( int n ) {
 			( void ) n;
-			random_access_iterator	res;
+			__generic_iterator<T>	res;
 
 			res = ++*this;
 			return res;
 		}
 
-		random_access_iterator<T>&	operator--( void ) {
+		__generic_iterator<T>&	operator--( void ) {
 			this->it--;
 			return *this;
 		}
 
-		random_access_iterator<T>	operator--( int n ) {
+		__generic_iterator<T>	operator--( int n ) {
 			( void ) n;
-			random_access_iterator<T>	res;
+			__generic_iterator<T>	res;
 
 			res = --*this;
 			return res;
 		}
 
-		bool operator<( const random_access_iterator<T> & rhs) const
+		bool operator<( const __generic_iterator<T> & rhs) const
 		{
 			return p<rhs.p;
 		}
 
-		bool operator>( const random_access_iterator<T> & rhs) const
+		bool operator>( const __generic_iterator<T> & rhs) const
 		{
 			return p>rhs.p;
 		}
 
-		bool operator<=( const random_access_iterator<T> & rhs) const
+		bool operator<=( const __generic_iterator<T> & rhs) const
 		{
 			return p<=rhs.p;
 		}
 
-		bool operator>=( const random_access_iterator<T> & rhs) const
+		bool operator>=( const __generic_iterator<T> & rhs) const
 		{
 			return p>=rhs.p;
 		}
@@ -172,122 +170,66 @@ namespace ft
 			return *(it + index);
 		}
 
-		random_access_iterator<T>& operator+(const random_access_iterator<T> & rhs) const 
+		__generic_iterator<T>& operator+(const __generic_iterator<T> & rhs) const 
 		{
 			return it + rhs.it;
 		}
 
-		random_access_iterator<T>& operator-(const random_access_iterator<T> & rhs) const 
+		__generic_iterator<T>& operator-(const __generic_iterator<T> & rhs) const 
 		{
 			return it - rhs.it;
 		}
 
-		random_access_iterator<T>& operator+(const int & rhs) const 
+		__generic_iterator<T>& operator+(const int & rhs) const 
 		{
 			return it + rhs;
 		}
 
-		random_access_iterator<T>& operator-(const int & rhs) const 
+		__generic_iterator<T>& operator-(const int & rhs) const 
 		{
 			return it - rhs;
 		}
 
-		random_access_iterator<T>& operator+=(const random_access_iterator<T>& rhs)
+		__generic_iterator<T>& operator+=(const __generic_iterator<T>& rhs)
 		{
 
 			this->it = this->it + rhs.it;
 			return *this;
 		}
 
-		random_access_iterator<T>& operator-=(const random_access_iterator<T>& rhs)
+		__generic_iterator<T>& operator-=(const __generic_iterator<T>& rhs)
 		{
 
 			this->it = this->it - rhs.it;
 			return *this;
 		}
 
-		random_access_iterator<T>& operator+=(const int & rhs) const 
+		__generic_iterator<T>& operator+=(const int & rhs) const 
 		{
 			this->it = this->it + rhs;
 			return *this;
 		}
 
-		random_access_iterator<T>& operator-=(const int & rhs) const 
+		__generic_iterator<T>& operator-=(const int & rhs) const 
 		{
 			this->it = this->it - rhs;
 			return *this;
 		}
 
-//friend for non member fonctions
-		friend random_access_iterator<T>& operator+(const int & lhs, const random_access_iterator<T>& rhs);
-		friend random_access_iterator<T>& operator-(const int & lhs, const random_access_iterator<T>& rhs);
+		friend __generic_iterator<T>& operator+(const int & lhs, const __generic_iterator<T>& rhs);
+		friend __generic_iterator<T>& operator-(const int & lhs, const __generic_iterator<T>& rhs);
 		friend void advance (InputIterator& it, Distance n);
 		friend typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last);
 	}; // class iterator end
 
-
-	template < class T >
-	class output_iterator : public ft::iterator<std::output_iterator_tag, T>
-	{
-		private:
-
-		T *it;
-		output_iterator(){}
-		protected:
-		
-		public:
-
-		output_iterator(const output_iterator<T> & src)
-		{
-			it = src.it;
-		}
-
-		~output_iterator(){}
-		
-		output_iterator<T> & operator=(const output_iterator<T> & rhs)
-		{
-			if ( this != &rhs )
-			{
-				it = rhs.it;
-			}
-			return *this;
-		}
-
-		T& operator*()
-		{
-			return *it;
-		}
-
-		T* operator->()
-		{
-			return it;
-		}
-
-		output_iterator<T>&	operator++( void ) {
-			this->it++;
-			return *this;
-		}
-
-		output_iterator<T>	operator++( int n ) {
-			( void ) n;
-			output_iterator	res;
-
-			res = ++*this;
-			return res;
-		}
-
-	};
-	
-//NON MEMBER FUNCTIONS
 	template <class T>
-	random_access_iterator<T>& operator+(const int & lhs, const random_access_iterator<T>& rhs)
+	__generic_iterator<T>& operator+(const int & lhs, const __generic_iterator<T>& rhs)
 	{
 		return lhs + rhs.it;
 	}
 
-
 	template <class T>
-	random_access_iterator<T>& operator-(const int & lhs, const random_access_iterator<T>& rhs)
+	__generic_iterator<T>& operator-(const int & lhs, const __generic_iterator<T>& rhs)
 	{
 		return lhs - rhs.it;
 	}
@@ -307,43 +249,6 @@ namespace ft
 		if (d < 0)
 			d = d * -1;
 		return d;
-	}
-
-	template <class Container>
-	back_insert_iterator<Container> back_inserter (Container& x)
-	{
-		
-	}
-
-	template <class Container>
-	class back_insert_iterator: output_iterator<Container>
-	{
-
-	}
-
-
-	template <class Container>
-	front_insert_iterator<Container> front_inserter (Container& x)
-	{
-
-	}
-
-	template <class Container>
-	class front_insert_iterator: output_iterator<Container>
-	{
-		
-	}
-
-	template <class Container, class Iterator>
-	insert_iterator<Container> inserter (Container& x, Iterator it)
-	{
-		
-	}
-
-	template <class Container>
-	class insert_iterator: output_iterator<Container>
-	{
-		
 	}
 } // namespace ft end
 
@@ -414,3 +319,15 @@ Multi-pass: neither dereferencing nor incrementing affects dereferenceability	{ 
 											
 
 */
+
+
+
+	// template< class Iter >
+	// struct iterator_traits
+	// {
+	// 	typename	std::incrementable_traits<Iter>::difference_type  	difference_type
+	// 	typename	void 												value_type
+	// 	typename	void 												pointer
+	// 	typename	void 												reference
+	// 	typename	std::output_iterator_tag 							iterator_category
+	// };
