@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/03/19 17:03:02 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/03/23 14:35:21 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,27 +75,24 @@ namespace ft
 		public:
 
 		__generic_iterator()
+			: it(NULL)
 		{
-			it = NULL;
 		}
 
 		__generic_iterator(T *ptr)
+			: it(ptr)
 		{
-			it = ptr;
 		}
 
 		__generic_iterator(const __generic_iterator<T> & src)
+			: it(src.it)
 		{
-			it = src.it;
 		}
 		~__generic_iterator(){}
 
 		__generic_iterator<T> & operator=(const __generic_iterator<T> & rhs)
 		{
-			if ( this != &rhs )
-			{
-				it = rhs.it;
-			}
+			it = rhs.it;
 			return *this;
 		}
 
@@ -110,12 +107,11 @@ namespace ft
 		}
 
 		__generic_iterator<T>&	operator++( void ) {
-			this->it++;
+			++it;
 			return *this;
 		}
 
-		__generic_iterator<T>	operator++( int n ) {
-			( void ) n;
+		__generic_iterator<T>	operator++( int ) {
 			__generic_iterator<T>	res;
 
 			res = ++*this;
@@ -127,109 +123,90 @@ namespace ft
 			return *this;
 		}
 
-		__generic_iterator<T>	operator--( int n ) {
-			( void ) n;
+		__generic_iterator<T>	operator--( int ) {
 			__generic_iterator<T>	res;
 
 			res = --*this;
 			return res;
 		}
 
-		bool operator<( const __generic_iterator<T> & rhs) const
+		bool operator<( const __generic_iterator<T> & rhs ) const
 		{
 			return p<rhs.p;
 		}
 
-		bool operator>( const __generic_iterator<T> & rhs) const
+		bool operator>( const __generic_iterator<T> & rhs ) const
 		{
-			return p>rhs.p;
+			return p > rhs.p;
 		}
 
-		bool operator<=( const __generic_iterator<T> & rhs) const
+		bool operator<=( const __generic_iterator<T> & rhs ) const
 		{
-			return p<=rhs.p;
+			return p <= rhs.p;
 		}
 
 		bool operator>=( const __generic_iterator<T> & rhs) const
 		{
-			return p>=rhs.p;
+			return p >= rhs.p;
 		}
 
-		T& operator*()
+		T& operator*() const
 		{
 			return *it;
 		}
 
-		T* operator->()
+		T* operator->() const
 		{
 			return it;
 		}
 
-		T & operator[](const unsigned int & index)
+		T & operator[](difference_type index)
 		{
 			return *(it + index);
 		}
 
-		__generic_iterator<T>& operator+(const __generic_iterator<T> & rhs) const 
-		{
-			return it + rhs.it;
-		}
 
-		__generic_iterator<T>& operator-(const __generic_iterator<T> & rhs) const 
+		difference_type operator-(const __generic_iterator<T> & rhs) const 
 		{
 			return it - rhs.it;
 		}
 
-		__generic_iterator<T>& operator+(const int & rhs) const 
+		__generic_iterator<T> operator+(difference_type rhs) const 
 		{
 			return it + rhs;
 		}
 
-		__generic_iterator<T>& operator-(const int & rhs) const 
+		__generic_iterator<T> operator-(differenc_type nrhs) const 
 		{
 			return it - rhs;
 		}
 
-		__generic_iterator<T>& operator+=(const __generic_iterator<T>& rhs)
+		__generic_iterator<T>& operator+=(difference_type rhs) const 
 		{
-
-			this->it = this->it + rhs.it;
+			it += rhs;
 			return *this;
 		}
 
-		__generic_iterator<T>& operator-=(const __generic_iterator<T>& rhs)
+		__generic_iterator<T>& operator-=(difference_type rhs) const 
 		{
-
-			this->it = this->it - rhs.it;
+			it -= rhs;
 			return *this;
 		}
 
-		__generic_iterator<T>& operator+=(const int & rhs) const 
-		{
-			this->it = this->it + rhs;
-			return *this;
-		}
-
-		__generic_iterator<T>& operator-=(const int & rhs) const 
-		{
-			this->it = this->it - rhs;
-			return *this;
-		}
-
-		friend __generic_iterator<T>& operator+(const int & lhs, const __generic_iterator<T>& rhs);
-		friend __generic_iterator<T>& operator-(const int & lhs, const __generic_iterator<T>& rhs);
+		friend __generic_iterator<T>& operator+(difference_type lhs, const __generic_iterator<T>& rhs);
+		friend __generic_iterator<T>& operator-(difference_type lhs, const __generic_iterator<T>& rhs);
 		friend void advance (InputIterator& it, Distance n);
 		friend typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last);
 	}; // class iterator end
 
 	template <class T>
-	__generic_iterator<T>& operator+(const int & lhs, const __generic_iterator<T>& rhs)
+	__generic_iterator<T> operator+(difference_type lhs, const __generic_iterator<T>& rhs)
 	{
 		return lhs + rhs.it;
 	}
 
 	template <class T>
-	__generic_iterator<T>& operator-(const int & lhs, const __generic_iterator<T>& rhs)
+	__generic_iterator<T> operator-(difference_type lhs, const __generic_iterator<T>& rhs)
 	{
 		return lhs - rhs.it;
 	}
@@ -251,8 +228,6 @@ namespace ft
 		return d;
 	}
 
-
-//TODO RESTART REVERSE ITERATOR
 	template <class Iterator>
 	class __generic_reverse_iterator
 	{
@@ -290,7 +265,7 @@ namespace ft
 			rev_it = it - 1; 
 		}
 
-		template <class Iter>
+	//	template <class Iter>
 		__generic_reverse_iterator (const __generic_reverse_iterator<iterator_type>& src)
 		{
 			rev_it = src.rev_it;
@@ -312,9 +287,9 @@ namespace ft
 			return rev_it;
 		}
 
-		operator+()
+		__generic_reverse_iterator<iterator_type>& operator+(const difference_type n) const
 		{
-
+			return __generic_reverse_iterator(base_it - n);
 		}
 
 		operator++()
