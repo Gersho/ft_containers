@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/03/23 14:35:21 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 14:51:42 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ namespace ft
 
 		bool operator<( const __generic_iterator<T> & rhs ) const
 		{
-			return p<rhs.p;
+			return p < rhs.p;
 		}
 
 		bool operator>( const __generic_iterator<T> & rhs ) const
@@ -160,7 +160,7 @@ namespace ft
 			return it;
 		}
 
-		T & operator[](difference_type index)
+		T & operator[](difference_type index) const
 		{
 			return *(it + index);
 		}
@@ -176,7 +176,7 @@ namespace ft
 			return it + rhs;
 		}
 
-		__generic_iterator<T> operator-(differenc_type nrhs) const 
+		__generic_iterator<T> operator-(differenc_type rhs) const 
 		{
 			return it - rhs;
 		}
@@ -231,6 +231,12 @@ namespace ft
 	template <class Iterator>
 	class __generic_reverse_iterator
 	{
+		
+	}
+/*
+	template <class Iterator>
+	class __generic_reverse_iterator
+	{
 
 		typename Iterator											iterator_type
 		typename iterator_traits<Iterator>::iterator_category		iterator_category
@@ -249,7 +255,6 @@ namespace ft
 		
 
 
-		/* Constructors */
 
 		public:
 
@@ -387,9 +392,12 @@ base iterators
 > 	<
 >=	<=
 
-*/
+
 
 	}
+*/
+
+
 } // namespace ft end
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/03/19 15:41:41 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/01 14:40:01 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,9 @@ namespace ft
 		
 		protected:
 		private:
+
+		size_type	capacity;
+		pointer		ptr;
 	};
 
 }
