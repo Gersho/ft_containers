@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/06 12:56:49 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/06 15:41:42 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,19 +220,6 @@ namespace ft
 	template <class Iterator>
 	class __generic_reverse_iterator
 	{
-		public:
-
-		protected:
-
-		private:
-
-		Iterator iter;
-	};
-/*
-	template <class Iterator>
-	class __generic_reverse_iterator
-	{
-
 		typename Iterator											iterator_type
 		typename iterator_traits<Iterator>::iterator_category		iterator_category
 		typename iterator_traits<Iterator>::value_type				value_type
@@ -240,232 +227,103 @@ namespace ft
 		typename iterator_traits<Iterator>::pointer					pointer
 		typename iterator_traits<Iterator>::reference				reference
 
-
-		private:
-
-		iterator_type *rev_it;
-		iterator_type *base_it;
-		
-		protected:
-		
-
-
-
 		public:
 
+		protected:
+
+
+
+		//default (1)
 		__generic_reverse_iterator()
 		{
-			rev_it = NULL;
-			base_it = NULL;
+
 		}
 
-		explicit __generic_reverse_iterator (iterator_type it)
+		//initialisation (2)
+		__generic_reverse_iterator(iterator_type iter)
 		{
-			base_it = it;
-			rev_it = it - 1; 
 		}
 
-	//	template <class Iter>
-		__generic_reverse_iterator (const __generic_reverse_iterator<iterator_type>& src)
-		{
-			rev_it = src.rev_it;
-			base_it = src.base_it;
-		}
-
-		iterator_type base() const
-		{
-			return base_it;
-		}
-
-		reference operator*() const
-		{
-			return *rev_it;
-		}
-
-		pointer operator->() const
-		{
-			return rev_it;
-		}
-
-		__generic_reverse_iterator<iterator_type>& operator+(const difference_type n) const
-		{
-			return __generic_reverse_iterator(base_it - n);
-		}
-
-		operator++()
+		//copy (3)
+		template <class Iter>
+		__generic_reverse_iterator(const __generic_reverse_iterator<Iter>& rev_it)
 		{
 
 		}
-
-		operator+=()
-		{
-
-		}
-
-		operator-()
-		{
-
-		}
-
-		operator--()
-		{
-
-		}
-
-		operator-=()
-		{
-
-		}
-
-
-
-		operator[]()
-		{
-
-		}
-
-  
-
-		protected:
 		
 		private:
 
+		iterator_type base_iterator;
+		
+	};
 
 
-
-/*
-Non-member function overloads
-
-(1)	
-
-template <class Iterator>
-  bool operator== (const reverse_iterator<Iterator>& lhs,
-                   const reverse_iterator<Iterator>& rhs);
-
-(2)	
-
-template <class Iterator>
-  bool operator!= (const reverse_iterator<Iterator>& lhs,
-                   const reverse_iterator<Iterator>& rhs);
-
-(3)	
-
-template <class Iterator>
-  bool operator<  (const reverse_iterator<Iterator>& lhs,
-                   const reverse_iterator<Iterator>& rhs);
-
-(4)	
-
-template <class Iterator>
-  bool operator<= (const reverse_iterator<Iterator>& lhs,
-                   const reverse_iterator<Iterator>& rhs);
-
-(5)	
-
-template <class Iterator>
-  bool operator>  (const reverse_iterator<Iterator>& lhs,
-                   const reverse_iterator<Iterator>& rhs);
-
-(6)	
-
-template <class Iterator>
-  bool operator>= (const reverse_iterator<Iterator>& lhs,
-                   const reverse_iterator<Iterator>& rhs);
-
-Relational operators for reverse_iterator
-Performs the appropriate comparison operation between the reverse_iterator objects lhs and rhs.
-
-Internally, the function compares directly the base iterators using the reflexively equivalent relational operator:
-
-operator on
-reverse iterators	equivalent used on
-base iterators
-==	==
-!=	!=
-< 	>
-<=	>=
-> 	<
->=	<=
-
-
-
-	}
-*/
 
 
 } // namespace ft end
 
 #endif
 
+
+
 /*
 
 
-OK
+Member functions
 
-copy-constructible, copy-assignable and destructible		X b(a);
-															b = a;
+(constructor)
+    Constructs reverse_iterator object (public member function )
 
-Can be incremented			++a
-							a++
+default (1)	 		reverse_iterator();
 
-Supports equality/inequality comparisons	a == b
-											a != b
+initialization (2)	 explicit reverse_iterator (iterator_type it);
 
-Can be dereferenced as an rvalue	*a
-									a->m
+copy (3)		template <class Iter>
+  				reverse_iterator (const reverse_iterator<Iter>& rev_it);
 
-Supports inequality comparisons (<, >, <= and >=) between iterators	a < b
-																	a > b
-																	a <= b
-																	a >= b
+base
+    Return base iterator (public member function )
 
-default-constructible	X a;
-						X()
+operator*
+    Dereference iterator (public member function )
 
-	Can be decremented	--a
-						a--
-						*a--
+operator+
+    Addition operator (public member function )
 
-Supports offset dereference operator ([])		a[n]
+operator++
+    Increment iterator position (public member function )
 
-	Supports arithmetic operators + and -	a + n
-											n + a
-											a - n
-											a - b
+operator+=
+    Advance iterator (public member function )
 
-Supports compound assignment operations += and -=	a += n
-													a -= n
+operator-
+    Subtraction operator (public member function )
 
+operator--
+    Decrease iterator position (public member function )
 
-**********************************************
-TODO
-**********************************************
+operator-=
+    Retrocede iterator (public member function )
 
-//iteratpr class 
+operator->
+    Dereference iterator (public member function )
 
-Output	Can be dereferenced as an lvalue
-(only for mutable iterator types)			*a = t
-											*a++ = t
+operator[]
+    Dereference iterator with offset (public member function )
 
 
-Multi-pass: neither dereferencing nor incrementing affects dereferenceability	{ b=a; *a++; *b; }
+Non-member function overloads
+
+relational operators
+    Relational operators for reverse_iterator (function template )
+
+operator+
+    Addition operator (function template )
+
+operator-
+    Subtraction operator (function template )
 
 
-reverse iterator
 
-
-											
 
 */
-
-
-
-	// template< class Iter >
-	// struct iterator_traits
-	// {
-	// 	typename	std::incrementable_traits<Iter>::difference_type  	difference_type
-	// 	typename	void 												value_type
-	// 	typename	void 												pointer
-	// 	typename	void 												reference
-	// 	typename	std::output_iterator_tag 							iterator_category
-	// };
