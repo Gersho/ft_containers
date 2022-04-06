@@ -6,13 +6,16 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/01 14:51:42 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/06 12:56:49 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #ifndef ITERATOR_HPP
 # define ITERATOR_HPP
+
+
+# include <cstddef>
 
 namespace ft
 {
@@ -107,7 +110,7 @@ namespace ft
 		}
 
 		__generic_iterator<T>&	operator++( void ) {
-			++it;
+			this->it++;
 			return *this;
 		}
 
@@ -150,17 +153,17 @@ namespace ft
 			return p >= rhs.p;
 		}
 
-		T& operator*() const
+		reference operator*() const
 		{
 			return *it;
 		}
 
-		T* operator->() const
+		pointer operator->() const
 		{
 			return it;
 		}
 
-		T & operator[](difference_type index) const
+		reference operator[](difference_type index) const
 		{
 			return *(it + index);
 		}
@@ -193,23 +196,9 @@ namespace ft
 			return *this;
 		}
 
-		friend __generic_iterator<T>& operator+(difference_type lhs, const __generic_iterator<T>& rhs);
-		friend __generic_iterator<T>& operator-(difference_type lhs, const __generic_iterator<T>& rhs);
 		friend void advance (InputIterator& it, Distance n);
 		friend typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last);
 	}; // class iterator end
-
-	template <class T>
-	__generic_iterator<T> operator+(difference_type lhs, const __generic_iterator<T>& rhs)
-	{
-		return lhs + rhs.it;
-	}
-
-	template <class T>
-	__generic_iterator<T> operator-(difference_type lhs, const __generic_iterator<T>& rhs)
-	{
-		return lhs - rhs.it;
-	}
 
 	template <class InputIterator, class Distance>
 	void advance (InputIterator& it, Distance n)
@@ -231,8 +220,14 @@ namespace ft
 	template <class Iterator>
 	class __generic_reverse_iterator
 	{
-		
-	}
+		public:
+
+		protected:
+
+		private:
+
+		Iterator iter;
+	};
 /*
 	template <class Iterator>
 	class __generic_reverse_iterator
