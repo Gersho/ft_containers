@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/06 15:41:42 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/12 15:39:17 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,31 +24,31 @@ namespace ft
 	template< class Iter >
 	struct iterator_traits
 	{
-		typename	Iter::difference_type  	difference_type
-		typename	Iter::value_type		value_type
-		typename	Iter::pointer			pointer
-		typename	Iter::reference			reference
-		typename	Iter::iterator_category	iterator_category
+		typename			Iter::difference_type  	difference_type;
+		typedef	typename	Iter::value_type		value_type;
+		typedef	typename	Iter::pointer			pointer;
+		typedef	typename	Iter::reference			reference;
+		typedef	typename	Iter::iterator_category	iterator_category;
 	};
 
 	template< class T >
-	struct iterator_traits<T*>
+	struct iterator_traits< T* >
 	{
-		typename	std::ptrdiff_t 					difference_type
-		typename	T								value_type
-		typename	T* 								pointer
-		typename	T& 								reference
-		typename	ft::random_access_iterator_tag	iterator_category
+		typedef	std::ptrdiff_t 					difference_type;
+		typedef	T								value_type;
+		typedef	T* 								pointer;
+		typedef	T& 								reference;
+		typedef	ft::random_access_iterator_tag	iterator_category;
 	};
 
 	template< class T >
-	struct iterator_traits<const T*>
+	struct iterator_traits< const T* >
 	{
-		typename	std::ptrdiff_t						difference_type					
-		typename	T 									value_type
-		typename	const T* 							pointer
-		typename	const T& 							reference
-		typename	ft::random_access_iterator_tag		iterator_category	
+		typedef	std::ptrdiff_t					difference_type;			
+		typedef	T 								value_type;
+		typedef	const T* 						pointer;
+		typedef	const T& 						reference;
+		typedef	ft::random_access_iterator_tag	iterator_category;
 	};
 
 	template <
@@ -58,16 +58,16 @@ namespace ft
 				class Pointer = T*,
 				class Reference = T&
 				>
-	struct iterator {
+	struct __iterator {
+		typedef Category  iterator_category;
 		typedef T         value_type;
 		typedef Distance  difference_type;
 		typedef Pointer   pointer;
 		typedef Reference reference;
-		typedef Category  iterator_category;
 	};
 
 	template < class T >
-	class __generic_iterator : public ft::iterator<ft::random_access_iterator_tag, T>
+	class __generic_iterator : public ft::__iterator<ft::random_access_iterator_tag, T>
 	{
 		private:
 
@@ -200,6 +200,8 @@ namespace ft
 		friend typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last);
 	}; // class iterator end
 
+//TODO const iterator (heritage de l'iterator non const ?)
+
 	template <class InputIterator, class Distance>
 	void advance (InputIterator& it, Distance n)
 	{
@@ -220,12 +222,12 @@ namespace ft
 	template <class Iterator>
 	class __generic_reverse_iterator
 	{
-		typename Iterator											iterator_type
-		typename iterator_traits<Iterator>::iterator_category		iterator_category
-		typename iterator_traits<Iterator>::value_type				value_type
-		typename iterator_traits<Iterator>::difference_type			difference_type
-		typename iterator_traits<Iterator>::pointer					pointer
-		typename iterator_traits<Iterator>::reference				reference
+		typename Iterator											iterator_type;
+		typename iterator_traits<Iterator>::iterator_category		iterator_category;
+		typename iterator_traits<Iterator>::value_type				value_type;
+		typename iterator_traits<Iterator>::difference_type			difference_type;
+		typename iterator_traits<Iterator>::pointer					pointer;
+		typename iterator_traits<Iterator>::reference				reference;
 
 		public:
 

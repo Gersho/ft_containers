@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/01 14:40:01 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/12 16:32:37 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@
 namespace ft 
 {
 
-	template < class T, class Allocator = std::allocator<T>>
+	//template < class T, class Alloc = std::allocator<T> > class vector; // generic template
+
+	template < class T, class Allocator = std::allocator<T> >
 	class vector
 	{
 		public:
@@ -39,20 +41,25 @@ namespace ft
 		
 
 		// (1) Default constructor. Constructs an empty container with a default-constructed allocator.
-		vector()
+		vector() : _capacity(0), _size(0), _ptr(NULL), _allocator(allocator_type)
 		{
 		}
 		
 		// (2) Constructs an empty container with the given allocator alloc.
-		explicit vector( const Allocator& alloc )
+		explicit vector( const Allocator& alloc ) : _capacity(0), _size(0), _ptr(NULL), _allocator(alloc)
 		{
 
 		}
 		
 		// (3) Constructs the container with count cop`ies of elements with value value.
 		explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
+		: _allocator(alloc), _size(count)
 		{
+			//try catch
 
+			//allocate quel taille ? quel capacity ?
+			_ptr = allocator_type.allocate(sizeof(T) * count * 2);
+			_capacity = count * 2;
 		}
 		
 		// (5) Constructs the container with the contents of the range [first, last).
@@ -68,11 +75,24 @@ namespace ft
 
 		}
 		
+		~vector()
+		{
+			//free stuff or whatever
+
+		}
+
 		protected:
 		private:
 
-		size_type	capacity;
-		pointer		ptr;
+		size_type		_capacity;
+		size_type		_size;
+		allocator_type	_allocator;
+		pointer			_ptr;
+
+		
+		iterator		_iterator;
+		iterator		_begin;
+		//allocator ?
 	};
 
 }

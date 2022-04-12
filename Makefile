@@ -1,10 +1,10 @@
-SRCS		= main.cpp
+SRCS		= main_test.cpp
 
 OBJS			= $(SRCS:.cpp=.o)
 
 DEPS			= $(SRCS:.cpp=.d)
 
-NAME			= containers
+NAME			= span
 CC				= clang++
 CFLAGS			= --std=c++98 -Wall -Wextra -Werror
 
@@ -28,4 +28,4 @@ re:			fclean all
 
 .PHONY:		re fclean clean all
 
--include $(DEPS)%  
+-include $(DEPS)
