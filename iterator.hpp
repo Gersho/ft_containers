@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/12 15:39:17 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/13 13:52:06 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,31 +51,41 @@ namespace ft
 		typedef	ft::random_access_iterator_tag	iterator_category;
 	};
 
-	template <
-				class Category,
-				class T,
-				class Distance = ptrdiff_t,
-				class Pointer = T*,
-				class Reference = T&
-				>
-	struct __iterator {
-		typedef Category  iterator_category;
-		typedef T         value_type;
-		typedef Distance  difference_type;
-		typedef Pointer   pointer;
-		typedef Reference reference;
-	};
+	// template <
+	// 			class Category,
+	// 			class T,
+	// 			class Distance = ptrdiff_t,
+	// 			class Pointer = T*,
+	// 			class Reference = T&
+	// 			>
+	// struct __iterator {
+	// 	typedef Category  iterator_category;
+	// 	typedef T         value_type;
+	// 	typedef Distance  difference_type;
+	// 	typedef Pointer   pointer;
+	// 	typedef Reference reference;
+	// };
 
 	template < class T >
-	class __generic_iterator : public ft::__iterator<ft::random_access_iterator_tag, T>
+	class __generic_iterator// : public ft::__iterator<ft::random_access_iterator_tag, T>
 	{
 		private:
 
 		T *it;
 
+
+
 		protected:
 		
 		public:
+
+
+		typedef ft::random_access_iterator_tag 			iterator_category;
+		typedef T         								value_type;
+		typedef std::ptrdiff_t  						difference_type;
+		typedef T*   									pointer;
+		typedef T& 										reference;
+
 
 		__generic_iterator()
 			: it(NULL)
@@ -101,12 +111,12 @@ namespace ft
 
 		bool operator==( const __generic_iterator<T> & rhs) const
 		{
-			return p==rhs.p;
+			return it==rhs.it;
 		}
 
 		bool operator !=(const __generic_iterator<T> & rhs) const
 		{
-			return p!=rhs.p;
+			return it!=rhs.it;
 		}
 
 		__generic_iterator<T>&	operator++( void ) {
@@ -135,22 +145,22 @@ namespace ft
 
 		bool operator<( const __generic_iterator<T> & rhs ) const
 		{
-			return p < rhs.p;
+			return it < rhs.it;
 		}
 
 		bool operator>( const __generic_iterator<T> & rhs ) const
 		{
-			return p > rhs.p;
+			return it > rhs.it;
 		}
 
 		bool operator<=( const __generic_iterator<T> & rhs ) const
 		{
-			return p <= rhs.p;
+			return it <= rhs.it;
 		}
 
 		bool operator>=( const __generic_iterator<T> & rhs) const
 		{
-			return p >= rhs.p;
+			return it >= rhs.it;
 		}
 
 		reference operator*() const
@@ -179,7 +189,7 @@ namespace ft
 			return it + rhs;
 		}
 
-		__generic_iterator<T> operator-(differenc_type rhs) const 
+		__generic_iterator<T> operator-(difference_type rhs) const 
 		{
 			return it - rhs;
 		}
@@ -196,8 +206,9 @@ namespace ft
 			return *this;
 		}
 
-		friend void advance (InputIterator& it, Distance n);
-		friend typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last);
+		friend void advance (__generic_iterator<T>& it, typename iterator_traits<__generic_iterator<T> >::difference_type n);
+		friend void advance (__generic_iterator<T>& it, typename iterator_traits<__generic_iterator<T> >::difference_type n);
+		friend typename iterator_traits<__generic_iterator<T> >::difference_type distance (__generic_iterator<T> first, __generic_iterator<T> last);
 	}; // class iterator end
 
 //TODO const iterator (heritage de l'iterator non const ?)
@@ -211,7 +222,7 @@ namespace ft
 	template<class InputIterator>
 	typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last)
 	{
-		distance d;
+		std::ptrdiff_t d;
 
 		d = last.it - first.it;
 		if (d < 0)
@@ -219,6 +230,7 @@ namespace ft
 		return d;
 	}
 
+/*
 	template <class Iterator>
 	class __generic_reverse_iterator
 	{
@@ -258,7 +270,7 @@ namespace ft
 		iterator_type base_iterator;
 		
 	};
-
+*/
 
 
 

@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/12 16:32:37 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/13 13:52:38 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,53 +32,61 @@ namespace ft
 		typedef	std::ptrdiff_t										difference_type;
 		typedef	value_type&											reference;
 		typedef	const value_type&									const_reference;
-	 	typedef Allocator::pointer									pointer	
-		typedef Allocator::const_pointer 							const_pointer 
+	 	typedef typename Allocator::pointer									pointer;
+		typedef typename Allocator::const_pointer 							const_pointer;
 		typedef ft::__generic_iterator<T>							iterator;
 		typedef ft::__generic_iterator<const T>						const_iterator;	
-		typedef	ft::__generic_reverse_iterator<iterator>			reverse_iterator;
-		typedef	ft::__generic_reverse_iterator<const_iterator>		const_reverse_iterator;
+		// typedef	ft::__generic_reverse_iterator<iterator>			reverse_iterator;
+		// typedef	ft::__generic_reverse_iterator<const_iterator>		const_reverse_iterator;
 		
 
 		// (1) Default constructor. Constructs an empty container with a default-constructed allocator.
-		vector() : _capacity(0), _size(0), _ptr(NULL), _allocator(allocator_type)
+		vector()
+		: _capacity(0), _size(0), _ptr(NULL)//, _allocator(allocator_type)
 		{
 		}
 		
 		// (2) Constructs an empty container with the given allocator alloc.
-		explicit vector( const Allocator& alloc ) : _capacity(0), _size(0), _ptr(NULL), _allocator(alloc)
+		explicit vector( const Allocator& alloc )
+		: _capacity(0), _size(0), _ptr(NULL), _allocator(alloc)
 		{
 
 		}
 		
 		// (3) Constructs the container with count cop`ies of elements with value value.
-		explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
-		: _allocator(alloc), _size(count)
-		{
-			//try catch
+		// explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
+		// : _allocator(alloc), _size(count), _capacity(count)
+		// {
+		// 	//try catch
 
-			//allocate quel taille ? quel capacity ?
-			_ptr = allocator_type.allocate(sizeof(T) * count * 2);
-			_capacity = count * 2;
-		}
+		// 	//allocate quel taille ? quel capacity ?
+
+		// 	_ptr = _allocator.allocate(sizeof(T) * count);
+
+
+		// }
 		
 		// (5) Constructs the container with the contents of the range [first, last).
 		template< class InputIt >
 		vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() )
+		: _allocator(alloc)
 		{
-
+			size_t	diff = last - first;
+			_capacity = diff;
+			_size = diff;
+			_ptr = _allocator.allocate(sizeof(T) * _capacity);
 		}
 		
 		// (6) Copy constructor. Constructs the container with the copy of the contents of other.
-		vector( const vector& other )
-		{
+		// vector( const vector& other )
+		// {
 
-		}
+		// }
 		
 		~vector()
 		{
 			//free stuff or whatever
-
+			_allocator.deallocate(_ptr, _capacity);
 		}
 
 		protected:
@@ -90,8 +98,8 @@ namespace ft
 		pointer			_ptr;
 
 		
-		iterator		_iterator;
-		iterator		_begin;
+		// iterator		_iterator;
+		// iterator		_begin;
 		//allocator ?
 	};
 
