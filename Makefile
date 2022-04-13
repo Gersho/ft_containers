@@ -4,7 +4,7 @@ OBJS			= $(SRCS:.cpp=.o)
 
 DEPS			= $(SRCS:.cpp=.d)
 
-NAME			= span
+NAME			= containers
 CC				= clang++
 CFLAGS			= --std=c++98 -Wall -Wextra -Werror
 

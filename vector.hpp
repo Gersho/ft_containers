@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/13 13:52:38 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/13 16:24:57 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VECTOR_HPP
 
 #include <memory>
+#include <stdexcept>
 #include "iterator.hpp"
 
 namespace ft 
@@ -32,8 +33,8 @@ namespace ft
 		typedef	std::ptrdiff_t										difference_type;
 		typedef	value_type&											reference;
 		typedef	const value_type&									const_reference;
-	 	typedef typename Allocator::pointer									pointer;
-		typedef typename Allocator::const_pointer 							const_pointer;
+	 	typedef typename allocator_type::pointer					pointer;
+		typedef typename allocator_type::const_pointer 				const_pointer;
 		typedef ft::__generic_iterator<T>							iterator;
 		typedef ft::__generic_iterator<const T>						const_iterator;	
 		// typedef	ft::__generic_reverse_iterator<iterator>			reverse_iterator;
@@ -74,7 +75,7 @@ namespace ft
 			size_t	diff = last - first;
 			_capacity = diff;
 			_size = diff;
-			_ptr = _allocator.allocate(sizeof(T) * _capacity);
+			_ptr = _allocator.allocate(_capacity);
 		}
 		
 		// (6) Copy constructor. Constructs the container with the copy of the contents of other.
@@ -89,6 +90,66 @@ namespace ft
 			_allocator.deallocate(_ptr, _capacity);
 		}
 
+
+
+		iterator begin()
+		{
+			iterator it = __generic_iterator<T>(_ptr);
+			return it;
+		}
+
+		const_iterator begin() const
+		{
+			const_iterator it = __generic_iterator<const T>(_ptr);
+			return it;
+		}
+
+		iterator end()
+		{
+			iterator it = begin() + _size;
+			return it;
+		}
+
+		const_iterator end() const
+		{
+			const_iterator it = begin() + _size;
+			return it;
+		}
+
+		size_type size() const { return _size; }
+
+		size_type max_size() const
+		{
+			return _allocator.max_size();
+		}
+
+		size_type capacity() const { return _capacity; }
+		bool empty() const { return _size == 0 ? true : false; };
+
+		reference operator[](size_type index)
+		{
+			return *(begin() + index);
+		}
+
+		const_reference operator[] (size_type index) const
+		{
+			return *(begin() + index);
+		}
+
+		reference at(size_type index)
+		{
+			if (index > _size)
+				throw std::out_of_range("out of range");
+			return *(begin() + index);
+		}
+
+		const_reference at(size_type index) const
+		{
+			if (index > _size)
+				throw std::out_of_range("out of range");
+			return *(begin() + index);
+		}
+
 		protected:
 		private:
 
@@ -101,6 +162,9 @@ namespace ft
 		// iterator		_iterator;
 		// iterator		_begin;
 		//allocator ?
+
+
+
 	};
 
 }

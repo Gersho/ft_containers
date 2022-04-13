@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/13 13:52:06 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/13 14:15:56 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -207,7 +207,7 @@ namespace ft
 		}
 
 		friend void advance (__generic_iterator<T>& it, typename iterator_traits<__generic_iterator<T> >::difference_type n);
-		friend void advance (__generic_iterator<T>& it, typename iterator_traits<__generic_iterator<T> >::difference_type n);
+	//	friend void advance (__generic_iterator<T>& it, typename iterator_traits<__generic_iterator<T> >::difference_type n);
 		friend typename iterator_traits<__generic_iterator<T> >::difference_type distance (__generic_iterator<T> first, __generic_iterator<T> last);
 	}; // class iterator end
 
