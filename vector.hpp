@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/13 16:24:57 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/13 17:16:12 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,8 @@ namespace ft
 		// : _allocator(alloc), _size(count), _capacity(count)
 		// {
 		// 	//try catch
-
 		// 	//allocate quel taille ? quel capacity ?
-
 		// 	_ptr = _allocator.allocate(sizeof(T) * count);
-
-
 		// }
 		
 		// (5) Constructs the container with the contents of the range [first, last).
@@ -116,6 +112,10 @@ namespace ft
 			return it;
 		}
 
+
+		//rbegin
+		//rend
+
 		size_type size() const { return _size; }
 
 		size_type max_size() const
@@ -123,8 +123,28 @@ namespace ft
 			return _allocator.max_size();
 		}
 
+		//resize
+		void resize (size_type n, value_type val = value_type())
+		{
+
+		}
+
+/*
+ Resizes the container so that it contains n elements.
+
+If n is smaller than the current container size, the content is reduced to its first n elements, removing those beyond (and destroying them).
+
+If n is greater than the current container size, the content is expanded by inserting at the end as many elements as needed to reach a size of n. If val is specified, the new elements are initialized as copies of val, otherwise, they are value-initialized.
+
+If n is also greater than the current container capacity, an automatic reallocation of the allocated storage space takes place.
+
+Notice that this function changes the actual content of the container by inserting or erasing elements from it.
+*/
+
 		size_type capacity() const { return _capacity; }
 		bool empty() const { return _size == 0 ? true : false; };
+
+		//reserve
 
 		reference operator[](size_type index)
 		{
@@ -149,6 +169,26 @@ namespace ft
 				throw std::out_of_range("out of range");
 			return *(begin() + index);
 		}
+
+
+		//front
+
+		//back
+
+		// 	- [x] `assign`: Assign vector content
+		// - [x] `push_back`: Add element at the end
+		// - [x] `pop_back`: Delete last element
+		// - [x] `insert`: Insert elements
+		// - [x] `erase`: Erase elements
+		// - [x] `swap`: Swap content
+		// - [x] `clear`: Clear content
+
+		// #### Allocator:
+		// - [x] `get_allocator`: Get allocator	
+
+		// ## Non-member function overloads
+		// - [x] `relational operators`: Relational operators for vector
+		// - [x] `swap`: Exchange contents of vectors
 
 		protected:
 		private:
