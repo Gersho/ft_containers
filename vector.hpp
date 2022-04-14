@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/13 17:16:12 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/14 16:44:06 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,13 @@
 
 #include <memory>
 #include <stdexcept>
+#include <iostream>
 #include "iterator.hpp"
 
 namespace ft 
 {
+
+//void construct ( pointer p, const_reference val );
 
 	//template < class T, class Alloc = std::allocator<T> > class vector; // generic template
 
@@ -43,35 +46,68 @@ namespace ft
 
 		// (1) Default constructor. Constructs an empty container with a default-constructed allocator.
 		vector()
-		: _capacity(0), _size(0), _ptr(NULL)//, _allocator(allocator_type)
+		: _capacity(0), _size(0), _allocator(allocator_type()), _ptr(NULL)
 		{
 		}
 		
 		// (2) Constructs an empty container with the given allocator alloc.
 		explicit vector( const Allocator& alloc )
-		: _capacity(0), _size(0), _ptr(NULL), _allocator(alloc)
+		: _capacity(0), _size(0), _allocator(alloc), _ptr(NULL)
 		{
-
 		}
 		
 		// (3) Constructs the container with count cop`ies of elements with value value.
-		// explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
-		// : _allocator(alloc), _size(count), _capacity(count)
-		// {
-		// 	//try catch
-		// 	//allocate quel taille ? quel capacity ?
-		// 	_ptr = _allocator.allocate(sizeof(T) * count);
-		// }
+		explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
+		: _allocator(alloc), _size(0), _capacity(count)
+		{
+			try 
+			{
+				_ptr = _allocator.allocate(count);
+			}
+			catch (std::bad_alloc& ba)
+			{
+				std::cerr << "bad_alloc caught in explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()): " << ba.what() << '\n';
+				_capacity = 0;
+				_ptr = NULL;
+				throw;
+				return;
+			}
+			//fill the vector
+			//void construct ( pointer p, const_reference val );
+			(void) value;
+		}
 		
 		// (5) Constructs the container with the contents of the range [first, last).
 		template< class InputIt >
-		vector( InputIt first, InputIt last, const Allocator& alloc = Allocator() )
-		: _allocator(alloc)
+		vector( InputIt first, InputIt last, const Allocator& alloc = Allocator())
+		: _size(0), _allocator(alloc)
 		{
 			size_t	diff = last - first;
 			_capacity = diff;
-			_size = diff;
-			_ptr = _allocator.allocate(_capacity);
+			if (diff > 0)
+			{
+				try 
+				{
+					_ptr = _allocator.allocate(_capacity);
+				}
+				catch (std::bad_alloc& ba)
+				{
+					std::cerr << "bad_alloc caught in vector( InputIt first, InputIt last, const Allocator& alloc = Allocator()): " << ba.what() << '\n';
+					_size = 0;
+					_capacity = 0;
+					_ptr = NULL;
+					throw;
+					return;
+				}
+				
+				//fill the vector
+				//void construct ( pointer p, const_reference val );
+			}
+			else
+			{
+				_capacity = 0;
+				_ptr = NULL;
+			}
 		}
 		
 		// (6) Copy constructor. Constructs the container with the copy of the contents of other.
@@ -83,7 +119,18 @@ namespace ft
 		~vector()
 		{
 			//free stuff or whatever
+			//destroy
+			// iterator	beg = begin();
+			// iterator	end = end();
+
+			// while (beg != end)
+			// {
+			// 	_allocator.destroy();
+			// }
+
+			
 			_allocator.deallocate(_ptr, _capacity);
+
 		}
 
 
@@ -124,10 +171,13 @@ namespace ft
 		}
 
 		//resize
-		void resize (size_type n, value_type val = value_type())
-		{
+		// void resize (size_type n, value_type val = value_type())
+		// {
 
-		}
+		// }
+
+
+
 
 /*
  Resizes the container so that it contains n elements.
@@ -144,7 +194,12 @@ Notice that this function changes the actual content of the container by inserti
 		size_type capacity() const { return _capacity; }
 		bool empty() const { return _size == 0 ? true : false; };
 
-		//reserve
+		void reserve (size_type n)
+		{
+			if (n <= _capacity)
+				return;
+			//TODO
+		}
 
 		reference operator[](size_type index)
 		{
@@ -176,9 +231,94 @@ Notice that this function changes the actual content of the container by inserti
 		//back
 
 		// 	- [x] `assign`: Assign vector content
+
 		// - [x] `push_back`: Add element at the end
+
+		
+		void push_back (const value_type& val)
+		{
+			if (_size == _capacity)
+			{
+				try
+				{
+					if (_capacity == 0)
+						reserve(1);
+					else
+						reserve(_capacity * 2);	
+				}
+				catch (std::bad_alloc& ba)
+				{
+					throw;
+					return;
+				}
+			}
+			//_ptr[_size] = val;
+			_allocator.construct(_ptr + _size, val);
+			_size++;
+		}
+
 		// - [x] `pop_back`: Delete last element
-		// - [x] `insert`: Insert elements
+
+
+		//INSERT single element (1)	
+
+		iterator insert (iterator position, const value_type& val)
+		{
+			if (_size == _capacity)
+			{
+				try
+				{
+					if (_capacity == 0)
+						reserve(1);
+					else
+						reserve(_capacity * 2);	
+				}
+				catch (std::bad_alloc& ba)
+				{
+					throw;
+					return;
+				}
+			}
+
+			value_type tmp = val;
+			value_type swap;
+			while (position)
+			{
+				swap = *position;
+
+				//    *position = tmp;
+				_allocator.construct(position, tmp);
+				tmp = swap;
+				position++;
+			}
+
+			_size++;
+		}
+
+		//INSERT fill (2)	
+
+   		void insert (iterator position, size_type n, const value_type& val)
+		{
+			while (n)
+			{
+				insert(position, val);
+				n--;
+			}
+		}
+
+		//INSERT range (3)	
+
+		template <class InputIterator>
+		void insert (iterator position, InputIterator first, InputIterator last)
+		{
+			while (first != last)
+			{
+				insert(position, *first);
+				position++;
+				first++;
+			}
+		}
+
 		// - [x] `erase`: Erase elements
 		// - [x] `swap`: Swap content
 		// - [x] `clear`: Clear content
@@ -210,6 +350,22 @@ Notice that this function changes the actual content of the container by inserti
 }
 
 #endif
+
+/*
+
+
+try catch list:
+
+allocator allocate()
+
+
+throw:
+
+vector at() (version normal et const)
+
+*/
+
+
 
 /*
 
