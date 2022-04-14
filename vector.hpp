@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/14 16:44:06 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/14 18:14:05 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,17 @@ Notice that this function changes the actual content of the container by inserti
 		{
 			if (n <= _capacity)
 				return;
+			pointer dest = _allocator.allocate(n);
+			iterator src_start =  __generic_iterator<T>(_ptr);
+			iterator src_end	= src_start + _size;
+			iterator  dest_start =  __generic_iterator<T>(dest);
+			_size = 0;
+			size_type old_capa = _capacity;
+			_capacity = n;
+			insert (dest_start, src_start, src_end);
+			_allocator.deallocate(_ptr, old_capa);
+			_ptr = dest;
+			// _src destroy ?
 			//TODO
 		}
 
@@ -252,8 +263,12 @@ Notice that this function changes the actual content of the container by inserti
 					return;
 				}
 			}
-			//_ptr[_size] = val;
+			std::cout << "coucou" << std::endl;
+				std::cout << "ft size: " << size() << std::endl;
+				std::cout << "ft capacity: " << capacity() << std::endl;
+				std::cout << "ft max_size: " << max_size() << std::endl;
 			_allocator.construct(_ptr + _size, val);
+			std::cout << "coucou2" << std::endl;
 			_size++;
 		}
 
@@ -262,8 +277,10 @@ Notice that this function changes the actual content of the container by inserti
 
 		//INSERT single element (1)	
 
+
 		iterator insert (iterator position, const value_type& val)
 		{
+			iterator save = position;
 			if (_size == _capacity)
 			{
 				try
@@ -276,24 +293,29 @@ Notice that this function changes the actual content of the container by inserti
 				catch (std::bad_alloc& ba)
 				{
 					throw;
-					return;
+					return NULL;
 				}
 			}
 
 			value_type tmp = val;
 			value_type swap;
-			while (position)
+			while (*position)
 			{
 				swap = *position;
 
 				//    *position = tmp;
-				_allocator.construct(position, tmp);
+				//void construct ( pointer p, const_reference val );
+				// position est un iterator et non un pointer
+				_allocator.construct(position , tmp);
 				tmp = swap;
 				position++;
 			}
 
 			_size++;
+			return save;
 		}
+
+
 
 		//INSERT fill (2)	
 

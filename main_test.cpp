@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 11:39:50 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/14 15:49:03 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/14 16:58:49 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ int main()
 	std::cout << "ft size: " << ft_vec.size() << std::endl;
 	std::cout << "ft capacity: " << ft_vec.capacity() << std::endl;
 	std::cout << "ft max_size: " << ft_vec.max_size() << std::endl;
-
+	ft_vec.push_back(5);
+	ft_vec.push_back(15);
 	
 	std::vector<int> std_vec;
 
