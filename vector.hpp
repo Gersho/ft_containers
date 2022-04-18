@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/14 18:14:05 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/18 02:57:43 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ namespace ft
 		typedef	const value_type&									const_reference;
 	 	typedef typename allocator_type::pointer					pointer;
 		typedef typename allocator_type::const_pointer 				const_pointer;
-		typedef ft::__generic_iterator<T>							iterator;
-		typedef ft::__generic_iterator<const T>						const_iterator;	
+		typedef ft::__generic_iterator<value_type>							iterator;
+		typedef ft::__generic_iterator<const value_type>						const_iterator;	
 		// typedef	ft::__generic_reverse_iterator<iterator>			reverse_iterator;
 		// typedef	ft::__generic_reverse_iterator<const_iterator>		const_reverse_iterator;
 		
@@ -72,9 +72,8 @@ namespace ft
 				throw;
 				return;
 			}
-			//fill the vector
-			//void construct ( pointer p, const_reference val );
-			(void) value;
+			for (size_type i = 0; i < count; i++)
+				push_back(value);
 		}
 		
 		// (5) Constructs the container with the contents of the range [first, last).
@@ -99,9 +98,11 @@ namespace ft
 					throw;
 					return;
 				}
-				
-				//fill the vector
-				//void construct ( pointer p, const_reference val );
+				for (size_type i = 0; i < diff; i++)
+				{
+					_allocator.construct(&_ptr[i], *first);
+					first++;
+				}
 			}
 			else
 			{
@@ -110,27 +111,43 @@ namespace ft
 			}
 		}
 		
-		// (6) Copy constructor. Constructs the container with the copy of the contents of other.
-		// vector( const vector& other )
-		// {
-
-		// }
+	//	(6) Copy constructor. Constructs the container with the copy of the contents of src.
+		vector( const vector& src )
+		{
+			_size = src._size;
+			_capacity = src._capacity;
+			_allocator = src._allocator;
+			if (src._capacity > 0)
+			{
+				try 
+				{
+					_ptr = _allocator.allocate(_capacity);
+				}
+				catch (std::bad_alloc& ba)
+				{
+					std::cerr << "bad_alloc caught in vector( const vector& src ): " << ba.what() << '\n';
+					_size = 0;
+					_capacity = 0;
+					_ptr = NULL;
+					throw;
+					return;
+				}
+			}
+			for (size_type i = 0; i <_size; i++)
+				_allocator.construct(&_ptr[i], src._ptr[i]);
+		}
 		
 		~vector()
 		{
-			//free stuff or whatever
-			//destroy
-			// iterator	beg = begin();
-			// iterator	end = end();
+			iterator	first = begin();
+			iterator	last = end();
 
-			// while (beg != end)
-			// {
-			// 	_allocator.destroy();
-			// }
-
-			
+			while (first != last)
+			{
+				_allocator.destroy(&first[0]);
+				first++;
+			}
 			_allocator.deallocate(_ptr, _capacity);
-
 		}
 
 
@@ -162,22 +179,11 @@ namespace ft
 
 		//rbegin
 		//rend
+		//const rbegin
+		//const rend
 
 		size_type size() const { return _size; }
-
-		size_type max_size() const
-		{
-			return _allocator.max_size();
-		}
-
-		//resize
-		// void resize (size_type n, value_type val = value_type())
-		// {
-
-		// }
-
-
-
+		size_type max_size() const { return _allocator.max_size(); }
 
 /*
  Resizes the container so that it contains n elements.
@@ -190,6 +196,26 @@ If n is also greater than the current container capacity, an automatic reallocat
 
 Notice that this function changes the actual content of the container by inserting or erasing elements from it.
 */
+		void resize (size_type n, value_type val = value_type())
+		{
+			if (n < _size)
+			{
+				for (size_type i = n; i < _size; i++)
+					_allocator.destroy(&_ptr[i]);
+			}
+			else if (n < _capacity)
+			{
+				for (size_type i = _size; i < n; i++)
+					_allocator.construct(&_ptr[i], val);
+			}
+			if (n > _capacity)
+			{
+				reserve(n);
+				for (size_type i = _size; i < n; i++)
+					_allocator.construct(&_ptr[i], val);
+			}
+			_size = n;
+		}
 
 		size_type capacity() const { return _capacity; }
 		bool empty() const { return _size == 0 ? true : false; };
@@ -198,18 +224,31 @@ Notice that this function changes the actual content of the container by inserti
 		{
 			if (n <= _capacity)
 				return;
-			pointer dest = _allocator.allocate(n);
-			iterator src_start =  __generic_iterator<T>(_ptr);
-			iterator src_end	= src_start + _size;
-			iterator  dest_start =  __generic_iterator<T>(dest);
-			_size = 0;
-			size_type old_capa = _capacity;
+
+			pointer tmp;
+			try 
+			{
+				tmp = _allocator.allocate(n);
+			}
+			catch (std::bad_alloc& ba)
+			{
+				std::cerr << "bad_alloc caught in void Vector::reserve (size_type n): " << ba.what() << '\n';
+				_size = 0;
+				_capacity = 0;
+				tmp = NULL;
+				throw;
+				return;
+			}
+			for (size_type i = 0; i < _size; i++)
+			{
+				_allocator.construct(&tmp[i], _ptr[i]);
+				_allocator.destroy(&_ptr[i]);
+			}
+			_allocator.deallocate(_ptr, _capacity);
+			_ptr = tmp;
 			_capacity = n;
-			insert (dest_start, src_start, src_end);
-			_allocator.deallocate(_ptr, old_capa);
-			_ptr = dest;
-			// _src destroy ?
-			//TODO
+
+
 		}
 
 		reference operator[](size_type index)
