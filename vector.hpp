@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/18 04:18:52 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/18 05:52:56 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@
 
 namespace ft 
 {
+
+	// enlever _destroy_all() et remplacer par clear()
+
+
 	template < class T, class Allocator = std::allocator<T> >
 	class vector
 	{
@@ -202,7 +206,8 @@ Notice that this function changes the actual content of the container by inserti
 				_allocator.construct(&tmp[i], _ptr[i]);
 				_allocator.destroy(&_ptr[i]);
 			}
-			_allocator.deallocate(_ptr, _capacity);
+			if (_ptr)
+				_allocator.deallocate(_ptr, _capacity);
 			_ptr = tmp;
 			_capacity = n;
 		}
@@ -279,7 +284,6 @@ Notice that this function changes the actual content of the container by inserti
 			for (size_type i = 0; i < n; i++)
 			{
 				_allocator.construct(&_ptr[i], val);
-				first++;
 			}
 			_size = n;		
 		}
@@ -290,71 +294,38 @@ Notice that this function changes the actual content of the container by inserti
 		
 		void push_back (const value_type& val)
 		{
-			if (_size == _capacity)
-			{
-				try
-				{
-					if (_capacity == 0)
-						reserve(1);
-					else
-						reserve(_capacity * 2);	
-				}
-				catch (std::bad_alloc& ba)
-				{
-					throw;
-					return;
-				}
-			}
-			std::cout << "coucou" << std::endl;
-				std::cout << "ft size: " << size() << std::endl;
-				std::cout << "ft capacity: " << capacity() << std::endl;
-				std::cout << "ft max_size: " << max_size() << std::endl;
+			if(!_upgrade_capacity())
+				return;
+			// std::cout << "coucou" << std::endl;
+			// 	std::cout << "ft size: " << size() << std::endl;
+			// 	std::cout << "ft capacity: " << capacity() << std::endl;
+			// 	std::cout << "ft max_size: " << max_size() << std::endl;
 			_allocator.construct(_ptr + _size, val);
-			std::cout << "coucou2" << std::endl;
+		//	std::cout << "coucou2" << std::endl;
 			_size++;
 		}
 
-		// - [x] `pop_back`: Delete last element
-
+		void	pop_back()
+		{
+			_allocator.destroy(&_ptr[_size - 1]);
+			_size--;
+		}
 
 		//INSERT single element (1)	
 
 
 		iterator insert (iterator position, const value_type& val)
 		{
-			iterator save = position;
-			if (_size == _capacity)
-			{
-				try
-				{
-					if (_capacity == 0)
-						reserve(1);
-					else
-						reserve(_capacity * 2);	
-				}
-				catch (std::bad_alloc& ba)
-				{
-					throw;
-					return NULL;
-				}
-			}
+			if(!_upgrade_capacity())
+				return NULL;
 
-			value_type tmp = val;
-			value_type swap;
-			while (*position)
-			{
-				swap = *position;
+			size_type diff = position - begin();
 
-				//    *position = tmp;
-				//void construct ( pointer p, const_reference val );
-				// position est un iterator et non un pointer
-				_allocator.construct(position , tmp);
-				tmp = swap;
-				position++;
-			}
-
+			for (size_type i = _size; i > diff; i--)
+				_allocator.construct(&_ptr[i], _ptr[i - 1]);
+			_allocator.construct(&_ptr[diff], val);
 			_size++;
-			return save;
+			return position;
 		}
 
 
@@ -384,12 +355,62 @@ Notice that this function changes the actual content of the container by inserti
 		}
 
 		// - [x] `erase`: Erase elements
+		iterator erase (iterator position)
+		{
+			iterator	first = position;
+			iterator	last = end();
+
+			while (first != (last - 1))
+			{
+				_allocator.destroy(first);
+				_allocator.construct(first, *(first + 1));
+				first++;
+			}
+			_allocator.destroy(first);	
+			_size--;
+			return position;
+		}
+
+		iterator erase (iterator first, iterator last)
+		{
+			size_type diff = last - first;
+			for (size_type i = 0; i < diff; i++)
+			{
+				erase(first);
+			}
+			return first;
+		}
+		
 		// - [x] `swap`: Swap content
+
+		void swap (vector& x)
+		{
+			size_type		tmp_capacity = _capacity;
+			size_type		tmp_size = _size;
+			allocator_type	tmp_allocator = _allocator;
+			pointer 		tmp_ptr = _ptr;
+
+			_capacity = x._capacity;
+			_size = x._size;
+			_allocator = x._allocator;
+			_ptr = x._ptr;
+
+			x._capacity = tmp_capacity;
+			x._size = tmp_size;
+			x._allocator = tmp_allocator;
+			x._ptr = tmp_ptr;
+		}
+
+
 		// - [x] `clear`: Clear content
+		void clear()
+		{
+			_destroy_all();
+		}
 
 		// #### Allocator:
 		// - [x] `get_allocator`: Get allocator	
-
+		allocator_type get_allocator() const { return _allocator; };
 		// ## Non-member function overloads
 		// - [x] `relational operators`: Relational operators for vector
 		// - [x] `swap`: Exchange contents of vectors
@@ -430,6 +451,23 @@ Notice that this function changes the actual content of the container by inserti
 			}
 			return true;
 		}
+
+		bool _upgrade_capacity()
+		{
+			// if (_ptr)
+			// 	return false;
+			if (_size == _capacity)
+			{
+				if (_capacity == 0)
+					reserve(1);
+				else
+					reserve(_capacity * 2);	
+				if (!_ptr)
+					return false;
+			}
+			return true;
+		}
+
 		// iterator		_iterator;
 		// iterator		_begin;
 		//allocator ?
@@ -437,6 +475,26 @@ Notice that this function changes the actual content of the container by inserti
 
 
 	};
+
+
+
+		// ## Non-member function overloads
+		// - [x] `swap`: Exchange contents of vectors
+
+	template <class T, class Alloc>
+	void swap (vector<T,Alloc>& x, vector<T,Alloc>& y)
+	{
+		x.swap(y);
+	}
+		
+		// - [x] `relational operators`: Relational operators for vector
+
+
+
+
+
+
+
 
 }
 

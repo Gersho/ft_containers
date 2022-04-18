@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 11:39:50 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/18 03:31:47 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/18 05:31:10 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,28 @@ int main()
 	std::cout << "ft size: " << ft_vec.size() << std::endl;
 	std::cout << "ft capacity: " << ft_vec.capacity() << std::endl;
 	std::cout << "ft max_size: " << ft_vec.max_size() << std::endl;
-	// ft_vec.push_back(5);
-	// ft_vec.push_back(15);
-	
-	std::vector<int> std_vec;
+	ft_vec.push_back(5);
+	ft_vec.push_back(15);
+	std::cout << "ft size: " << ft_vec.size() << std::endl;
+	std::cout << "ft capacity: " << ft_vec.capacity() << std::endl;
 
-	std::cout << "std size: " << std_vec.size() << std::endl;
-	std::cout << "std capacity: " << std_vec.capacity() << std::endl;
-	std::cout << "std max_size: " << std_vec.max_size() << std::endl;
-	std_vec.push_back(99);
-	std_vec.push_back(99);
-	std_vec.push_back(99);
-	std::cout << "std size: " << std_vec.size() << std::endl;
-	std::cout << "std capacity: " << std_vec.capacity() << std::endl;
-	std::cout << "std max_size: " << std_vec.max_size() << std::endl;
+	// std::vector<int> std_vec;
+
+	// std::cout << "std size: " << std_vec.size() << std::endl;
+	// std::cout << "std capacity: " << std_vec.capacity() << std::endl;
+	// std::cout << "std max_size: " << std_vec.max_size() << std::endl;
+	// std_vec.push_back(99);
+	// std_vec.push_back(99);
+	// std_vec.push_back(99);
+	// std::cout << "std size: " << std_vec.size() << std::endl;
+	// std::cout << "std capacity: " << std_vec.capacity() << std::endl;
+	// std::cout << "std max_size: " << std_vec.max_size() << std::endl;
 
 	
-	std_vec.assign(2, 1);
-	std::cout << "std size: " << std_vec.size() << std::endl;
-	std::cout << "std capacity: " << std_vec.capacity() << std::endl;
-	std::cout << "std max_size: " << std_vec.max_size() << std::endl;
+	// std_vec.assign(2, 1);
+	// std::cout << "std size: " << std_vec.size() << std::endl;
+	// std::cout << "std capacity: " << std_vec.capacity() << std::endl;
+	// std::cout << "std max_size: " << std_vec.max_size() << std::endl;
 	// ft::__generic_iterator<int> it = std_vec.begin();
 	// std::cout << "std iterator begin: " << std_vec.begin() << std::endl;
 	// std::cout << "std iterator end: " << std_vec.end() << std::endl;
