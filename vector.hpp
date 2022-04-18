@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/18 02:57:43 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/18 04:18:52 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@
 
 namespace ft 
 {
-
-//void construct ( pointer p, const_reference val );
-
-	//template < class T, class Alloc = std::allocator<T> > class vector; // generic template
-
 	template < class T, class Allocator = std::allocator<T> >
 	class vector
 	{
@@ -60,16 +55,10 @@ namespace ft
 		explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
 		: _allocator(alloc), _size(0), _capacity(count)
 		{
-			try 
+			if (!_try_alloc(&_ptr, count, "bad_alloc caught in explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()): " ))
 			{
-				_ptr = _allocator.allocate(count);
-			}
-			catch (std::bad_alloc& ba)
-			{
-				std::cerr << "bad_alloc caught in explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()): " << ba.what() << '\n';
 				_capacity = 0;
 				_ptr = NULL;
-				throw;
 				return;
 			}
 			for (size_type i = 0; i < count; i++)
@@ -85,18 +74,12 @@ namespace ft
 			_capacity = diff;
 			if (diff > 0)
 			{
-				try 
+				if (!_try_alloc(&_ptr, _capacity, "bad_alloc caught in vector( InputIt first, InputIt last, const Allocator& alloc = Allocator()): "))
 				{
-					_ptr = _allocator.allocate(_capacity);
-				}
-				catch (std::bad_alloc& ba)
-				{
-					std::cerr << "bad_alloc caught in vector( InputIt first, InputIt last, const Allocator& alloc = Allocator()): " << ba.what() << '\n';
 					_size = 0;
 					_capacity = 0;
 					_ptr = NULL;
-					throw;
-					return;
+					return;		
 				}
 				for (size_type i = 0; i < diff; i++)
 				{
@@ -119,18 +102,12 @@ namespace ft
 			_allocator = src._allocator;
 			if (src._capacity > 0)
 			{
-				try 
+				if (!_try_alloc(&_ptr, _capacity, "bad_alloc caught in vector( const vector& src ): "))
 				{
-					_ptr = _allocator.allocate(_capacity);
-				}
-				catch (std::bad_alloc& ba)
-				{
-					std::cerr << "bad_alloc caught in vector( const vector& src ): " << ba.what() << '\n';
 					_size = 0;
 					_capacity = 0;
 					_ptr = NULL;
-					throw;
-					return;
+					return;					
 				}
 			}
 			for (size_type i = 0; i <_size; i++)
@@ -139,18 +116,9 @@ namespace ft
 		
 		~vector()
 		{
-			iterator	first = begin();
-			iterator	last = end();
-
-			while (first != last)
-			{
-				_allocator.destroy(&first[0]);
-				first++;
-			}
+			_destroy_all();
 			_allocator.deallocate(_ptr, _capacity);
 		}
-
-
 
 		iterator begin()
 		{
@@ -226,19 +194,9 @@ Notice that this function changes the actual content of the container by inserti
 				return;
 
 			pointer tmp;
-			try 
-			{
-				tmp = _allocator.allocate(n);
-			}
-			catch (std::bad_alloc& ba)
-			{
-				std::cerr << "bad_alloc caught in void Vector::reserve (size_type n): " << ba.what() << '\n';
-				_size = 0;
-				_capacity = 0;
-				tmp = NULL;
-				throw;
+			if(!_try_alloc(&tmp, n, "bad_alloc caught in void Vector::reserve (size_type n): "))
 				return;
-			}
+
 			for (size_type i = 0; i < _size; i++)
 			{
 				_allocator.construct(&tmp[i], _ptr[i]);
@@ -247,8 +205,6 @@ Notice that this function changes the actual content of the container by inserti
 			_allocator.deallocate(_ptr, _capacity);
 			_ptr = tmp;
 			_capacity = n;
-
-
 		}
 
 		reference operator[](size_type index)
@@ -263,24 +219,71 @@ Notice that this function changes the actual content of the container by inserti
 
 		reference at(size_type index)
 		{
-			if (index > _size)
-				throw std::out_of_range("out of range");
+			if (index >= _size)
+				throw std::out_of_range("Vector::at out of range");
 			return *(begin() + index);
 		}
 
 		const_reference at(size_type index) const
 		{
-			if (index > _size)
-				throw std::out_of_range("out of range");
+			if (index >= _size)
+				throw std::out_of_range("Vector::at const out of range");
 			return *(begin() + index);
 		}
 
+		reference front() { return *begin(); }
 
-		//front
+		const_reference front() const{ return *begin(); }
 
-		//back
+		reference back() { return *(end() - 1); }
 
-		// 	- [x] `assign`: Assign vector content
+		const_reference back() const { return *(end() - 1); }
+
+
+// 	- [x] `assign`: Assign vector content
+// 		range (1)	
+
+		template <class InputIterator>
+		void assign (InputIterator first, InputIterator last)
+		{
+			size_type newsize = last - first;
+			_destroy_all();
+			if (newsize > _capacity)
+			{
+				reserve(newsize);
+				if (!_ptr)
+					return;
+			}
+			for (size_type i = 0; i < newsize; i++)
+			{
+				_allocator.construct(&_ptr[i], *first);
+				first++;
+			}
+			_size = newsize;
+		}
+
+
+
+// 	- [x] `assign`: Assign vector content
+// fill (2)	
+
+		void assign (size_type n, const value_type& val)
+		{
+			_destroy_all();
+			if (n > _capacity)
+			{
+				reserve(n);
+				if (!_ptr)
+					return;
+			}
+			for (size_type i = 0; i < n; i++)
+			{
+				_allocator.construct(&_ptr[i], val);
+				first++;
+			}
+			_size = n;		
+		}
+
 
 		// - [x] `push_back`: Add element at the end
 
@@ -399,7 +402,34 @@ Notice that this function changes the actual content of the container by inserti
 		allocator_type	_allocator;
 		pointer			_ptr;
 
+		void _destroy_all()
+		{
+			iterator	first = begin();
+			iterator	last = end();
+
+			while (first != last)
+			{
+				_allocator.destroy(&first[0]);
+				first++;
+			}
+			_size = 0;
+		}
 		
+		bool _try_alloc(pointer *ptr,size_type count, std::string error)
+		{
+			try 
+			{
+				*ptr = _allocator.allocate(count);
+			}
+			catch (std::bad_alloc& ba)
+			{
+				std::cerr << error << ba.what() << '\n';
+				*ptr = NULL;
+				throw;
+				return false;
+			}
+			return true;
+		}
 		// iterator		_iterator;
 		// iterator		_begin;
 		//allocator ?
