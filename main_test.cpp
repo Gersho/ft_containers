@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/12 11:39:50 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/18 05:31:10 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/19 15:00:45 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,38 @@
 #include <iostream>
 
 //namespace ft = std;
+
+/*
+
+• vector
+You don’t have to do the vector<bool> specialization.
+
+• map
+
+• stack
+It will use your vector class as default underlying container. But it must still be
+compatible with other containers, the STL ones included.
+
+
+You also have to implement:
+
+• iterators_traits
+
+• reverse_iterator
+
+• enable_if
+Yes, it is C++11 but you will be able to implement it in a C++98 manner.
+This is asked so you can discover SFINAE.
+
+• is_integral
+
+• equal and/or lexicographical_compare
+
+• std::pair
+
+• std::make_pair
+
+*/
 
 int main()
 {	
