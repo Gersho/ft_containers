@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/18 05:52:56 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/19 19:03:17 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ namespace ft
 		typedef	const value_type&									const_reference;
 	 	typedef typename allocator_type::pointer					pointer;
 		typedef typename allocator_type::const_pointer 				const_pointer;
-		typedef ft::__generic_iterator<value_type>							iterator;
-		typedef ft::__generic_iterator<const value_type>						const_iterator;	
-		// typedef	ft::__generic_reverse_iterator<iterator>			reverse_iterator;
-		// typedef	ft::__generic_reverse_iterator<const_iterator>		const_reverse_iterator;
+		typedef ft::__generic_iterator<value_type>					iterator;
+		typedef ft::__generic_iterator<const value_type>			const_iterator;	
+		typedef	ft::reverse_iterator<iterator>						reverse_iterator;
+		typedef	ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 		
 
 		// (1) Default constructor. Constructs an empty container with a default-constructed allocator.
@@ -148,11 +148,25 @@ namespace ft
 			return it;
 		}
 
+		reverse_iterator rbegin()
+		{
+			return reverse_iterator(end());
+		}
 
-		//rbegin
-		//rend
-		//const rbegin
-		//const rend
+		const_reverse_iterator rbegin() const 
+		{
+			return const_reverse_iterator(end());
+		}
+
+		reverse_iterator rend()
+		{
+			return reverse_iterator(begin());
+		}
+
+		const_reverse_iterator rend() const 
+		{
+			return const_reverse_iterator(begin());
+		}
 
 		size_type size() const { return _size; }
 		size_type max_size() const { return _allocator.max_size(); }
