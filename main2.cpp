@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/20 16:27:40 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/20 20:56:53 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int main(void)
 	vec_a.push_back(15);
 	vec_a.push_back(20);
 
-	vec_a.assign(5,12);
+	//vec_a.assign(5,12);
 	vec_a.pop_back();
 
 	test_print_vec(vec_a);

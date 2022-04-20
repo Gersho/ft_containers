@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/20 14:25:10 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/20 20:58:09 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,14 @@ namespace ft
 		explicit vector( const Allocator& alloc = allocator_type())
 		: _capacity(0), _size(0), _allocator(alloc), _ptr(NULL)
 		{
+std::cout << "empty constructor" << std::endl;
 		}
 
 		// (2) Constructs a container with n elements. Each element is a copy of val.
 		explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
-		: _allocator(alloc), _size(0), _capacity(count)
+		: _capacity(count), _size(0), _allocator(alloc)
 		{
+std::cout << "fill constructor" << std::endl;
 			if (!_try_alloc(&_ptr, count, "bad_alloc caught in explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()): " ))
 			{
 				_capacity = 0;
@@ -69,6 +71,7 @@ namespace ft
 		vector( InputIt first, InputIt last, const Allocator& alloc = Allocator())
 		: _size(0), _allocator(alloc)
 		{
+std::cout << "range constructor" << std::endl;
 			size_t	diff = last - first;
 			_capacity = diff;
 			if (diff > 0)
@@ -96,6 +99,7 @@ namespace ft
 		//	(4) Constructs a container with a copy of each of the elements in x, in the same order.
 		vector( const vector& src )
 		{
+std::cout << "copy constructor" << std::endl;
 			_size = src._size;
 			_capacity = src._capacity;
 			_allocator = src._allocator;
