@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/20 13:27:36 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/20 13:35:18 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ namespace ft
 		// This destroys all container elements, and deallocates all the storage capacity allocated by the vector using its allocator.
 		~vector()
 		{
-			_destroy_all();
+			clear();
 			_allocator.deallocate(_ptr, _capacity);
 		}
 
@@ -252,7 +252,7 @@ namespace ft
 		void assign (InputIterator first, InputIterator last)
 		{
 			size_type newsize = last - first;
-			_destroy_all();
+			clear();
 			if (newsize > _capacity)
 			{
 				reserve(newsize);
@@ -269,7 +269,7 @@ namespace ft
 
 		void assign (size_type n, const value_type& val)
 		{
-			_destroy_all();
+			clear();
 			if (n > _capacity)
 			{
 				reserve(n);
@@ -377,7 +377,16 @@ namespace ft
 
 		void clear()
 		{
-			_destroy_all();
+			iterator	first = begin();
+			iterator	last = end();
+
+			while (first != last)
+			{
+				_allocator.destroy(&first[0]);
+				//_allocator.destroy(first);
+				first++;
+			}
+			_size = 0;
 		}
 
 		allocator_type get_allocator() const { return _allocator; };
@@ -389,20 +398,7 @@ namespace ft
 		size_type		_size;
 		allocator_type	_allocator;
 		pointer			_ptr;
-
-		void _destroy_all()
-		{
-			iterator	first = begin();
-			iterator	last = end();
-
-			while (first != last)
-			{
-				_allocator.destroy(&first[0]);
-				first++;
-			}
-			_size = 0;
-		}
-		
+	
 		bool _try_alloc(pointer *ptr,size_type count, std::string error)
 		{
 			try 
