@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/20 20:58:09 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/21 19:23:30 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <iostream>
 #include "iterator.hpp"
 #include "algorithm.hpp"
+#include "type_traits.hpp"
 
 namespace ft 
 {
@@ -67,6 +68,9 @@ std::cout << "fill constructor" << std::endl;
 
 		// (3) Constructs a container with as many elements as the range [first,last),
 		// with each element constructed from its corresponding element in that range, in the same order.
+		
+		//ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>
+		
 		template< class InputIt >
 		vector( InputIt first, InputIt last, const Allocator& alloc = Allocator())
 		: _size(0), _allocator(alloc)
