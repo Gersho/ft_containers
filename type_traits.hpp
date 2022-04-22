@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 15:24:51 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/22 23:20:42 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/23 00:07:51 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #ifndef TYPE_TRAITS_HPP
 # define TYPE_TRAITS_HPP
 
-# include <uchar.h>
+//# include <uchar.h>
 
 namespace ft
 {
@@ -31,112 +31,113 @@ namespace ft
 //faire plus de recherches sur constexpr
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-	template<class T> class is_integral
+	template<class T>
+	struct is_integral
 	{
 		const static bool value = false;
 		// constexpr operator bool(){ return value; }
 	};
 
 	template<>
-	class is_integral<bool>
+	struct is_integral<bool>
 	{
 		const static bool value = true;
 		// constexpr operator bool(){ return value; }		
 	};
 
 	template<>
-	class is_integral<char>
+	struct is_integral<char>
 	{
 		const static bool value = true;
 		// constexpr operator bool(){ return value; }		
 	};
 
 	// template<>
-	// class is_integral<char16_t>
+	// struct is_integral<char16_t>
 	// {
 	// 	const static bool value = true;
 	// 	// constexpr operator bool(){ return value; }		
 	// };
 
 	// template<>
-	// class is_integral<char32_t>
+	// struct is_integral<char32_t>
 	// {
 	// 	const static bool value = true;
 	// 	// constexpr operator bool(){ return value; }		
 	// };
 
 	template<>
-	class is_integral<wchar_t>
+	struct is_integral<wchar_t>
 	{
 		const static bool value = true;
 		// constexpr operator bool(){ return value; }		
 	};
 
 	template<>
-	class is_integral<signed char>
+	struct is_integral<signed char>
 	{
 		const static bool value = true;
 		// constexpr operator bool(){ return value; }		
 	};
 
 	template<>
-	class is_integral<short int>
+	struct is_integral<short int>
 	{
 		const static bool value = true;
 		// constexpr operator bool(){ return value; }		
 	};
 
 	template<>
-	class is_integral<int>
+	struct is_integral<int>
 	{
 		const static bool value = true;
 		// constexpr operator bool(){ return value; }		
 	};
 
 	template<>
-	class is_integral<long int>
+	struct is_integral<long int>
 	{
 		const static bool value = true;
 		// constexpr operator bool(){ return value; }		
 	};
 
 	template<>
-	class is_integral<long long int>
+	struct is_integral<long long int>
 	{
 		const static bool value = true;
 		// constexpr operator bool(){ return value; }		
 	};
 
 	template<>
-	class is_integral<unsigned char>
+	struct is_integral<unsigned char>
 	{
 		const static bool value = true;
 		// constexpr operator bool(){ return value; }		
 	};
 
 	template<>
-	class is_integral<unsigned short int>
+	struct is_integral<unsigned short int>
 	{
 		const static bool value = true;
 		// constexpr operator bool(){ return value; }		
 	};
 
 	template<>
-	class is_integral<unsigned int>
+	struct is_integral<unsigned int>
 	{
 		const static bool value = true;
 		// constexpr operator bool(){ return value; }		
 	};
 
 	template<>
-	class is_integral<unsigned long int>
+	struct is_integral<unsigned long int>
 	{
 		const static bool value = true;
 		// constexpr operator bool(){ return value; }		
 	};
 
 	template<>
-	class is_integral<unsigned long long int>
+	struct is_integral<unsigned long long int>
 	{
 		const static bool value = true;
 		// constexpr operator bool(){ return value; }		

@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/22 23:26:34 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/23 01:06:17 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,6 @@
 
 namespace ft 
 {
-
-	// enlever _destroy_all() et remplacer par clear()
-
-// gestion d'erreur reserve et resize
 	template < class T, class Allocator = std::allocator<T> >
 	class vector
 	{
@@ -48,14 +44,14 @@ namespace ft
 		explicit vector( const Allocator& alloc = allocator_type())
 		: _capacity(0), _size(0), _allocator(alloc), _ptr(NULL)
 		{
-std::cout << "empty constructor" << std::endl;
+//std::cout << "empty constructor" << std::endl;
 		}
 
 		// (2) Constructs a container with n elements. Each element is a copy of val.
 		explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
 		: _capacity(count), _size(0), _allocator(alloc)
 		{
-std::cout << "fill constructor" << std::endl;
+//std::cout << "fill constructor" << std::endl;
 			if (!_try_alloc(&_ptr, count, "bad_alloc caught in explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()): " ))
 			{
 				_capacity = 0;
@@ -69,13 +65,13 @@ std::cout << "fill constructor" << std::endl;
 		// (3) Constructs a container with as many elements as the range [first,last),
 		// with each element constructed from its corresponding element in that range, in the same order.
 		
-		//ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type
+		//typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type
 		
 		template< class InputIt >
-		vector( InputIt first, InputIt last, const Allocator& alloc = Allocator())
+		vector(typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type first, InputIt last, const Allocator& alloc = Allocator())
 		: _size(0), _allocator(alloc)
 		{
-std::cout << "range constructor" << std::endl;
+//std::cout << "range constructor" << std::endl;
 			size_t	diff = last - first;
 			_capacity = diff;
 			if (diff > 0)
@@ -124,6 +120,7 @@ std::cout << "copy constructor" << std::endl;
 		// This destroys all container elements, and deallocates all the storage capacity allocated by the vector using its allocator.
 		~vector()
 		{
+std::cout << "this is ft" << std::endl;
 			clear();
 			_allocator.deallocate(_ptr, _capacity);
 		}
@@ -258,8 +255,10 @@ std::cout << "copy constructor" << std::endl;
 
 		const_reference back() const { return *(end() - 1); }
 
+
+//typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type
 		template <class InputIterator>
-		void assign (InputIterator first, InputIterator last)
+		void assign (typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
 			size_type newsize = last - first;
 			clear();
@@ -329,9 +328,9 @@ std::cout << "copy constructor" << std::endl;
 				n--;
 			}
 		}
-
+//typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type
 		template <class InputIterator>
-		void insert (iterator position, InputIterator first, InputIterator last)
+		void insert (iterator position, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
 			while (first != last)
 			{

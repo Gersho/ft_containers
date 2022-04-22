@@ -5,6 +5,7 @@ OBJS			= $(SRCS:.cpp=.o)
 DEPS			= $(SRCS:.cpp=.d)
 
 NAME			= containers
+NAME_STD		= containers_std
 CC				= clang++
 CFLAGS			= --std=c++98 -Wall -Wextra -Werror
 
@@ -23,9 +24,17 @@ clean:
 
 fclean:			clean
 				$(RM) $(NAME)
+				$(RM) $(NAME_STD)
+
+std:
+				$(CC) $(CFLAGS) -D STD -c $(SRCS) -o $(OBJS)
+				$(CC) $(CFLAGS) -o $(NAME_STD) $(OBJS)
 
 re:			fclean all
 
-.PHONY:		re fclean clean all
+.PHONY:		re fclean clean all std test
 
 -include $(DEPS)
+
+
+#clang++ -D STD main.cpp -o main

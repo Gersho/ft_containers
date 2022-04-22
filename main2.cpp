@@ -6,11 +6,12 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/22 23:26:41 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/23 01:05:36 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#if 0 //CREATE A REAL STL EXAMPLE
+//#if 0
+#ifdef STD //CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
 	#include <vector>
@@ -23,8 +24,21 @@
 
 #include <iostream>
 
+// template<class T>
+// struct is_vector
+// {
+// 	const static bool value = false;
+// };
 
-void test_print_vec(const ft::vector<int> &vec )
+// template<class U>
+// struct is_vector<ft::vector<U> >
+// {
+// 	const static bool value = true;		
+// };
+
+
+template<class T>
+void test_print_vec(const ft::vector<T> &vec )
 {
 	std::size_t vec_size = vec.size();
 	
@@ -43,13 +57,15 @@ int main(void)
 {
 	ft::vector<int> vec_a;
 	ft::vector<int> vec_b(4, 5);
+	// ft::vector<int> vec_c;
 	
 	
 	// int	i_a = 4;
 	// int i_b = 5;
 	// ft::vector<int> vec_b(i_a, i_b);	
 	
-
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////
 	std::cout << std::boolalpha << "vec_a.empty(): " << vec_a.empty() << std::endl;
 	std::cout << std::boolalpha << "vec_b.empty(): " << vec_b.empty() << std::endl;
 
