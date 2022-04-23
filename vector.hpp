@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/23 20:25:32 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/23 21:15:13 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <memory>
 #include <stdexcept>
 #include <iostream>
+#include <sstream>
 #include "iterator.hpp"
 #include "algorithm.hpp"
 #include "type_traits.hpp"
@@ -194,6 +195,8 @@ namespace ft
 
 		void resize (size_type n, value_type val = value_type())
 		{
+			if (n > max_size())
+				throw std::length_error("vector::_M_fill_insert");
 			if (n < _size)
 			{
 				for (size_type i = n; i < _size; i++)
@@ -222,7 +225,7 @@ namespace ft
 				return;
 //std::cout << "reserve::n = " << n << std::endl;
 			if (n > max_size())
-				throw std::length_error("Vector::reserve() length error.");
+				throw std::length_error("vector::reserve");
 			pointer tmp;
 			if(!_try_alloc(&tmp, n, "bad_alloc caught in void Vector::reserve (size_type n): "))
 				return;
@@ -251,14 +254,36 @@ namespace ft
 		reference at(size_type index)
 		{
 			if (index >= _size)
-				throw std::out_of_range("Vector::at out of range");
+			{
+				std::ostringstream oss;
+
+				oss 
+				<< "vector::_M_range_check: __n (which is "
+				<< index
+				<< ") >= this->size() (which is "
+				<< _size << ")";
+				std::string msg =  oss.str();
+
+				throw std::out_of_range(msg);
+			}
 			return *(begin() + index);
 		}
-
+//vector::_M_range_check: __n (which is 500) >= this->size() (which is 29)
 		const_reference at(size_type index) const
 		{
 			if (index >= _size)
-				throw std::out_of_range("Vector::at const out of range");
+			{
+				std::ostringstream oss;
+
+				oss 
+				<< "vector::_M_range_check: __n (which is "
+				<< index
+				<< ") >= this->size() (which is "
+				<< _size << ")";
+				std::string msg =  oss.str();
+
+				throw std::out_of_range(msg);
+			}
 			return *(begin() + index);
 		}
 
@@ -380,9 +405,9 @@ namespace ft
 // 			//update size
 // 			_size += n;
 // 			return;
-				size_type dist = position - begin();
+				size_type diff = position - begin();
 
-
+				//update size
 	 			if ( _size + n > _capacity*2)
  					reserve(_size + n);
 				else if ( _size + n > _capacity)
@@ -390,11 +415,15 @@ namespace ft
 					if(!_upgrade_capacity())
 						return;
 				}
-				_size += n;
-				for (size_type i = _size - 1; i > dist; i--)
+				//move trailing part from the right
+				for (size_type i = _size + n - 1; i > diff; i--)
+				{
 					_allocator.construct(&_ptr[i], _ptr[i - n]);
+					_allocator.destroy(&_ptr[i - n]);
+				}
 				for (size_type i = 0; i < n; i++)
-					_allocator.construct(&_ptr[dist + i], val);
+					_allocator.construct(&_ptr[diff + i], val);
+				_size += n;
 				return;
 
 		}

@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/23 20:16:43 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/23 21:14:17 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,8 @@ int main(void)
 
 		std::cout << "vec_a.at(0): " << vec_a.at(0) << std::endl;
 
+		std::cout << "Testing exeptions thrown" << std::endl;
+
 		try
 		{
 			std::cout << "vec_a.at(500): " << vec_a.at(500) << std::endl;
@@ -163,6 +165,23 @@ int main(void)
 		catch (const std::out_of_range& e) {
 			std::cerr << "Out of Range error: " << e.what() << '\n';
 		}
+
+		try
+		{
+			vec_a.resize(vec_a.max_size() + 10);
+		}
+		catch (const std::length_error& e) {
+			std::cerr << "Length error: " << e.what() << '\n';
+		}
+
+		try
+		{
+			vec_a.reserve(vec_a.max_size() + 10);
+		}
+		catch (const std::length_error& e) {
+			std::cerr << "Length error: " << e.what() << '\n';
+		}
+
 
 		std::cout << "Testing Vector::front() and Vector::back()" << std::endl;
 		std::cout << "vec_a.front():" << vec_a.front() << std::endl;
@@ -203,5 +222,7 @@ std::cout << "IN MAIN diff: " << vec_c.end() - (vec_c.begin() + 2) << " start " 
 		vec_a.clear();
 
 		test_vects(vects);
+
+
 	} // end vector<int>
 }
