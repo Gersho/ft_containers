@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/23 13:45:42 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/23 16:46:54 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int main(void)
 
 		std::cout << "Testing Vector::push_back() and Vector::pop_back()" << std::endl;
 
-		//vec_a.pop_back(); //SEGFAULT tests
+		//vec_a.pop_back(); //SEGFAULT test
 		fill_vect(vec_a, 50);
 		vec_a.pop_back();
 
@@ -167,7 +167,7 @@ int main(void)
 		std::cout << "vec_a.front():" << vec_a.front() << std::endl;
 		std::cout << "vec_a.back():" << vec_a.back() << std::endl;
 		std::cout << "vec_b.front():" << vec_b.front() << std::endl;
-		std::cout << "vec_b.back():" << vec_a.back() << std::endl;
+		std::cout << "vec_b.back():" << vec_b.back() << std::endl;
 		std::cout << "vec_c.front():" << vec_c.front() << std::endl;
 		std::cout << "vec_c.back():" << vec_c.back() << std::endl;
 		std::cout << "vec_d.front():" << vec_d.front() << std::endl;

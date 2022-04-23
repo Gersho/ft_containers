@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/23 04:28:22 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/23 16:21:49 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ namespace ft
 		// This destroys all container elements, and deallocates all the storage capacity allocated by the vector using its allocator.
 		~vector()
 		{
-std::cout << "this is ft" << std::endl;
+//std::cout << "this is ft" << std::endl;
 			clear();
 			_allocator.deallocate(_ptr, _capacity);
 		}
