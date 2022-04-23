@@ -1,5 +1,5 @@
 #!/bin/bash
-mkdir logs
+mkdir -p logs
 echo "Making"
 make -s fclean
 make -s all

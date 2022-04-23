@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/23 02:45:12 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/23 20:13:18 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ namespace ft
 
 		pointer operator->() const
 		{
-			return _it;
+			return &(operator*());
 		}
 
 		reference operator[](difference_type index) const
@@ -229,8 +229,8 @@ namespace ft
 		public:
 
 		typedef  Iterator											iterator_type;
-		typename iterator_traits<Iterator>::iterator_category		iterator_category;
-		typename iterator_traits<Iterator>::value_type				value_type;
+		typedef typename iterator_traits<Iterator>::iterator_category		iterator_category;
+		typedef typename iterator_traits<Iterator>::value_type				value_type;
 		typedef typename iterator_traits<Iterator>::difference_type			difference_type;
 		typedef typename iterator_traits<Iterator>::pointer					pointer;
 		typedef typename iterator_traits<Iterator>::reference				reference;

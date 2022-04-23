@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/23 16:46:54 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/23 20:16:43 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void test_print_vec(const ft::vector<T> &vec )
 	std::cout << "size(): " << vec.size() << std::endl;
 	std::cout << "maxsize(): " << vec.max_size() << std::endl;
 	std::cout << "capacity(): " << vec.capacity() << std::endl;
-
+	std::cout << "end() - begin(): " << vec.end() - vec.begin() << std::endl;
+//	std::cout << "rbegin() - rend(): " << vec.rbegin() - vec.rend() << std::endl;
 	for (std::size_t i = 0; i < vec_size; i++)
 	{
 		std::cout << "vec[" << i << "]: " << vec[i] << std::endl;
@@ -181,10 +182,13 @@ int main(void)
 		vec_b.insert(vec_b.begin() + 2, 22);
 		vec_b.insert(vec_b.begin() + 11, 875);
 
-		vec_b.insert(vec_b.begin() + 1, vec_a.begin() + 2, vec_a.end() - 3);
+		//vec_b.insert(vec_b.begin() + 1, vec_a.begin() + 25, vec_a.begin() +24); // SEGFAULT TEST
+		vec_b.insert(vec_b.begin() + 1, vec_a.begin() + 12, vec_a.begin() +24);
 
-// std::cout << "juste avant le insert relou" << std::endl;
-// 		vec_c.insert(vec_c.begin() + 2, 5, 55);
+
+// std::cout << "PROBLEM HERE" << std::endl;
+std::cout << "IN MAIN diff: " << vec_c.end() - (vec_c.begin() + 2) << " start " << (vec_c.begin() + 2) - vec_c.begin() << std::endl;
+ 		vec_c.insert(vec_c.begin() + 2, 12, 55);
 
 		test_vects(vects);
 

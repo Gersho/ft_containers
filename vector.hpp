@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/23 16:21:49 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/23 20:25:32 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@
 //TODO 
 // REVOIR REVERSE ITERATOR
 // refaire insert 
-// pkoi size 88 dans vec B ?
 // essayer de casser insert avec de mauvais iterateurs
 // check swap ?!
+// operator overloads d'iterators ?
 
 namespace ft 
 {
@@ -335,11 +335,6 @@ namespace ft
 			if(!_upgrade_capacity())
 				return NULL;
 			size_type diff = position - begin();
-			//difference_type diff = position - begin();
-// std::cout << "insert val" << val << " diff " << diff << std::endl;
-// std::cout << " diff2 " << position - begin() << std::endl;
-// std::cout << " test size " << end() - begin() << std::endl;
-			//for (difference_type i = end() - begin(); i > diff; i--)
 			for (size_type i = _size; i > diff; i--)
 				_allocator.construct(&_ptr[i], _ptr[i - 1]);
 			_allocator.construct(&_ptr[diff], val);
@@ -347,21 +342,66 @@ namespace ft
 			return position;
 		}
 	
+
+	//TODO REPAIR
+	//PROBLEM HERE
    		void insert (iterator position, size_type n, const value_type& val)
 		{
-// std::cout << "coucou n " << n << " val " <<  val << std::endl;
-// std::cout << " diff1 " << position - begin() << std::endl;
-			while (n)
-			{
-				insert(position, val);
-				n--;
-			}
+// 			if ( _size + n > _capacity*2)
+// 				reserve(_size + n);
+// 			else if ( _size + n > _capacity)
+// 			{
+// 				if(!_upgrade_capacity())
+// 					return;
+// 			}
+
+//  size_type st_diff_pos = end() - position;
+//  size_type st_start_pos = position - begin();
+// size_type st_diff_it = end() - (begin() + 2);
+// size_type st_start_it = (begin() + 2) - begin();
+
+// difference_type dt_diff_pos = end() - position;
+// difference_type dt_start_pos = position - begin();
+// difference_type dt_diff_it = end() - (begin() + 2);
+// difference_type dt_start_it = (begin() + 2) - begin();
+
+//  std::cout << "size_type with position diff: " << st_diff_pos << " start " << st_start_pos << std::endl;
+// std::cout << "size_type with iterator diff: " << st_diff_it << " start " << st_start_it << std::endl;
+// std::cout << "difference type with position diff: " << dt_diff_pos << " start " << dt_start_pos << std::endl;
+// std::cout << "difference type with iterator diff: " << dt_diff_it << " start " << dt_start_it << std::endl;
+
+
+// std::cout << "1diff: " << end() - position << " start " << position - begin() << std::endl;
+// std::cout << "2diff: " << end() - (begin() + 2) << " start " << (begin() + 2) - begin() << std::endl;
+// 			//move trailing part from the right
+
+// 			//insert new vals
+// 			(void)val;
+// 			//update size
+// 			_size += n;
+// 			return;
+				size_type dist = position - begin();
+
+
+	 			if ( _size + n > _capacity*2)
+ 					reserve(_size + n);
+				else if ( _size + n > _capacity)
+				{
+					if(!_upgrade_capacity())
+						return;
+				}
+				_size += n;
+				for (size_type i = _size - 1; i > dist; i--)
+					_allocator.construct(&_ptr[i], _ptr[i - n]);
+				for (size_type i = 0; i < n; i++)
+					_allocator.construct(&_ptr[dist + i], val);
+				return;
+
 		}
-//typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type
+
 		template <class InputIterator>
 		void insert (iterator position, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
-//std::cout << "bbbbb" << std::endl;
 			while (first != last)
 			{
 				insert(position, *first);
