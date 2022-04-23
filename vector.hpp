@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/23 01:06:17 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/23 04:28:22 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@
 #include "iterator.hpp"
 #include "algorithm.hpp"
 #include "type_traits.hpp"
+
+
+//TODO 
+// REVOIR REVERSE ITERATOR
+// refaire insert 
+// pkoi size 88 dans vec B ?
+// essayer de casser insert avec de mauvais iterateurs
+// check swap ?!
 
 namespace ft 
 {
@@ -85,7 +93,10 @@ namespace ft
 				}
 				for (size_type i = 0; i < diff; i++)
 				{
-					_allocator.construct(&_ptr[i], *first);
+					//_allocator.construct(&_ptr[i], *first);
+					//_size++;
+					push_back(*first);
+
 					first++;
 				}
 			}
@@ -99,7 +110,7 @@ namespace ft
 		//	(4) Constructs a container with a copy of each of the elements in x, in the same order.
 		vector( const vector& src )
 		{
-std::cout << "copy constructor" << std::endl;
+//std::cout << "copy constructor" << std::endl;
 			_size = src._size;
 			_capacity = src._capacity;
 			_allocator = src._allocator;
@@ -114,7 +125,10 @@ std::cout << "copy constructor" << std::endl;
 				}
 			}
 			for (size_type i = 0; i <_size; i++)
+			{
 				_allocator.construct(&_ptr[i], src._ptr[i]);
+				//_size++;
+			}
 		}
 
 		// This destroys all container elements, and deallocates all the storage capacity allocated by the vector using its allocator.
@@ -206,6 +220,7 @@ std::cout << "this is ft" << std::endl;
 		{
 			if (n <= _capacity)
 				return;
+//std::cout << "reserve::n = " << n << std::endl;
 			if (n > max_size())
 				throw std::length_error("Vector::reserve() length error.");
 			pointer tmp;
@@ -261,13 +276,22 @@ std::cout << "this is ft" << std::endl;
 		void assign (typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
 			size_type newsize = last - first;
+			// size_type newsize;
+			// if (last > first)
+			// 	newsize = last - first;
+			// else
+			// 	newsize = first - last;
+//std::cout << "newsize " << newsize  << std::endl;
 			clear();
+			if	(newsize == 0)
+				return;
 			if (newsize > _capacity)
 			{
 				reserve(newsize);
 				if (!_ptr)
 					return;
 			}
+//std::cout << "ca vas peter" << std::endl;
 			for (size_type i = 0; i < newsize; i++)
 			{
 				_allocator.construct(&_ptr[i], *first);
@@ -310,9 +334,12 @@ std::cout << "this is ft" << std::endl;
 		{
 			if(!_upgrade_capacity())
 				return NULL;
-
 			size_type diff = position - begin();
-
+			//difference_type diff = position - begin();
+// std::cout << "insert val" << val << " diff " << diff << std::endl;
+// std::cout << " diff2 " << position - begin() << std::endl;
+// std::cout << " test size " << end() - begin() << std::endl;
+			//for (difference_type i = end() - begin(); i > diff; i--)
 			for (size_type i = _size; i > diff; i--)
 				_allocator.construct(&_ptr[i], _ptr[i - 1]);
 			_allocator.construct(&_ptr[diff], val);
@@ -322,6 +349,8 @@ std::cout << "this is ft" << std::endl;
 	
    		void insert (iterator position, size_type n, const value_type& val)
 		{
+// std::cout << "coucou n " << n << " val " <<  val << std::endl;
+// std::cout << " diff1 " << position - begin() << std::endl;
 			while (n)
 			{
 				insert(position, val);
@@ -332,6 +361,7 @@ std::cout << "this is ft" << std::endl;
 		template <class InputIterator>
 		void insert (iterator position, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
+//std::cout << "bbbbb" << std::endl;
 			while (first != last)
 			{
 				insert(position, *first);
@@ -347,11 +377,11 @@ std::cout << "this is ft" << std::endl;
 
 			while (first != (last - 1))
 			{
-				_allocator.destroy(first);
-				_allocator.construct(first, *(first + 1));
+				_allocator.destroy(&first[0]);
+				_allocator.construct(&first[0], *(first + 1));
 				first++;
 			}
-			_allocator.destroy(first);	
+			_allocator.destroy(&first[0]);	
 			_size--;
 			return position;
 		}

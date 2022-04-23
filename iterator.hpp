@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/19 17:51:36 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/23 02:45:12 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ namespace ft
 	template< class Iter >
 	struct iterator_traits
 	{
-		typename			Iter::difference_type  	difference_type;
+		typedef typename			Iter::difference_type  	difference_type;
 		typedef	typename	Iter::value_type		value_type;
 		typedef	typename	Iter::pointer			pointer;
 		typedef	typename	Iter::reference			reference;

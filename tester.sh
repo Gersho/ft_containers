@@ -7,8 +7,8 @@ echo "Begin testing"
 ./containers > ft.out
 ./containers_std > std.out
 diff ft.out std.out > diff.out
-cat diff.out
+#cat diff.out
 echo "End testing"
-#echo -n "Number of differences: "
+echo -n "Number of differences: "
 #wc -l $(`cat diff.out | grep "<"`)
-# wc -l diff.out
+wc -l diff.out

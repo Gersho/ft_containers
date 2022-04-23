@@ -35,6 +35,3 @@ re:			fclean all
 .PHONY:		re fclean clean all std test
 
 -include $(DEPS)
-
-
-#clang++ -D STD main.cpp -o main
