@@ -6,11 +6,10 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/23 04:26:37 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/23 13:45:42 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#if 0
 #ifdef STD //CREATE A REAL STL EXAMPLE
 	#include <map>
 	#include <stack>
@@ -23,19 +22,8 @@
 #endif
 
 #include <iostream>
-
-// template<class T>
-// struct is_vector
-// {
-// 	const static bool value = false;
-// };
-
-// template<class U>
-// struct is_vector<ft::vector<U> >
-// {
-// 	const static bool value = true;		
-// };
-
+#include <cstdlib>
+#include <ctime>
 
 template<class T>
 void test_print_vec(const ft::vector<T> &vec )
@@ -52,63 +40,71 @@ void test_print_vec(const ft::vector<T> &vec )
 	}
 }
 
+template<class T>
+struct s_vect 
+{
+	ft::vector<T> *vec_a;
+	ft::vector<T> *vec_b;
+	ft::vector<T> *vec_c;
+	ft::vector<T> *vec_d;
+};
+
+template<class T>
+void test_vects(struct s_vect<T> vects)
+{
+	std::cout << "Printing vector A" << std::endl;
+	test_print_vec(*(vects.vec_a));
+	std::cout << "Printing vector B" << std::endl;
+	test_print_vec(*(vects.vec_b));
+	std::cout << "Printing vector C" << std::endl;
+	test_print_vec(*(vects.vec_c));
+	std::cout << "Printing vector D" << std::endl;
+	test_print_vec(*(vects.vec_d));
+}
+
+void fill_vect(ft::vector<int> &vec, size_t qt)
+{
+	while (qt)
+	{
+		vec.push_back(rand());
+		qt--;
+	}
+}
 
 int main(void)
 {
+	srand(std::time(NULL));
 	{
 		ft::vector<int> vec_a;
 		ft::vector<int> vec_b(4, 5);
 		ft::vector<int> vec_c(vec_b.begin()+2, vec_b.end());
 		ft::vector<int> vec_d(vec_c);
-		
+
+		struct s_vect<int> vects;
+		vects.vec_a = &vec_a;
+		vects.vec_b = &vec_b;
+		vects.vec_c = &vec_c;
+		vects.vec_d = &vec_d;
+
 		std::cout << "Testing Vector::empty()" << std::endl;
 		std::cout << std::boolalpha << "vec_a.empty(): " << vec_a.empty() << std::endl;
 		std::cout << std::boolalpha << "vec_b.empty(): " << vec_b.empty() << std::endl;
 		std::cout << std::boolalpha << "vec_c.empty(): " << vec_c.empty() << std::endl;
 		std::cout << std::boolalpha << "vec_d.empty(): " << vec_d.empty() << std::endl;
 
-		std::cout << "Printing vector A" << std::endl;
-		test_print_vec(vec_a);
-		std::cout << "Printing vector B" << std::endl;
-		test_print_vec(vec_b);
-		std::cout << "Printing vector C" << std::endl;
-		test_print_vec(vec_c);
-		std::cout << "Printing vector D" << std::endl;
-		test_print_vec(vec_d);
+		test_vects(vects);
 
 		std::cout << "Testing Vector::push_back() and Vector::pop_back()" << std::endl;
-		vec_a.push_back(5);
-		vec_a.push_back(10);
+
+		//vec_a.pop_back(); //SEGFAULT tests
+		fill_vect(vec_a, 50);
 		vec_a.pop_back();
-		vec_a.push_back(105);
-		vec_a.push_back(115);
-		vec_a.push_back(125);
-		vec_a.pop_back();
-		vec_a.push_back(15);
-		vec_a.push_back(20);
 
+		fill_vect(vec_b, 25);
+		fill_vect(vec_c, 15);
+		fill_vect(vec_d, 10);
 
-		vec_b.push_back(45455);
-		vec_b.push_back(15415);
-		vec_b.push_back(1245);
-		vec_b.push_back(1221125);
-		vec_b.push_back(525);
-		vec_b.push_back(1575);
-		vec_b.push_back(1275725);
-		vec_b.push_back(12444125);
-		vec_b.push_back(111125);
-		vec_b.push_back(1225);
-		vec_b.push_back(0);
-		vec_b.push_back(45);
-
-		std::cout << "Printing vector A" << std::endl;
-		test_print_vec(vec_a);
-		std::cout << "Printing vector B" << std::endl;
-		test_print_vec(vec_b);
-		std::cout << "Printing vector C" << std::endl;
-		test_print_vec(vec_c);
-		std::cout << "Printing vector D" << std::endl;
-		test_print_vec(vec_d);
+		test_vects(vects);
 
 		std::cout << "Testing Vector relational operators" << std::endl;
 		std::cout << std::boolalpha << "vec_a == vec_b : " << (vec_a == vec_b) << std::endl;
@@ -127,8 +123,7 @@ int main(void)
 		std::cout << std::boolalpha << "vec_d <= vec_b : " << (vec_d <= vec_b) << std::endl;
 		std::cout << std::boolalpha << "vec_d >= vec_b : " << (vec_d >= vec_b) << std::endl;
 
-
-		std::cout << "Testing Vector::resize()" << std::endl;
+		std::cout << "Testing Vector::resize() ans Vector::reserve()" << std::endl;
 		vec_a.resize(20);
 		test_print_vec(vec_a);
 		vec_a.resize(50);
@@ -137,61 +132,20 @@ int main(void)
 		test_print_vec(vec_a);
 		vec_a.resize(20);
 		test_print_vec(vec_a);
-		vec_a.push_back(5);
-		vec_a.push_back(10);
-		vec_a.pop_back();
-		vec_a.push_back(105);
-		vec_a.push_back(115);
-		vec_a.push_back(105);
-		vec_a.push_back(115);
-		vec_a.push_back(105);
-//std::cout << "STILL ALIVE" << std::endl;
-		vec_a.push_back(115);
-		vec_a.push_back(105);
-		vec_a.push_back(115);
-		vec_a.push_back(105);
-		vec_a.push_back(115);
-		vec_a.push_back(105);
-		vec_a.push_back(115);
-		vec_a.push_back(105);
-		vec_a.push_back(115);
-		vec_a.push_back(105);
-		vec_a.push_back(115);
-		vec_a.push_back(105);
-		vec_a.push_back(115);
-		vec_a.push_back(125);
-		vec_a.pop_back();
-		vec_a.push_back(15);
-		vec_a.push_back(20);
+		fill_vect(vec_a, 15);
 
 		vec_b.reserve(17);
 
-		std::cout << "Printing vector A" << std::endl;
-		test_print_vec(vec_a);
-		std::cout << "Printing vector B" << std::endl;
-		test_print_vec(vec_b);
-		std::cout << "Printing vector C" << std::endl;
-		test_print_vec(vec_c);
-		std::cout << "Printing vector D" << std::endl;
-		test_print_vec(vec_d);
+		test_vects(vects);
 
-		std::cout << "Testing Vector::assign()" << std::endl;
-// std::cout << vec_c.rend() - vec_c.rbegin() << std::endl;
-// std::cout << vec_c.rbegin() - vec_c.rend() << std::endl;
+		std::cout << "Testing Vector::assign() and Vector::swap()" << std::endl;
+
 // 		 vec_c.assign(vec_a.rbegin(), vec_a.rend());
-		vec_c.assign(vec_a.begin(), vec_a.end());
-std::cout << "STILL ALIVE" << std::endl;
+		vec_c.assign(vec_a.begin() + 1, vec_a.end() - 2);
 		vec_d.assign(5,12);
 		vec_b.swap(vec_a);
 
-		std::cout << "Printing vector A" << std::endl;
-		test_print_vec(vec_a);
-		std::cout << "Printing vector B" << std::endl;
-		test_print_vec(vec_b);
-		std::cout << "Printing vector C" << std::endl;
-		test_print_vec(vec_c);
-		std::cout << "Printing vector D" << std::endl;
-		test_print_vec(vec_d);
+		test_vects(vects);
 
 		std::cout << "Testing Vector access operators" << std::endl;
 
@@ -219,18 +173,9 @@ std::cout << "STILL ALIVE" << std::endl;
 		std::cout << "vec_d.front():" << vec_d.front() << std::endl;
 		std::cout << "vec_d.back():" << vec_d.back() << std::endl;
 
-		std::cout << "Printing vector A" << std::endl;
-		test_print_vec(vec_a);
-		std::cout << "Printing vector B" << std::endl;
-		test_print_vec(vec_b);
-		std::cout << "Printing vector C" << std::endl;
-		test_print_vec(vec_c);
-		std::cout << "Printing vector D" << std::endl;
-		test_print_vec(vec_d);
+		test_vects(vects);
 
 		std::cout << "Testing Vector::insert()" << std::endl;
-
-
 
 		vec_b.insert(vec_b.begin() + 5, 75);
 		vec_b.insert(vec_b.begin() + 2, 22);
@@ -241,14 +186,7 @@ std::cout << "STILL ALIVE" << std::endl;
 // std::cout << "juste avant le insert relou" << std::endl;
 // 		vec_c.insert(vec_c.begin() + 2, 5, 55);
 
-		std::cout << "Printing vector A" << std::endl;
-		test_print_vec(vec_a);
-		std::cout << "Printing vector B" << std::endl;
-		test_print_vec(vec_b);
-		std::cout << "Printing vector C" << std::endl;
-		test_print_vec(vec_c);
-		std::cout << "Printing vector D" << std::endl;
-		test_print_vec(vec_d);
+		test_vects(vects);
 
 		std::cout << "Testing Vector::erase()" << std::endl;
 
@@ -260,14 +198,6 @@ std::cout << "STILL ALIVE" << std::endl;
 		vec_a.clear();
 		vec_a.clear();
 
-		std::cout << "Printing vector A" << std::endl;
-		test_print_vec(vec_a);
-		std::cout << "Printing vector B" << std::endl;
-		test_print_vec(vec_b);
-		std::cout << "Printing vector C" << std::endl;
-		test_print_vec(vec_c);
-		std::cout << "Printing vector D" << std::endl;
-		test_print_vec(vec_d);
-
+		test_vects(vects);
 	} // end vector<int>
 }
