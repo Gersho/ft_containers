@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/23 21:15:13 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/28 17:49:25 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@
 
 //TODO 
 // REVOIR REVERSE ITERATOR
-// refaire insert 
-// essayer de casser insert avec de mauvais iterateurs
-// check swap ?!
-// operator overloads d'iterators ?
+
 
 namespace ft 
 {

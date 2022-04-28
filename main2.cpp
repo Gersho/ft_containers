@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/23 21:14:17 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/28 18:18:57 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <fstream>
 
 template<class T>
 void test_print_vec(const ft::vector<T> &vec )
@@ -74,7 +75,14 @@ void fill_vect(ft::vector<int> &vec, size_t qt)
 
 int main(void)
 {
+	clock_t start_test;
+	clock_t time_vect;
+	clock_t time_stack;
+	clock_t time_map;
+
 	srand(std::time(NULL));
+	start_test = clock();
+	//Vector
 	{
 		ft::vector<int> vec_a;
 		ft::vector<int> vec_b(4, 5);
@@ -224,5 +232,48 @@ std::cout << "IN MAIN diff: " << vec_c.end() - (vec_c.begin() + 2) << " start " 
 		test_vects(vects);
 
 
-	} // end vector<int>
+	} // end Vector
+	time_vect = clock() - start_test;
+	start_test = clock();
+	//Stack
+	{
+
+	} // end stack
+	time_stack = clock() - start_test;
+	start_test = clock();
+	//Map
+	{
+
+	} // end Map
+	time_map = clock() - start_test;
+
+
+	std::ofstream	outfile;
+	#ifdef STD
+		outfile.open ("./logs/std.time");
+		if (!outfile.is_open())
+		{
+			std::cout << "TESTER ERROR: Cannot open output file" << std::endl;
+			return (-1);
+		}
+		outfile << "STD" << std::endl;
+	#else
+		outfile.open ("./logs/ft.time");
+		if (!outfile.is_open())
+		{
+			std::cout << "TESTER ERROR: Cannot open output file" << std::endl;
+			return (-1);
+		}
+		outfile << "FT" << std::endl;
+	#endif
+
+	float time_f;
+	time_f = ((float)time_vect)/CLOCKS_PER_SEC;
+  	outfile << "Vector: " << time_f << " sec (" << time_vect << " CT.)" << std::endl;
+	time_f = ((float)time_stack)/CLOCKS_PER_SEC;
+  	outfile << " Stack: " << time_f << " sec (" << time_vect << " CT.)" << std::endl;
+	time_f = ((float)time_map)/CLOCKS_PER_SEC;
+  	outfile << "   Map: " << time_f << " sec (" << time_vect << " CT.)" << std::endl;
+  	outfile.close();
+
 }

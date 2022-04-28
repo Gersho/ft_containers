@@ -1,4 +1,5 @@
 #!/bin/bash
+rm -rf logs
 mkdir -p logs
 echo "Making"
 make -s fclean
@@ -7,9 +8,9 @@ make -s clean
 make -s std
 make -s clean
 echo "Begin testing"
-echo "Running ft"
+echo "Running ft: ./containers > logs/ft.out 2> logs/ft.err"
 ./containers > logs/ft.out 2> logs/ft.err
-echo "Running std"
+echo "Running std: ./containers_std > logs/std.out 2> logs/std.err"
 ./containers_std > logs/std.out 2> logs/std.err
 diff logs/ft.out logs/std.out > logs/diff1.out
 diff logs/ft.err logs/std.err > logs/diff2.out
@@ -24,3 +25,5 @@ then
 else
 	echo -e "\e[31mGet back to work !\e[0m"
 fi
+echo "Time spent:"
+pr -m -t logs/ft.time logs/std.time
