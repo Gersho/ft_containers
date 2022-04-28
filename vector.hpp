@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/28 17:49:25 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/29 01:18:45 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 //TODO 
 // REVOIR REVERSE ITERATOR
-
+// VERIFIER FLAGS COMPIL AVANT RENDU PROJET
 
 namespace ft 
 {
@@ -223,6 +223,8 @@ namespace ft
 //std::cout << "reserve::n = " << n << std::endl;
 			if (n > max_size())
 				throw std::length_error("vector::reserve");
+
+
 			pointer tmp;
 			if(!_try_alloc(&tmp, n, "bad_alloc caught in void Vector::reserve (size_type n): "))
 				return;
@@ -236,6 +238,21 @@ namespace ft
 				_allocator.deallocate(_ptr, _capacity);
 			_ptr = tmp;
 			_capacity = n;
+
+			// pointer tmp = _ptr;
+			// if(!_try_alloc(&_ptr, n, "bad_alloc caught in void Vector::reserve (size_type n): "))
+			// 	return;
+
+			// for (size_type i = 0; i < _size; i++)
+			// {
+			// 	_allocator.construct(&_ptr[i], tmp[i]);
+			// 	_allocator.destroy(&tmp[i]);
+			// }
+			// if (tmp)
+			// 	_allocator.deallocate(tmp, _capacity);
+			// //_ptr = tmp;
+			// _capacity = n;
+
 		}
 
 		reference operator[](size_type index)

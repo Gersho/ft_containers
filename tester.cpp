@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main2.cpp                                          :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/28 18:18:57 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/29 01:14:07 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifdef STD //CREATE A REAL STL EXAMPLE
+#ifdef STD
 	#include <map>
 	#include <stack>
 	#include <vector>
@@ -80,12 +80,13 @@ int main(void)
 	clock_t time_stack;
 	clock_t time_map;
 
-	srand(std::time(NULL));
+	//srand(std::time(NULL));
+	srand(0);
 	start_test = clock();
 	//Vector
 	{
 		ft::vector<int> vec_a;
-		ft::vector<int> vec_b(4, 5);
+		ft::vector<int> vec_b(400, 5);
 		ft::vector<int> vec_c(vec_b.begin()+2, vec_b.end());
 		ft::vector<int> vec_d(vec_c);
 
@@ -106,12 +107,12 @@ int main(void)
 		std::cout << "Testing Vector::push_back() and Vector::pop_back()" << std::endl;
 
 		//vec_a.pop_back(); //SEGFAULT test
-		fill_vect(vec_a, 50);
+		fill_vect(vec_a, 5000);
 		vec_a.pop_back();
 
-		fill_vect(vec_b, 25);
-		fill_vect(vec_c, 15);
-		fill_vect(vec_d, 10);
+		fill_vect(vec_b, 2000);
+		fill_vect(vec_c, 1002);
+		fill_vect(vec_d, 1005);
 
 		test_vects(vects);
 
@@ -135,15 +136,15 @@ int main(void)
 		std::cout << "Testing Vector::resize() ans Vector::reserve()" << std::endl;
 		vec_a.resize(20);
 		test_print_vec(vec_a);
-		vec_a.resize(50);
+		vec_a.resize(5000);
 		test_print_vec(vec_a);
 		vec_a.resize(0);
 		test_print_vec(vec_a);
 		vec_a.resize(20);
 		test_print_vec(vec_a);
-		fill_vect(vec_a, 15);
+		fill_vect(vec_a, 12425);
 
-		vec_b.reserve(17);
+		vec_b.reserve(1700);
 
 		test_vects(vects);
 
@@ -168,7 +169,7 @@ int main(void)
 
 		try
 		{
-			std::cout << "vec_a.at(500): " << vec_a.at(500) << std::endl;
+			std::cout << "vec_a.at(vec_a.size() + 10): " << vec_a.at(vec_a.size() + 10) << std::endl;
 		}
 		catch (const std::out_of_range& e) {
 			std::cerr << "Out of Range error: " << e.what() << '\n';
@@ -213,9 +214,8 @@ int main(void)
 		vec_b.insert(vec_b.begin() + 1, vec_a.begin() + 12, vec_a.begin() +24);
 
 
-// std::cout << "PROBLEM HERE" << std::endl;
-std::cout << "IN MAIN diff: " << vec_c.end() - (vec_c.begin() + 2) << " start " << (vec_c.begin() + 2) - vec_c.begin() << std::endl;
- 		vec_c.insert(vec_c.begin() + 2, 12, 55);
+		vec_c.insert(vec_c.begin() + 2, 12, 55);
+		//vec_a.insert(vec_a.begin() + 2, 41, 5175);
 
 		test_vects(vects);
 
@@ -233,8 +233,10 @@ std::cout << "IN MAIN diff: " << vec_c.end() - (vec_c.begin() + 2) << " start " 
 
 
 	} // end Vector
+
 	time_vect = clock() - start_test;
 	start_test = clock();
+	
 	//Stack
 	{
 
@@ -271,9 +273,9 @@ std::cout << "IN MAIN diff: " << vec_c.end() - (vec_c.begin() + 2) << " start " 
 	time_f = ((float)time_vect)/CLOCKS_PER_SEC;
   	outfile << "Vector: " << time_f << " sec (" << time_vect << " CT.)" << std::endl;
 	time_f = ((float)time_stack)/CLOCKS_PER_SEC;
-  	outfile << " Stack: " << time_f << " sec (" << time_vect << " CT.)" << std::endl;
+  	outfile << " Stack: " << time_f << " sec (" << time_stack << " CT.)" << std::endl;
 	time_f = ((float)time_map)/CLOCKS_PER_SEC;
-  	outfile << "   Map: " << time_f << " sec (" << time_vect << " CT.)" << std::endl;
+  	outfile << "   Map: " << time_f << " sec (" << time_map << " CT.)" << std::endl;
   	outfile.close();
 
 }

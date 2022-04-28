@@ -1,4 +1,4 @@
-SRCS		= main2.cpp
+SRCS		= tester.cpp
 
 OBJS			= $(SRCS:.cpp=.o)
 
@@ -7,7 +7,7 @@ DEPS			= $(SRCS:.cpp=.d)
 NAME			= containers
 NAME_STD		= containers_std
 CC				= clang++
-CFLAGS			= --std=c++98 -Wall -Wextra -Werror
+CFLAGS			= --std=c++98 -Wall -Wextra -Werror -g
 
 all:			$(NAME)
 
