@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   tester.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/29 01:14:07 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/29 13:24:54 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ int main(void)
 		//vec_b.insert(vec_b.begin() + 1, vec_a.begin() + 25, vec_a.begin() +24); // SEGFAULT TEST
 		vec_b.insert(vec_b.begin() + 1, vec_a.begin() + 12, vec_a.begin() +24);
 
-
+//memory problem here
 		vec_c.insert(vec_c.begin() + 2, 12, 55);
 		//vec_a.insert(vec_a.begin() + 2, 41, 5175);
 

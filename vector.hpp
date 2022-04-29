@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/29 01:18:45 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/04/29 13:26:56 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -430,7 +430,8 @@ namespace ft
 						return;
 				}
 				//move trailing part from the right
-				for (size_type i = _size + n - 1; i > diff; i--)
+//std::cerr << "_size: " << _size << " n: " << n << " _size + n - 1: " << (_size + n - 1) << " diff: " << diff << std::endl;
+				for (size_type i = _size + n - 1; i > diff + n; i--)
 				{
 					_allocator.construct(&_ptr[i], _ptr[i - n]);
 					_allocator.destroy(&_ptr[i - n]);
