@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/29 13:26:56 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/05/03 15:53:21 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,12 @@ namespace ft
 		explicit vector( const Allocator& alloc = allocator_type())
 		: _capacity(0), _size(0), _allocator(alloc), _ptr(NULL)
 		{
-//std::cout << "empty constructor" << std::endl;
 		}
 
 		// (2) Constructs a container with n elements. Each element is a copy of val.
 		explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
 		: _capacity(count), _size(0), _allocator(alloc)
 		{
-//std::cout << "fill constructor" << std::endl;
 			if (!_try_alloc(&_ptr, count, "bad_alloc caught in explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()): " ))
 			{
 				_capacity = 0;
@@ -70,14 +68,11 @@ namespace ft
 
 		// (3) Constructs a container with as many elements as the range [first,last),
 		// with each element constructed from its corresponding element in that range, in the same order.
-		
-		//typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type
-		
+	
 		template< class InputIt >
 		vector(typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type first, InputIt last, const Allocator& alloc = Allocator())
 		: _size(0), _allocator(alloc)
 		{
-//std::cout << "range constructor" << std::endl;
 			size_t	diff = last - first;
 			_capacity = diff;
 			if (diff > 0)
@@ -91,10 +86,7 @@ namespace ft
 				}
 				for (size_type i = 0; i < diff; i++)
 				{
-					//_allocator.construct(&_ptr[i], *first);
-					//_size++;
 					push_back(*first);
-
 					first++;
 				}
 			}
@@ -108,7 +100,6 @@ namespace ft
 		//	(4) Constructs a container with a copy of each of the elements in x, in the same order.
 		vector( const vector& src )
 		{
-//std::cout << "copy constructor" << std::endl;
 			_size = src._size;
 			_capacity = src._capacity;
 			_allocator = src._allocator;
@@ -125,14 +116,12 @@ namespace ft
 			for (size_type i = 0; i <_size; i++)
 			{
 				_allocator.construct(&_ptr[i], src._ptr[i]);
-				//_size++;
 			}
 		}
 
 		// This destroys all container elements, and deallocates all the storage capacity allocated by the vector using its allocator.
 		~vector()
 		{
-//std::cout << "this is ft" << std::endl;
 			clear();
 			_allocator.deallocate(_ptr, _capacity);
 		}
@@ -193,7 +182,11 @@ namespace ft
 		void resize (size_type n, value_type val = value_type())
 		{
 			if (n > max_size())
-				throw std::length_error("vector::_M_fill_insert");
+			{
+				throw std::length_error("vector");
+				//linux error msg
+				//throw std::length_error("vector::_M_fill_insert");
+			}
 			if (n < _size)
 			{
 				for (size_type i = n; i < _size; i++)
@@ -220,15 +213,15 @@ namespace ft
 		{
 			if (n <= _capacity)
 				return;
-//std::cout << "reserve::n = " << n << std::endl;
 			if (n > max_size())
-				throw std::length_error("vector::reserve");
-
-
+			{
+				//linux error msg
+				//throw std::length_error("vector::reserve");
+				throw std::length_error("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
+			}
 			pointer tmp;
 			if(!_try_alloc(&tmp, n, "bad_alloc caught in void Vector::reserve (size_type n): "))
 				return;
-
 			for (size_type i = 0; i < _size; i++)
 			{
 				_allocator.construct(&tmp[i], _ptr[i]);
@@ -238,21 +231,6 @@ namespace ft
 				_allocator.deallocate(_ptr, _capacity);
 			_ptr = tmp;
 			_capacity = n;
-
-			// pointer tmp = _ptr;
-			// if(!_try_alloc(&_ptr, n, "bad_alloc caught in void Vector::reserve (size_type n): "))
-			// 	return;
-
-			// for (size_type i = 0; i < _size; i++)
-			// {
-			// 	_allocator.construct(&_ptr[i], tmp[i]);
-			// 	_allocator.destroy(&tmp[i]);
-			// }
-			// if (tmp)
-			// 	_allocator.deallocate(tmp, _capacity);
-			// //_ptr = tmp;
-			// _capacity = n;
-
 		}
 
 		reference operator[](size_type index)
@@ -269,34 +247,37 @@ namespace ft
 		{
 			if (index >= _size)
 			{
-				std::ostringstream oss;
+				// linux error msg
+				// std::ostringstream oss;
+				// oss 
+				// << "vector::_M_range_check: __n (which is "
+				// << index
+				// << ") >= this->size() (which is "
+				// << _size << ")";
+				// std::string msg =  oss.str();
+				// throw std::out_of_range(msg);
 
-				oss 
-				<< "vector::_M_range_check: __n (which is "
-				<< index
-				<< ") >= this->size() (which is "
-				<< _size << ")";
-				std::string msg =  oss.str();
-
-				throw std::out_of_range(msg);
+				throw std::out_of_range("vector");
 			}
 			return *(begin() + index);
 		}
-//vector::_M_range_check: __n (which is 500) >= this->size() (which is 29)
+
 		const_reference at(size_type index) const
 		{
 			if (index >= _size)
 			{
-				std::ostringstream oss;
+				//linux error msg
+				// std::ostringstream oss;
 
-				oss 
-				<< "vector::_M_range_check: __n (which is "
-				<< index
-				<< ") >= this->size() (which is "
-				<< _size << ")";
-				std::string msg =  oss.str();
+				// oss 
+				// << "vector::_M_range_check: __n (which is "
+				// << index
+				// << ") >= this->size() (which is "
+				// << _size << ")";
+				// std::string msg =  oss.str();
 
-				throw std::out_of_range(msg);
+				// throw std::out_of_range(msg);
+				throw std::out_of_range("vector");
 			}
 			return *(begin() + index);
 		}
@@ -309,18 +290,11 @@ namespace ft
 
 		const_reference back() const { return *(end() - 1); }
 
-
-//typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type
 		template <class InputIterator>
 		void assign (typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type first, InputIterator last)
 		{
 			size_type newsize = last - first;
-			// size_type newsize;
-			// if (last > first)
-			// 	newsize = last - first;
-			// else
-			// 	newsize = first - last;
-//std::cout << "newsize " << newsize  << std::endl;
+
 			clear();
 			if	(newsize == 0)
 				return;
@@ -330,7 +304,6 @@ namespace ft
 				if (!_ptr)
 					return;
 			}
-//std::cout << "ca vas peter" << std::endl;
 			for (size_type i = 0; i < newsize; i++)
 			{
 				_allocator.construct(&_ptr[i], *first);
@@ -380,48 +353,11 @@ namespace ft
 			_size++;
 			return position;
 		}
-	
 
-	//TODO REPAIR
-	//PROBLEM HERE
    		void insert (iterator position, size_type n, const value_type& val)
 		{
-// 			if ( _size + n > _capacity*2)
-// 				reserve(_size + n);
-// 			else if ( _size + n > _capacity)
-// 			{
-// 				if(!_upgrade_capacity())
-// 					return;
-// 			}
-
-//  size_type st_diff_pos = end() - position;
-//  size_type st_start_pos = position - begin();
-// size_type st_diff_it = end() - (begin() + 2);
-// size_type st_start_it = (begin() + 2) - begin();
-
-// difference_type dt_diff_pos = end() - position;
-// difference_type dt_start_pos = position - begin();
-// difference_type dt_diff_it = end() - (begin() + 2);
-// difference_type dt_start_it = (begin() + 2) - begin();
-
-//  std::cout << "size_type with position diff: " << st_diff_pos << " start " << st_start_pos << std::endl;
-// std::cout << "size_type with iterator diff: " << st_diff_it << " start " << st_start_it << std::endl;
-// std::cout << "difference type with position diff: " << dt_diff_pos << " start " << dt_start_pos << std::endl;
-// std::cout << "difference type with iterator diff: " << dt_diff_it << " start " << dt_start_it << std::endl;
-
-
-// std::cout << "1diff: " << end() - position << " start " << position - begin() << std::endl;
-// std::cout << "2diff: " << end() - (begin() + 2) << " start " << (begin() + 2) - begin() << std::endl;
-// 			//move trailing part from the right
-
-// 			//insert new vals
-// 			(void)val;
-// 			//update size
-// 			_size += n;
-// 			return;
 				size_type diff = position - begin();
 
-				//update size
 	 			if ( _size + n > _capacity*2)
  					reserve(_size + n);
 				else if ( _size + n > _capacity)
@@ -429,8 +365,6 @@ namespace ft
 					if(!_upgrade_capacity())
 						return;
 				}
-				//move trailing part from the right
-//std::cerr << "_size: " << _size << " n: " << n << " _size + n - 1: " << (_size + n - 1) << " diff: " << diff << std::endl;
 				for (size_type i = _size + n - 1; i > diff + n; i--)
 				{
 					_allocator.construct(&_ptr[i], _ptr[i - n]);
