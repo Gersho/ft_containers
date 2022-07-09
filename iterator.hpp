@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/23 20:13:18 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/09 16:33:38 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,11 +92,15 @@ namespace ft
 		{
 		}
 
-		__generic_iterator(const __generic_iterator<T> & src)
-			: _it(src._it)
+		template <class U>
+		__generic_iterator(const __generic_iterator<U> & src)
+			: _it(src.base())
 		{
 		}
+
 		~__generic_iterator(){}
+
+//reference base() const{ return _it; }
 
 		__generic_iterator<T> & operator=(const __generic_iterator<T> & rhs)
 		{
@@ -235,6 +239,9 @@ namespace ft
 		typedef typename iterator_traits<Iterator>::pointer					pointer;
 		typedef typename iterator_traits<Iterator>::reference				reference;
 
+
+
+
 // Member functions
 
 // (constructor)
@@ -272,12 +279,23 @@ namespace ft
 //   reverse_iterator (const reverse_iterator<Iter>& rev_it);
 // (3) copy / type-cast constructor
 //     Constructs a reverse iterator from some other reverse iterator. The constructed object keeps the same sense of iteration as rev_it.
+
+
 		template <class Iter>
-		reverse_iterator (const reverse_iterator<Iter>& rev_it)
+		reverse_iterator (reverse_iterator<Iter>& rev_it)
 		:_it(rev_it.base())
 		{
 			
 		};
+
+
+		// template <class Iter>
+		// reverse_iterator (const reverse_iterator<Iter>& rev_it)
+		// :_it(rev_it.base())
+		// {
+			
+		// };
+
 
 // base
 //     Return base iterator (public member function )

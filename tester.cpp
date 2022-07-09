@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/29 13:24:54 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/09 16:24:24 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 #include <fstream>
 
 template<class T>
-void test_print_vec(const ft::vector<T> &vec )
+void test_print_vec(ft::vector<T> &vec )
 {
 	std::size_t vec_size = vec.size();
 	
@@ -35,7 +35,15 @@ void test_print_vec(const ft::vector<T> &vec )
 	std::cout << "maxsize(): " << vec.max_size() << std::endl;
 	std::cout << "capacity(): " << vec.capacity() << std::endl;
 	std::cout << "end() - begin(): " << vec.end() - vec.begin() << std::endl;
-//	std::cout << "rbegin() - rend(): " << vec.rbegin() - vec.rend() << std::endl;
+	std::cout << "rbegin() - rend(): " << vec.rbegin() - vec.rend() << std::endl;
+
+	ft::vector<int>::reverse_iterator it = vec.rbegin();
+	ft::vector<int>::reverse_iterator ite = vec.rend();
+	while (it != ite)
+	{
+		std::cout << *it << std::endl;
+		it++;
+	} 
 	for (std::size_t i = 0; i < vec_size; i++)
 	{
 		std::cout << "vec[" << i << "]: " << vec[i] << std::endl;
@@ -154,6 +162,8 @@ int main(void)
 		vec_c.assign(vec_a.begin() + 1, vec_a.end() - 2);
 		vec_d.assign(5,12);
 		vec_b.swap(vec_a);
+// std::cout << "atchoum" << std::endl;
+ //		swap(vec_c, vec_d);
 
 		test_vects(vects);
 
