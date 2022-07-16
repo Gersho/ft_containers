@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/13 13:52:06 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/16 11:45:23 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,6 @@
 #include "iterator.hpp"
 #include "algorithm.hpp"
 #include "type_traits.hpp"
-
-
-//TODO 
-// REVOIR REVERSE ITERATOR
-// VERIFIER FLAGS COMPIL AVANT RENDU PROJET
 
 namespace ft 
 {
