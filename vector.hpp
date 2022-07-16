@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/09 13:09:30 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/13 13:52:06 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,23 +159,23 @@ namespace ft
 		reverse_iterator rbegin()
 		{
 //std::cout << "rbegin" << std::endl;
-			return reverse_iterator(end() - 1);
+			return reverse_iterator(end());
 		}
 
 		const_reverse_iterator rbegin() const 
 		{
 //std::cout << "rbegin const" << std::endl;
-			return const_reverse_iterator(end() - 1);
+			return const_reverse_iterator(end());
 		}
 
 		reverse_iterator rend()
 		{
-			return reverse_iterator(begin() - 1);
+			return reverse_iterator(begin());
 		}
 
 		const_reverse_iterator rend() const 
 		{
-			return const_reverse_iterator(begin() - 1);
+			return const_reverse_iterator(begin());
 		}
 
 		size_type size() const { return _size; }

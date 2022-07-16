@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/09 16:33:38 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/13 14:55:54 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,7 +270,8 @@ namespace ft
 		explicit reverse_iterator (iterator_type it)
 		:_it(it)
 		{
-			
+
+//std::cout << "revsere iterator it constructor" << std::endl;
 		};
 
 // copy (3)	
@@ -282,7 +283,7 @@ namespace ft
 
 
 		template <class Iter>
-		reverse_iterator (reverse_iterator<Iter>& rev_it)
+		reverse_iterator (const reverse_iterator<Iter>& rev_it)
 		:_it(rev_it.base())
 		{
 			
