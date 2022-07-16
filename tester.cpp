@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/09 16:24:24 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/13 14:58:17 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,17 @@ void test_print_vec(ft::vector<T> &vec )
 	std::cout << "maxsize(): " << vec.max_size() << std::endl;
 	std::cout << "capacity(): " << vec.capacity() << std::endl;
 	std::cout << "end() - begin(): " << vec.end() - vec.begin() << std::endl;
-	std::cout << "rbegin() - rend(): " << vec.rbegin() - vec.rend() << std::endl;
+	//std::cout << "rbegin() - rend(): " << vec.rbegin() - vec.rend() << std::endl;
 
-	ft::vector<int>::reverse_iterator it = vec.rbegin();
+	ft::vector<int>::iterator it = std vec.rbegin();
 	ft::vector<int>::reverse_iterator ite = vec.rend();
+	int j = 0;
 	while (it != ite)
 	{
-		std::cout << *it << std::endl;
+		//std::cout << *it << std::endl;
+		std::cout << "j: " << j << " *it: " << *it << std::endl;
 		it++;
+		j++;
 	} 
 	for (std::size_t i = 0; i < vec_size; i++)
 	{
@@ -98,6 +101,8 @@ int main(void)
 		ft::vector<int> vec_c(vec_b.begin()+2, vec_b.end());
 		ft::vector<int> vec_d(vec_c);
 
+
+	
 		struct s_vect<int> vects;
 		vects.vec_a = &vec_a;
 		vects.vec_b = &vec_b;
