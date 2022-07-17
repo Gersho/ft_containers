@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 11:09:39 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/16 15:09:04 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/17 16:25:34 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ namespace ft
 		T1 first;
 		T2 second;
 
-
 		// default (1)	
 		// pair();
 		pair(): first(first_type()), second(second_type()) {}
@@ -39,8 +38,6 @@ namespace ft
 		// pair (const first_type& a, const second_type& b);
 		pair (const first_type& a, const second_type& b): first(first_type(a)), second(second_type(b)) {}
 
-
-		// std::pair::operator=
 		// copy (1)	
 		// pair& operator= (const pair& pr);
 		pair& operator= (const pair& pr)

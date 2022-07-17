@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/13 14:55:54 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/17 19:18:37 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -459,6 +459,32 @@ namespace ft
 	{
 		return lhs.base() - rhs.base();
 	}
+
+
+	// template <class Key, class Value>
+	// struct node
+	// {
+	// 	struct node left_child;
+	// 	struct node right_child;
+	// 	//struct node parent;
+	// 	size_t left_height;
+	// 	size_t right_height;
+	// 	struct pair<Key, Value> *data;
+	// };
+
+	// template < class Node >
+	// class  __tree_iterator
+	// {
+	// 	private:
+			
+	// 	protected:
+
+	// 	public:
+
+	// };
+
+
+
 
 } // namespace ft end
 

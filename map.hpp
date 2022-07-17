@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/16 15:19:16 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/17 19:52:28 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 #include <functional>
 #include <memory>
 #include "utility.hpp"
+#include "iterator.hpp"
+#include "Tree.hpp"
 
 namespace ft
 {
@@ -69,11 +71,20 @@ namespace ft
 
 
 
-// Constructors
+		// Constructors
 
-// empty (1)	
-// explicit map (const key_compare& comp = key_compare(),
-//               const allocator_type& alloc = allocator_type());
+		// empty (1)	
+		// explicit map (const key_compare& comp = key_compare(),
+		//               const allocator_type& alloc = allocator_type());
+
+		explicit map (const key_compare& comp = key_compare(),
+					const allocator_type& alloc = allocator_type()):
+					_compare(comp),
+					_allocator(alloc)
+					{}
+
+
+
 
 // range (2)	
 // template <class InputIterator>
@@ -108,17 +119,17 @@ namespace ft
 
 // const_reverse_iterator rend() const;
 
-bool empty() const
-{
-	return (_size == 0);
-}
+		bool empty() const
+		{
+			return (_size == 0);
+		}
 
-size_type size() const
-{
-	return (_size);
-}
+		size_type size() const
+		{
+			return (_size);
+		}
 
-//size_type max_size() const;
+		size_type max_size() const { return _allocator.max_size(); }
 
 // mapped_type& operator[] (const key_type& k);
 
@@ -176,25 +187,37 @@ size_type size() const
 
 		allocator_type get_allocator() const { return _allocator; };
 
+		protected:
+
 		private:
+		key_compare		_compare;
 		allocator_type	_allocator;
-		pointer			_ptr;
+		//pointer			_tree;
+		Tree			tree;
 		size_type		_size;
 
-	};
 
 
-	template <class Key, class T>
-	struct node
-	{
-		struct node left_child;
-		struct node right_child;
-		size_t left_height;
-		size_t right_height;
-		struct pair<Key, T> *data;	
+		pointer _try_alloc()
+		{
+			pointer ptr;
+
+			try 
+			{
+				ptr = _allocator.allocate(sizeof(node));
+			}
+			catch (std::bad_alloc& ba)
+			{
+				std::cerr << "Error allocating node " << ba.what() << '\n';
+				ptr = NULL;
+				throw;
+				return ptr;
+			}
+			return ptr;
+		}
+
 	};
-	
-	
+
 }
 
 
