@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/17 19:52:28 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/18 11:19:29 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ namespace ft
 
 //std::map::insert
 // single element (1)	
-
 // pair<iterator,bool> insert (const value_type& val);
 
 // with hint (2)	
@@ -193,7 +192,7 @@ namespace ft
 		key_compare		_compare;
 		allocator_type	_allocator;
 		//pointer			_tree;
-		Tree			tree;
+		Tree<Key, T, Alloc, Compare>			tree;
 		size_type		_size;
 
 
@@ -208,7 +207,7 @@ namespace ft
 			}
 			catch (std::bad_alloc& ba)
 			{
-				std::cerr << "Error allocating node " << ba.what() << '\n';
+				std::cerr << "Error allocating node: " << ba.what() << '\n';
 				ptr = NULL;
 				throw;
 				return ptr;
