@@ -12,7 +12,7 @@ void show(struct ft::node<int> *p, int l, ft::Tree<int, std::allocator<int>, std
       std::cout << "Root -> ";
    for (i = 0; i < l&& p != avl->get_root(); i++)
       std::cout << " ";
-      std::cout << *(p->data);
+      std::cout << *(p->data) << "(" << p->height << ")";
       show(p->left, l + 1, avl);
    }
 }

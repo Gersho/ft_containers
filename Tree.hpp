@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/24 14:27:19 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/24 16:20:45 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,18 @@ namespace ft
 		struct node<T> *left;
 		struct node<T> *right;
 		struct node<T> *parent;
-		unsigned int left_height;
-		unsigned int right_height;
+		// unsigned int left_height;
+		// unsigned int right_height;
+		int height;
 		T *data;
 
 		node():
 		left(NULL),
 		right(NULL),
 		parent(NULL),
-		left_height(0),
-		right_height(0),
+		// left_height(0),
+		// right_height(0),
+		height(1),
 		data(NULL)
 		{}
 
@@ -90,34 +92,72 @@ namespace ft
 		// 	}
 		// }
 
+		// int difference(node_type *parent)
+		// {
+
+		// 	return (parent->left_height - parent->right_height);
+		// }
+
+
 		int difference(node_type *parent)
 		{
-			return (parent->left_height - parent->right_height);
-		}
-
-		void update_heights(node_type *parent)
-		{
-			if (!parent)
-				return;
+			int left_height;
+			int right_height;
 
 			if (parent->left)
-			{
-				parent->left_height = ((parent->left->left_height < parent->left->right_height) ? parent->left->right_height : parent->left->left_height) + 1;
-			}
+				left_height = parent->left->height;
 			else
-			{
-				parent->left_height = 0;
-			}
+				left_height = 0;
 
 			if (parent->right)
-			{
-				parent->right_height = ((parent->right->left_height < parent->right->right_height) ? parent->right->right_height : parent->right->left_height) + 1;
-			}
+				right_height = parent->right->height;
 			else
-			{
-				parent->right_height = 0;
-			}
+				right_height = 0;
+
+// std::cout << "node: " << *(parent->data) 
+// << " LH = " << left_height 
+// << " RH = " << right_height 
+// << " diff = " << (left_height - right_height) 
+// << std::endl;
+
+			return (left_height - right_height);
+		}
+
+
+		// void update_heights(node_type *parent)
+		// {
+		// 	if (!parent)
+		// 		return;
+
+		// 	if (parent->left)
+		// 	{
+		// 		//parent->left_height = ((parent->left->left_height < parent->left->right_height) ? parent->left->right_height : parent->left->left_height) + 1;
+		// 	}
+		// 	else
+		// 	{
+		// 		parent->left_height = 0;
+		// 	}
+
+		// 	if (parent->right)
+		// 	{
+		// 		//parent->right_height = ((parent->right->left_height < parent->right->right_height) ? parent->right->right_height : parent->right->left_height) + 1;
+		// 	}
+		// 	else
+		// 	{
+		// 		parent->right_height = 0;
+		// 	}
 			
+		// }
+
+
+		void update_height(node_type *parent)
+		{
+			if(!parent)
+				return;
+//std::cout << "node " << *(parent->data) << " OH = " << parent->height;
+			parent->height =  1 + std::max((parent->left != NULL ? parent->left->height : 0), (parent->right != NULL ? parent->right->height : 0));
+//std::cout << " NH = " << parent->height << std::endl;
+		
 		}
 
 		node_type *get_root() const { return _root; }
@@ -130,7 +170,7 @@ namespace ft
 		{
 			node_type *newparent;
 			node_type *tmp;
-std::cout << "rotating left on node: " << *(parent->data) << std::endl;
+//std::cout << "rotating left on node: " << *(parent->data) << std::endl;
 			newparent = parent->right; // H = U->right;
 			tmp = newparent->left;
 			parent->right = newparent->left;  //U->right = I = H->left; 
@@ -142,8 +182,8 @@ std::cout << "rotating left on node: " << *(parent->data) << std::endl;
 			parent->parent = newparent;
 
 			//update heights
-			update_heights(parent);
-			update_heights(newparent);
+			update_height(parent);
+			update_height(newparent);
 			return newparent;
 		}
 
@@ -151,7 +191,7 @@ std::cout << "rotating left on node: " << *(parent->data) << std::endl;
 		{
 			node_type *newparent;
 			node_type *tmp;
-std::cout << "rotating right on node: " << *(parent->data) << std::endl;
+//std::cout << "rotating right on node: " << *(parent->data) << std::endl;
 			newparent = parent->left;
 			tmp = newparent->right;
 			parent->left = newparent->right;
@@ -163,12 +203,8 @@ std::cout << "rotating right on node: " << *(parent->data) << std::endl;
 			parent->parent = newparent;
 
 //update heights parent et newparent
-			// parent->left_height;
-			// parent->right_height;
-			// newparent->left_height;
-			// newparent->right_height;	
-			update_heights(parent);
-			update_heights(newparent);		
+			update_height(parent);
+			update_height(newparent);		
 			return newparent;
 		}
 
@@ -176,7 +212,7 @@ std::cout << "rotating right on node: " << *(parent->data) << std::endl;
 		node_type *double_r_rotate(node_type *parent)
 		{
 			node_type *tmp;
-std::cout << "rotating double r on node: " << *(parent->data) << std::endl;
+//std::cout << "rotating double r on node: " << *(parent->data) << std::endl;
 			tmp = parent->left;
 			parent->left = left_rotate(tmp);
 			return right_rotate(parent);
@@ -185,7 +221,7 @@ std::cout << "rotating double r on node: " << *(parent->data) << std::endl;
 		node_type *double_l_rotate(node_type *parent)
 		{
 			node_type *tmp;
-std::cout << "rotating double l on node: " << *(parent->data) << std::endl;
+//std::cout << "rotating double l on node: " << *(parent->data) << std::endl;
 			tmp = parent->right;
 			parent->right = right_rotate(tmp);
 			return left_rotate(parent);
@@ -194,6 +230,8 @@ std::cout << "rotating double l on node: " << *(parent->data) << std::endl;
 		node_type *balance(node_type *parent)
 		{
 			int balance = difference(parent);
+// std::cout << "balancing node " << *(parent->data);
+// std::cout << "    diff " << balance << std::endl;
 			if (balance > 1)
 			{
 				if (difference(parent->left) > 0)
@@ -210,12 +248,6 @@ std::cout << "rotating double l on node: " << *(parent->data) << std::endl;
 			}
 			return parent;
 		}
-
-
-
-
-
-
 
 
 		node_type *insert(node_type *current_root, T &data)
@@ -240,8 +272,6 @@ std::cout << "rotating double l on node: " << *(parent->data) << std::endl;
 				//node constructor qui construit la pair ?
 				_allocator.construct(current_root, node_type());
 
-
-
 				try 
 				{
 					//current_root->data = _allocator.allocate(sizeof(T));
@@ -256,26 +286,39 @@ std::cout << "rotating double l on node: " << *(parent->data) << std::endl;
 				}
 				_allocator.construct(current_root->data, data);
 				//current_root->data = data;
-
-				current_root->left = NULL;
-				current_root->right = NULL;
+//std::cout << "inserted " << *(current_root->data) << std::endl;
+				// current_root->left = NULL;
+				// current_root->right = NULL;
 				return current_root;
 			}
-			else if (data < *(current_root->data))
+			//else if (data < *(current_root->data))
+			else if (_compare(*(current_root->data), data))
 			{
 				current_root->left = insert(current_root->left, data);
 				current_root->left->parent = current_root;
+				update_height(current_root);
+
+
+				
 				//limiter balance pour opti ?
 				//r = balance(r);
 				current_root = balance(current_root);
 			}
-			else if (data >= *(current_root->data))
+			//else if (data >= *(current_root->data))
+			else if (_compare(data, *(current_root->data)))
 			{
 				current_root->right = insert(current_root->right, data);
 				current_root->right->parent = current_root;
+				
+				update_height(current_root);
 				//limiter balance pour opti ?
 				//r = balance(r);
 				current_root = balance(current_root);
+			}
+			else
+			{
+				//equals
+//std::cout << "cannot add equal value" << std::endl;
 			}
 			return current_root;
 		}
