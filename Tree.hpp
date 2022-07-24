@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/24 16:20:45 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/24 19:23:16 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,6 +322,124 @@ namespace ft
 			}
 			return current_root;
 		}
+
+
+
+	node_type *find_lowest(node_type* node)
+	{
+		node_type* current = node;
+	
+		while (current->left != NULL)
+			current = current->left;
+	
+		return current;
+	}
+
+
+	node_type* erase(node_type* parent, T key)
+	{
+		
+		//value not found
+		if (parent == NULL)
+			return parent;
+
+
+if (key ==  50 || key == 45)
+{
+	std::cout << "key " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
+	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
+}
+
+		if (_compare(*(parent->data), key))
+		{
+			parent->left = erase(parent->left, key);
+		}
+		else if (_compare(key, *(parent->data)))
+		{
+			parent->right = erase(parent->right, key);
+		}
+		else
+		{
+			// node with only one child or no child
+			if( (parent->left == NULL) ||
+				(parent->right == NULL) )
+			{
+				node_type *temp = parent->left ?
+							parent->left :
+							parent->right;
+	
+				// No child case
+				if (temp == NULL)
+				{
+					temp = parent;
+					parent = NULL;
+				}
+				else // One child case
+				{
+					_allocator.destroy(parent->data);
+					_allocator.construct(parent->data, *(temp->data));
+
+					//*parent = *temp; // Copy the contents of
+				}
+							// the non-empty child
+				//free(temp);
+				_allocator.destroy(temp->data);
+				_allocator.deallocate(temp->data, 1);
+				std::allocator<node_type>().destroy(temp);
+				std::allocator<node_type>().deallocate(temp, 1);
+if (key ==  50 || key == 45)
+{
+	std::cout << "onechild key " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
+	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
+
+	// 	std::cout << "onechild key " << key << " val " << *(temp->data) << " ptrs: tmp = " << temp 
+	// << " lc = " << temp->left << " rc = " << temp->right << std::endl;
+}
+
+			}
+			else
+			{
+				// node with two children: Get the inorder
+				// successor (smallest in the right subtree)
+				node_type* temp = find_lowest(parent->right);
+	
+				// Copy the inorder successor's
+				// data to this node
+			//	parent->data = temp->data;
+					_allocator.destroy(parent->data);
+					_allocator.construct(parent->data, *(temp->data));
+if (key ==  50 || key == 45)
+{
+	std::cout << "twochild key " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
+	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
+
+		std::cout << "twochild key " << key << " val " << *(temp->data) << " ptrs: tmp = " << temp 
+	<< " lc = " << temp->left << " rc = " << temp->right << std::endl;
+}
+	
+				// Delete the inorder successor
+				parent->right = erase(parent->right,
+										*(temp->data));
+			}
+		}
+	
+
+		if (parent == NULL)
+			return parent;
+	
+
+		update_height(parent);
+		parent = balance(parent);
+if (key ==  50 || key == 45)
+{
+	std::cout << "ENDkey " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
+	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
+
+}
+	
+		return parent;
+	}
+
 
 		protected:
 
