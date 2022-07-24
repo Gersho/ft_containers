@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/18 11:19:29 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/23 22:01:04 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,7 @@ namespace ft
 		key_compare		_compare;
 		allocator_type	_allocator;
 		//pointer			_tree;
-		Tree<Key, T, Alloc, Compare>			tree;
+		Tree<T, Alloc, Compare>			_tree;
 		size_type		_size;
 
 
