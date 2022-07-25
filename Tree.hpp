@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/24 19:23:16 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/25 23:59:42 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <stdexcept>
+#include "iterator.hpp"
 
 namespace ft
 {
@@ -27,8 +28,6 @@ namespace ft
 		struct node<T> *left;
 		struct node<T> *right;
 		struct node<T> *parent;
-		// unsigned int left_height;
-		// unsigned int right_height;
 		int height;
 		T *data;
 
@@ -36,8 +35,6 @@ namespace ft
 		left(NULL),
 		right(NULL),
 		parent(NULL),
-		// left_height(0),
-		// right_height(0),
 		height(1),
 		data(NULL)
 		{}
@@ -51,11 +48,13 @@ namespace ft
 		public:
 
 		typedef node<T> node_type;
+		typedef Tree<T, Allocator, Compare> tree_type;
 		typedef Allocator allocator_type;
 		typedef Compare key_compare;
-
+		typedef ft::__tree_iterator<T, Tree>	 iterator;
+		typedef ft::__tree_iterator<const T, Tree>		const_iterator;	
 //constructors
-		Tree(): _root(NULL), _allocator(allocator_type()) 
+		Tree(): _root(NULL), _allocator(allocator_type()), _compare(key_compare()), _size(0)
 		{
 			
 		}
@@ -65,38 +64,25 @@ namespace ft
 			//clear toutes les nodes
 		}
 
-		// int height(node_type *parent)
-		// {
-		// 	int h = 0;
-		// 	if (parent != NULL)
-		// 	{
-		// 		int l_height = height(parent->left);
-		// 		int r_height = height(parent->right);
-		// 		int max_height = max(l_height, r_height);
-		// 		h = max_height + 1;
-		// 	}
-		// 	return h;
-		// }
 
-		// void show(node_type *p, int l) {
-		// 	int i;
-		// 	if (p != NULL) {
-		// 	show(p->right, l+ 1);
-		// 	std::cout<<" ";
-		// 	if (p == _root)
-		// 		std::cout << "Root -> ";
-		// 	for (i = 0; i < l&& p != _root; i++)
-		// 		std::cout << " ";
-		// 		std::cout << *(p->data);
-		// 		show(p->left, l + 1);
-		// 	}
-		// }
+		iterator begin()
+		{
+			iterator ret;
+			ret->_it = tree->get_root();
+			if (ret->_it == NULL)
+				return NULL;
 
-		// int difference(node_type *parent)
-		// {
+			while (ret->_it->left != NULL)
+				ret->_it = ret->_it->left;
+			return *ret;		
+		}
 
-		// 	return (parent->left_height - parent->right_height);
-		// }
+		const_iterator begin() const
+		{
+			iterator ret = begin();
+			return const_iterator(*ret, this);
+		}
+
 
 
 		int difference(node_type *parent)
@@ -124,30 +110,6 @@ namespace ft
 		}
 
 
-		// void update_heights(node_type *parent)
-		// {
-		// 	if (!parent)
-		// 		return;
-
-		// 	if (parent->left)
-		// 	{
-		// 		//parent->left_height = ((parent->left->left_height < parent->left->right_height) ? parent->left->right_height : parent->left->left_height) + 1;
-		// 	}
-		// 	else
-		// 	{
-		// 		parent->left_height = 0;
-		// 	}
-
-		// 	if (parent->right)
-		// 	{
-		// 		//parent->right_height = ((parent->right->left_height < parent->right->right_height) ? parent->right->right_height : parent->right->left_height) + 1;
-		// 	}
-		// 	else
-		// 	{
-		// 		parent->right_height = 0;
-		// 	}
-			
-		// }
 
 
 		void update_height(node_type *parent)
@@ -160,10 +122,16 @@ namespace ft
 		
 		}
 
+		int get_size() const { return _size; } 
 		node_type *get_root() const { return _root; }
 		void set_root(node_type *root)
 		{
 			_root = root;
+		}
+
+		void set_size(int size)
+		{
+			_size = size;
 		}
 
 		node_type *left_rotate(node_type *parent)
@@ -289,6 +257,7 @@ namespace ft
 //std::cout << "inserted " << *(current_root->data) << std::endl;
 				// current_root->left = NULL;
 				// current_root->right = NULL;
+				_size++;
 				return current_root;
 			}
 			//else if (data < *(current_root->data))
@@ -335,6 +304,25 @@ namespace ft
 		return current;
 	}
 
+	node_type *find_highest(node_type* node)
+	{
+		node_type* current = node;
+	
+		while (current->right != NULL)
+			current = current->right;
+	
+		return current;
+	}
+
+	node_type *find_highest(node_type* node) const
+	{
+		node_type* current = node;
+	
+		while (current->right != NULL)
+			current = current->right;
+	
+		return current;
+	}
 
 	node_type* erase(node_type* parent, T key)
 	{
@@ -344,11 +332,11 @@ namespace ft
 			return parent;
 
 
-if (key ==  50 || key == 45)
-{
-	std::cout << "key " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
-	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
-}
+// if (/*key ==  50 || */key == 45)
+// {
+// 	std::cout << "key " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
+// 	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
+// }
 
 		if (_compare(*(parent->data), key))
 		{
@@ -371,6 +359,12 @@ if (key ==  50 || key == 45)
 				// No child case
 				if (temp == NULL)
 				{
+// if (/*key ==  50 || */key == 45)
+// {
+// 	std::cout << "key nochild" << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
+// 	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
+// }
+
 					temp = parent;
 					parent = NULL;
 				}
@@ -378,23 +372,31 @@ if (key ==  50 || key == 45)
 				{
 					_allocator.destroy(parent->data);
 					_allocator.construct(parent->data, *(temp->data));
+					parent->left = NULL;
+					parent->right = NULL;
 
-					//*parent = *temp; // Copy the contents of
 				}
-							// the non-empty child
-				//free(temp);
-				_allocator.destroy(temp->data);
-				_allocator.deallocate(temp->data, 1);
-				std::allocator<node_type>().destroy(temp);
-				std::allocator<node_type>().deallocate(temp, 1);
-if (key ==  50 || key == 45)
-{
-	std::cout << "onechild key " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
-	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
+				if (temp)
+				{
+					_allocator.destroy(temp->data);
+					_allocator.deallocate(temp->data, 1);
+					std::allocator<node_type>().destroy(temp);
+					std::allocator<node_type>().deallocate(temp, 1);
+					_size--;
+				}
+// if ( key == 45) { std::cout << "coucou" << std::endl;}
+// if (/*key ==  50 || */ key == 45)
+// {
+// 	if (parent)
+// 	{
+// 		std::cout << "onechild key " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
+// 		<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
 
-	// 	std::cout << "onechild key " << key << " val " << *(temp->data) << " ptrs: tmp = " << temp 
-	// << " lc = " << temp->left << " rc = " << temp->right << std::endl;
-}
+// 	}
+
+// 	// 	std::cout << "onechild key " << key << " val " << *(temp->data) << " ptrs: tmp = " << temp 
+// 	// << " lc = " << temp->left << " rc = " << temp->right << std::endl;
+// }
 
 			}
 			else
@@ -408,14 +410,14 @@ if (key ==  50 || key == 45)
 			//	parent->data = temp->data;
 					_allocator.destroy(parent->data);
 					_allocator.construct(parent->data, *(temp->data));
-if (key ==  50 || key == 45)
-{
-	std::cout << "twochild key " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
-	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
+// if (/*key ==  50 || */ key == 45)
+// {
+// 	std::cout << "twochild key " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
+// 	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
 
-		std::cout << "twochild key " << key << " val " << *(temp->data) << " ptrs: tmp = " << temp 
-	<< " lc = " << temp->left << " rc = " << temp->right << std::endl;
-}
+// 		std::cout << "twochild key " << key << " val " << *(temp->data) << " ptrs: tmp = " << temp 
+// 	<< " lc = " << temp->left << " rc = " << temp->right << std::endl;
+// }
 	
 				// Delete the inorder successor
 				parent->right = erase(parent->right,
@@ -430,12 +432,12 @@ if (key ==  50 || key == 45)
 
 		update_height(parent);
 		parent = balance(parent);
-if (key ==  50 || key == 45)
-{
-	std::cout << "ENDkey " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
-	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
+// if (/*key ==  50 || */key == 45)
+// {
+// 	std::cout << "ENDkey " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
+// 	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
 
-}
+// }
 	
 		return parent;
 	}
@@ -448,6 +450,7 @@ if (key ==  50 || key == 45)
 		node_type *_root;
 		allocator_type	_allocator;
 		key_compare		_compare;
+		int _size;
 		
 	};
 

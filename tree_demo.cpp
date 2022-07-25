@@ -70,6 +70,8 @@ int main() {
             avl.set_root(avl.erase(avl.get_root(), values[8]));
             avl.set_root(avl.erase(avl.get_root(), values[1]));
             avl.set_root(avl.erase(avl.get_root(), values[7]));
+            avl.set_root(avl.erase(avl.get_root(), values[0]));
+            avl.set_root(avl.erase(avl.get_root(), values[9]));
          break;
          case 9:
             exit(1);

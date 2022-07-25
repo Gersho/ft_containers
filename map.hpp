@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/23 22:01:04 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/26 00:01:01 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 #include <functional>
 #include <memory>
 #include "utility.hpp"
-#include "iterator.hpp"
 #include "Tree.hpp"
+#include "iterator.hpp"
 
 namespace ft
 {
@@ -37,18 +37,19 @@ namespace ft
 		typedef T mapped_type;
 		typedef pair<const key_type,mapped_type> value_type;
 		typedef Compare key_compare;
-		typedef /* XXX */ value_compare;
+		typedef value_compare value_compare;
 		typedef Alloc allocator_type;
 		typedef allocator_type::reference reference;
 		typedef allocator_type::const_reference const_reference;
 		typedef allocator_type::pointer pointer;
 		typedef allocator_type::const_pointer const_pointer;
-		typedef /*ft::__whatever_iterator<value_type>	*/ iterator;
-		typedef /*ft::__generic_iterator<const value_type>	*/		const_iterator;	
-		typedef	/*ft::reverse_iterator<iterator>	*/					reverse_iterator;
-		typedef	/*ft::reverse_iterator<const_iterator>		*/		const_reverse_iterator;
-		typedef /* iterator_traits<iterator>::difference_type */ difference_type;
-		typedef /* size_t ? */ size_type;
+		typedef Tree<T, Alloc, Compare>	 tree;
+		typedef ft::__tree_iterator<value_type, tree>	 iterator;
+		typedef ft::__tree_iterator<const value_type, tree>		const_iterator;	
+		typedef	ft::reverse_iterator<iterator>						reverse_iterator;
+		typedef	ft::reverse_iterator<const_iterator>				const_reverse_iterator;
+		typedef  iterator_traits<iterator>::difference_type  difference_type;
+		typedef  size_t  size_type;
 
 		template <class Key, class T, class Compare, class Alloc>
 		class map<Key,T,Compare,Alloc>::value_compare
@@ -71,7 +72,6 @@ namespace ft
 
 
 
-		// Constructors
 
 		// empty (1)	
 		// explicit map (const key_compare& comp = key_compare(),
@@ -92,46 +92,82 @@ namespace ft
 //        const key_compare& comp = key_compare(),
 //        const allocator_type& alloc = allocator_type());
 
-// copy (3)	
-// map (const map& x);
+		// copy (3)	
+		// map (const map& x);
+		map( const map& x )
+		{
+			*this = x;
+		}
+
+		// Destructor
+		~map();
 
 
+		map& operator= (const map& x)
+		{
+			_compare = x._compare;
+			_allocator = x._allocator;
+			_tree = x._tree;
+			return *this;
+		}
 
-// Destructor
-//~map();
+		iterator begin()
+		{
+		return _tree.begin();
+		}
+
+		const_iterator begin() const
+		{
+			return _tree.begin();
+		}
+
+		iterator end()
+		{
+			return NULL;
+		}
+
+		const_iterator end() const
+		{
+			return NULL;
+		}
 
 
-// map& operator= (const map& x);
+		reverse_iterator rbegin()
+		{
+			return reverse_iterator(_tree.find_highest(_tree.get_root()));
+		}
 
-//       iterator begin();
+		const_reverse_iterator rbegin() const 
+		{
+			return const_reverse_iterator(_tree.find_highest(_tree.get_root()));
+		}
 
-// const_iterator begin() const;
+		reverse_iterator rend()
+		{
+			return reverse_iterator(NULL);
+		}
 
-//       iterator end();
-
-// const_iterator end() const;
-
-//       reverse_iterator rbegin();
-
-// const_reverse_iterator rbegin() const;
-
-//       reverse_iterator rend();
-
-// const_reverse_iterator rend() const;
+		const_reverse_iterator rend() const 
+		{
+			return const_reverse_iterator(NULL);
+		}
 
 		bool empty() const
 		{
-			return (_size == 0);
+			return (_tree.get_size() == 0);
 		}
 
 		size_type size() const
 		{
-			return (_size);
+			return (_tree.get_size());
 		}
 
 		size_type max_size() const { return _allocator.max_size(); }
 
-// mapped_type& operator[] (const key_type& k);
+// mapped_type& operator[] (const key_type& k)
+// {
+// 	(*((this->insert(make_pair(k,mapped_type()))).first)).second;
+// }
 
 
 //std::map::insert
@@ -160,9 +196,15 @@ namespace ft
 
 //void clear();
 
-//key_compare key_comp() const;
+key_compare key_comp() const
+{
+	return _compare;
+}
 
-//value_compare value_comp() const;
+value_compare value_comp() const
+{
+	return value_compare();
+}
 
 //  iterator find (const key_type& k);
 
@@ -193,27 +235,27 @@ namespace ft
 		allocator_type	_allocator;
 		//pointer			_tree;
 		Tree<T, Alloc, Compare>			_tree;
-		size_type		_size;
+		//size_type		_size;
 
 
 
-		pointer _try_alloc()
-		{
-			pointer ptr;
+		// pointer _try_alloc()
+		// {
+		// 	pointer ptr;
 
-			try 
-			{
-				ptr = _allocator.allocate(sizeof(node));
-			}
-			catch (std::bad_alloc& ba)
-			{
-				std::cerr << "Error allocating node: " << ba.what() << '\n';
-				ptr = NULL;
-				throw;
-				return ptr;
-			}
-			return ptr;
-		}
+		// 	try 
+		// 	{
+		// 		ptr = _allocator.allocate(sizeof(node));
+		// 	}
+		// 	catch (std::bad_alloc& ba)
+		// 	{
+		// 		std::cerr << "Error allocating node: " << ba.what() << '\n';
+		// 		ptr = NULL;
+		// 		throw;
+		// 		return ptr;
+		// 	}
+		// 	return ptr;
+		// }
 
 	};
 

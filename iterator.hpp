@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/23 21:03:17 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/25 22:50:11 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 namespace ft
 {
 	struct random_access_iterator_tag {};
+	struct bidirectional_iterator_tag {};
 
 	template< class Iter >
 	struct iterator_traits
@@ -100,7 +101,7 @@ namespace ft
 
 		~__generic_iterator(){}
 
-//reference base() const{ return _it; }
+		reference base() const{ return _it; }
 
 		__generic_iterator<T> & operator=(const __generic_iterator<T> & rhs)
 		{
@@ -472,16 +473,23 @@ namespace ft
 	// 	struct pair<Key, Value> *data;
 	// };
 
-	template < class Node >
+	template < class Node, class Treebase >
 	class  __tree_iterator
 	{
 		private:
-			
-		protected:
 
+		Node *_it;
+		Treebase *_tree;
+
+		protected:
 		public:
 
-
+		typedef ft::bidirectional_iterator_tag 			iterator_category;
+		typedef Node       								value_type;
+		typedef Node*   									pointer;
+		typedef Node& 										reference;
+		typedef __tree_iterator<Node, Treebase>				iterator;
+		typedef const iterator								const_iterator;
 
 // Is default-constructible, copy-constructible, copy-assignable and destructible	
 // X a;
@@ -489,14 +497,59 @@ namespace ft
 // b = a;
 // ~X()
 
+		__tree_iterator()
+			: _it(NULL)
+		{
+		}
+
+		__tree_iterator(Node *ptr, Treebase *tree)
+			: _it(ptr), _tree(tree)
+		{
+		}
+
+		template <class U>
+		__tree_iterator(const __tree_iterator<Node, Treebase> & src)
+			: _it(src._it), _tree(src._tree)
+		{
+		}
+
+		~__tree_iterator(){}
+
 // Can be compared for equivalence using the equality/inequality operators
 // (meaningful when both iterator values iterate over the same underlying sequence).	
 // a == b
 // a != b
+		iterator& operator=( iterator const & rhs )
+		{
+			_it = rhs._it;
+			_tree = rhs._tree;
+			return *this;
+		}
 
+		bool operator==( const_iterator & rhs) const
+		{
+			return _it==rhs._it;
+		}
+
+		bool operator !=(const_iterator & rhs) const
+		{
+			return _it!=rhs._it;
+		}
 // Can be dereferenced as an rvalue (if in a dereferenceable state).	
 // *a
 // a->m
+
+		reference operator*() const
+		{
+			if (_it && _it->data)
+				return *(_it->data);
+			return NULL;
+		}
+
+		pointer operator->() const
+		{
+			return &(operator*());
+		}
 
 // For mutable iterators (non-constant iterators):
 // Can be dereferenced as an lvalue (if in a dereferenceable state).
@@ -509,6 +562,95 @@ namespace ft
 // a++
 // *a++
 
+
+	iterator &operator++ ()
+	{
+		iterator *tmp;
+		
+		if (this->_it == NULL)
+		{
+			this->_it = _tree->get_root();
+			
+			// error! ++ requested for an empty tree
+//TODO check this case
+			if (this->_it == NULL)
+				return NULL;
+
+			while (this->_it->left != NULL)
+				this->_it = this->_it->left;
+		}
+		else
+		{			
+			if (this->_it->right != NULL)
+			{
+				this->_it = this->_it->right;
+				while (this->_it->left != NULL)
+					this->_it = this->_it->left;
+			}
+			else
+			{
+				tmp = this->_it->parent;
+				while (tmp != NULL && this->_it == tmp->right)
+				{
+					this->_it = tmp;
+					tmp = tmp->parent;
+				}
+				this->_it = tmp;
+			}
+		}
+		
+			return *this;
+	}
+
+	iterator operator++( int )
+	{
+		iterator tmp = *this;
+		++( *this );
+		return tmp;
+	}
+
+
+	iterator &operator-- ()
+	{
+		iterator *tmp;
+		
+		if (this->_it == NULL)
+		{
+			this->_it = _tree->get_root();
+			if (this->_it == NULL)
+				return NULL;
+			while (this->_it->right != NULL)
+				this->_it = this->_it->right;
+		}
+		else
+		{			
+			if (this->_it->left != NULL)
+			{
+				this->_it = this->_it->left;
+				while (this->_it->right != NULL)
+					this->_it = this->_it->right;
+			}
+			else
+			{
+				tmp = this->_it->parent;
+				while (tmp != NULL && this->_it == tmp->left)
+				{
+					this->_it = tmp;
+					tmp = tmp->parent;
+				}
+				this->_it = tmp;
+			}
+		}
+		
+			return *this;
+	}
+
+	iterator operator--( int )
+	{
+		iterator tmp = *this;
+		--( *this );
+		return tmp;
+	}
 // Can be decremented (if a dereferenceable iterator value precedes it).
 // 	--a
 // a--
@@ -518,6 +660,31 @@ namespace ft
 
 	};
 
+
+
+	template <class Node, class Treebase>
+	bool operator==( __tree_iterator<Node, Treebase>  & lhs, __tree_iterator<Node, Treebase>  & rhs )
+	{
+		return &*lhs == &*rhs;
+	}
+
+	template <class Node, class Treebase>
+	bool operator!=( __tree_iterator<Node, Treebase>  & lhs, __tree_iterator<Node, Treebase>  & rhs )
+	{
+		return &*lhs != &*rhs;
+	}
+	
+	template <class Node, class Treebase>
+	bool operator==( const __tree_iterator<Node, Treebase>  & lhs, const __tree_iterator<Node, Treebase> & rhs )
+	{
+		return &*lhs == &*rhs;
+	}
+
+	template <class Node, class Treebase>
+	bool operator!=( const __tree_iterator<Node, Treebase>  & lhs, const __tree_iterator<Node, Treebase>  & rhs )
+	{
+		return &*lhs != &*rhs;
+	}
 
 
 
