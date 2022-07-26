@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/26 11:02:10 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/26 20:20:52 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@
 #include <cstdlib>
 #include <iostream>
 #include <stdexcept>
+#include "vector.hpp"
 #include "iterator.hpp"
+#include "utility.hpp"
+
 
 namespace ft
 {
@@ -51,8 +54,8 @@ namespace ft
 		typedef Tree<T, Allocator, Compare> tree_type;
 		typedef Allocator allocator_type;
 		typedef Compare key_compare;
-		typedef ft::__tree_iterator<T, Tree>	 iterator;
-		typedef ft::__tree_iterator<const T, Tree>		const_iterator;	
+		typedef ft::__tree_iterator<node_type, Tree>	 iterator;
+		typedef ft::__tree_iterator<const node_type, Tree>		const_iterator;	
 //constructors
 		Tree(): _root(NULL), _allocator(allocator_type()), _compare(key_compare()), _size(0)
 		{
@@ -64,17 +67,32 @@ namespace ft
 			//clear toutes les nodes
 		}
 
-		tree_type &operator= (const tree_type & rhs)
+		int get_size() const { return _size; } 
+		node_type *get_root() const { return _root; }
+		ft::pair<iterator, bool> &get_last_insert()  { return _last_insert; }
+		int get_last_erase() const { return _last_erase; } 
+
+		void set_root(node_type *root)
 		{
-			//clear le tree avec ancien allocator
-			//copy allocator/compare
-			//deep copy, iter over rhs tree and insert into this
+			_root = root;
 		}
+
+		void set_size(int size)
+		{
+			_size = size;
+		}
+
+		// tree_type &operator= (const tree_type & rhs)
+		// {
+		// 	//clear le tree avec ancien allocator
+		// 	//copy allocator/compare
+		// 	//deep copy, iter over rhs tree and insert into this
+		// }
 
 		iterator begin()
 		{
 			iterator ret;
-			ret->_it = tree->get_root();
+			ret->_it = get_root();
 			if (ret->_it == NULL)
 				return NULL;
 
@@ -113,17 +131,7 @@ namespace ft
 			parent->height =  1 + std::max((parent->left != NULL ? parent->left->height : 0), (parent->right != NULL ? parent->right->height : 0));	
 		}
 
-		int get_size() const { return _size; } 
-		node_type *get_root() const { return _root; }
-		void set_root(node_type *root)
-		{
-			_root = root;
-		}
 
-		void set_size(int size)
-		{
-			_size = size;
-		}
 
 		node_type *left_rotate(node_type *parent)
 		{
@@ -205,7 +213,7 @@ namespace ft
 		}
 
 
-		node_type *insert(node_type *current_root, T &data)
+		node_type *insert(node_type *current_root,const T &data)
 		{
 			if (current_root == NULL)
 			{
@@ -220,7 +228,7 @@ namespace ft
 					throw;
 					return current_root;
 				}
-				_allocator.construct(current_root, node_type());
+				std::allocator<node_type>().construct(current_root, node_type());
 
 				try 
 				{
@@ -234,17 +242,20 @@ namespace ft
 					return current_root;
 				}
 				_allocator.construct(current_root->data, data);
+std::cout << "pwet" << std::endl;
+				_last_insert = ft::make_pair(iterator(current_root, this), true);
+std::cout << "last insert " << _last_insert.first->data << std::endl;
 				_size++;
 				return current_root;
 			}
-			else if (_compare(*(current_root->data), data))
+			else if (_compare(current_root->data->first, data.first))
 			{
 				current_root->left = insert(current_root->left, data);
 				current_root->left->parent = current_root;
 				update_height(current_root);
 				current_root = balance(current_root);
 			}
-			else if (_compare(data, *(current_root->data)))
+			else if (_compare(data.first, current_root->data->first))
 			{
 				current_root->right = insert(current_root->right, data);
 				current_root->right->parent = current_root;
@@ -254,8 +265,8 @@ namespace ft
 			}
 			else
 			{
-				//equals
-//std::cout << "cannot add equal value" << std::endl;
+//std::cout << "atchoum" << std::endl;
+				_last_insert = ft::make_pair(iterator(current_root, this), false);
 			}
 			return current_root;
 		}
@@ -305,13 +316,16 @@ namespace ft
 	node_type* erase(node_type* parent, T key)
 	{
 		if (parent == NULL)
+		{
+			_last_erase = 0;
 			return parent;
+		}
 
-		if (_compare(*(parent->data), key))
+		if (_compare(parent->data->first, key))
 		{
 			parent->left = erase(parent->left, key);
 		}
-		else if (_compare(key, *(parent->data)))
+		else if (_compare(key, parent->data->first))
 		{
 			parent->right = erase(parent->right, key);
 		}
@@ -343,6 +357,7 @@ namespace ft
 					_allocator.deallocate(temp->data, 1);
 					std::allocator<node_type>().destroy(temp);
 					std::allocator<node_type>().deallocate(temp, 1);
+					_last_erase = 1;
 					_size--;
 				}
 			}
@@ -375,7 +390,8 @@ namespace ft
 		allocator_type	_allocator;
 		key_compare		_compare;
 		int _size;
-		
+		ft::pair<iterator, bool> _last_insert;
+		int _last_erase;
 	};
 
 }

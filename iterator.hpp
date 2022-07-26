@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/25 22:50:11 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/26 20:34:10 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 
 
 # include <cstddef>
+# include "Tree.hpp"
+
 
 namespace ft
 {
@@ -473,22 +475,32 @@ namespace ft
 	// 	struct pair<Key, Value> *data;
 	// };
 
-	template < class Node, class Treebase >
+	template < class T, class Treebase >
 	class  __tree_iterator
 	{
-		private:
 
-		Node *_it;
+		private:
+		struct node<T>;
+
+		struct node<T> *_it;
 		Treebase *_tree;
 
 		protected:
 		public:
 
+	//	typedef	typename	Iter::iterator_category	iterator_category;
+	//	typedef	typename	Iter::value_type		value_type;
+	//	typedef typename			Iter::difference_type  	difference_type;
+	//	typedef	typename	Iter::pointer			pointer;
+	//	typedef	typename	Iter::reference			reference;
+
+
 		typedef ft::bidirectional_iterator_tag 			iterator_category;
-		typedef Node       								value_type;
-		typedef Node*   									pointer;
-		typedef Node& 										reference;
-		typedef __tree_iterator<Node, Treebase>				iterator;
+		typedef T       								value_type;
+		typedef T*   									pointer;
+		typedef T& 										reference;
+		typedef std::ptrdiff_t  						difference_type;
+		typedef __tree_iterator<node<T> >, Treebase>				iterator;
 		typedef const iterator								const_iterator;
 
 // Is default-constructible, copy-constructible, copy-assignable and destructible	
@@ -502,18 +514,26 @@ namespace ft
 		{
 		}
 
-		__tree_iterator(Node *ptr, Treebase *tree)
+		__tree_iterator(node<T> *ptr, Treebase *tree)
 			: _it(ptr), _tree(tree)
 		{
 		}
 
-		template <class U>
-		__tree_iterator(const __tree_iterator<Node, Treebase> & src)
-			: _it(src._it), _tree(src._tree)
+		template <class U, class V>
+		__tree_iterator(const __tree_iterator<U, V> & src)
 		{
+			*this = src;
 		}
 
 		~__tree_iterator(){}
+
+
+		// Node *_it;
+		// Treebase *_tree;
+//TODO GERER LES GETTER
+		// Treebase *get_tree() const { return _tree;}
+		// Node *get_it() const{ return _it; }
+
 
 // Can be compared for equivalence using the equality/inequality operators
 // (meaningful when both iterator values iterate over the same underlying sequence).	
@@ -542,7 +562,7 @@ namespace ft
 		reference operator*() const
 		{
 			if (_it && _it->data)
-				return *(_it->data);
+				return _it->data;
 			return NULL;
 		}
 
@@ -662,26 +682,26 @@ namespace ft
 
 
 
-	template <class Node, class Treebase>
-	bool operator==( __tree_iterator<Node, Treebase>  & lhs, __tree_iterator<Node, Treebase>  & rhs )
+	template <class T, class Treebase>
+	bool operator==( __tree_iterator<ft::node<T>, Treebase>  & lhs, __tree_iterator<ft::node<T>, Treebase>  & rhs )
 	{
 		return &*lhs == &*rhs;
 	}
 
-	template <class Node, class Treebase>
-	bool operator!=( __tree_iterator<Node, Treebase>  & lhs, __tree_iterator<Node, Treebase>  & rhs )
+	template <class T, class Treebase>
+	bool operator!=( __tree_iterator<ft::node<T>, Treebase>  & lhs, __tree_iterator<ft::node<T>, Treebase>  & rhs )
 	{
 		return &*lhs != &*rhs;
 	}
 	
-	template <class Node, class Treebase>
-	bool operator==( const __tree_iterator<Node, Treebase>  & lhs, const __tree_iterator<Node, Treebase> & rhs )
+	template <class T, class Treebase>
+	bool operator==( const __tree_iterator<ft::node<T>, Treebase>  & lhs, const __tree_iterator<ft::node<T>, Treebase> & rhs )
 	{
 		return &*lhs == &*rhs;
 	}
 
-	template <class Node, class Treebase>
-	bool operator!=( const __tree_iterator<Node, Treebase>  & lhs, const __tree_iterator<Node, Treebase>  & rhs )
+	template <class T, class Treebase>
+	bool operator!=( const __tree_iterator<ft::node<T>, Treebase>  & lhs, const __tree_iterator<ft::node<T>, Treebase>  & rhs )
 	{
 		return &*lhs != &*rhs;
 	}

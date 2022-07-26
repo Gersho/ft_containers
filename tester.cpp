@@ -6,17 +6,17 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/25 23:11:58 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/26 20:11:48 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifdef STD
-//	#include <map>
+	#include <map>
 	#include <stack>
 	#include <vector>
 	namespace ft = std;
 #else
-//	#include "map.hpp"
+	#include "map.hpp"
 	#include "stack.hpp"
 	#include "vector.hpp"
 #endif
@@ -25,6 +25,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <fstream>
+#include <string>
 
 template<class T>
 void test_print_vec(ft::vector<T> &vec )
@@ -83,11 +84,34 @@ void fill_vect(ft::vector<int> &vec, size_t qt)
 	}
 }
 
+template<class Key, class T>
+void show_map(ft::map<Key, T> &map)
+{
+	typename ft::map<Key, T>::iterator it = map.begin();
+	typename ft::map<Key, T>::iterator ite = map.end();
 
-// void map_tests()
-// {
+	while(it != ite)
+	{
+		std::cout << "key: " << *(it).first << " value: " << *(it).second << std::endl;
+		it++;
+	}
+}
 
-// }
+void map_tests()
+{
+	// ft::map<int, std::string> map_a;
+
+	// map_a.insert(ft::make_pair<int, std::string>(5, "allo"));
+	// map_a.insert(ft::make_pair<int, std::string>(15, "al45lo"));
+	// map_a.insert(ft::make_pair<int, std::string>(55, "al04lo"));
+	// map_a.insert(ft::make_pair<int, std::string>(25, "a12llo"));
+	// map_a.insert(ft::make_pair<int, std::string>(35, "all4554o"));
+	// show_map(map_a);
+	ft::map<int, int> a;
+	a.insert( ft::make_pair<int, int>( 5, 5 ) );
+	//show_map(a);
+
+}
 
 void vector_tests()
 {
@@ -250,7 +274,7 @@ int main(void)
 	srand(0);
 	start_test = clock();
 
-	vector_tests();
+//	vector_tests();
 
 	time_vect = clock() - start_test;
 	start_test = clock();
@@ -260,7 +284,7 @@ int main(void)
 	time_stack = clock() - start_test;
 	start_test = clock();
 
-//	map_tests();
+	map_tests();
 
 	time_map = clock() - start_test;
 

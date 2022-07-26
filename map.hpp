@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/26 10:52:16 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/26 20:13:17 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "utility.hpp"
 #include "Tree.hpp"
 #include "iterator.hpp"
+#include "vector.hpp"
 
 namespace ft
 {
@@ -30,6 +31,10 @@ namespace ft
 			>
 	class map
 	{
+		private:
+		
+		class value_comp;
+
 
 		public:
 
@@ -37,29 +42,45 @@ namespace ft
 		typedef T mapped_type;
 		typedef pair<const key_type,mapped_type> value_type;
 		typedef Compare key_compare;
-		typedef value_compare value_compare;
+		typedef value_comp value_compare;
 		typedef Alloc allocator_type;
-		typedef allocator_type::reference reference;
-		typedef allocator_type::const_reference const_reference;
-		typedef allocator_type::pointer pointer;
-		typedef allocator_type::const_pointer const_pointer;
+		typedef typename allocator_type::reference reference;
+		typedef typename allocator_type::const_reference const_reference;
+		typedef typename allocator_type::pointer pointer;
+		typedef typename allocator_type::const_pointer const_pointer;
 		typedef Tree<T, Alloc, Compare>	 tree;
 		typedef ft::__tree_iterator<value_type, tree>	 iterator;
 		typedef ft::__tree_iterator<const value_type, tree>		const_iterator;	
 		typedef	ft::reverse_iterator<iterator>						reverse_iterator;
 		typedef	ft::reverse_iterator<const_iterator>				const_reverse_iterator;
-		typedef  iterator_traits<iterator>::difference_type  difference_type;
+		typedef typename iterator_traits<iterator>::difference_type  difference_type;
 		typedef  size_t  size_type;
 
-		template <class Key, class T, class Compare, class Alloc>
-		class map<Key,T,Compare,Alloc>::value_compare
-		{ 
-			friend class map;
+		// template <class X, class Y, class C, class A>
+		// class map<X,Y,C,A>::value_comp
+		// { 
+		// 	friend class map;
 
+		// 	protected:
+		// 		C comp;
+		// 		value_compare (C c) : comp(c) {}
+
+		// 	public:
+		// 		typedef bool result_type;
+		// 		typedef value_type first_argument_type;
+		// 		typedef value_type second_argument_type;
+		// 		bool operator() (const value_type& x, const value_type& y) const
+		// 		{
+		// 			return comp(x.first, y.first);
+		// 		}
+		// }
+		private:
+
+		class value_comp
+		{
 			protected:
 				Compare comp;
-				value_compare (Compare c) : comp(c) {}
-
+				value_comp( key_compare c ) : comp( c ) {}
 			public:
 				typedef bool result_type;
 				typedef value_type first_argument_type;
@@ -68,14 +89,9 @@ namespace ft
 				{
 					return comp(x.first, y.first);
 				}
-		}
+		};
 
-
-
-
-		// empty (1)	
-		// explicit map (const key_compare& comp = key_compare(),
-		//               const allocator_type& alloc = allocator_type());
+		public:
 
 		explicit map (const key_compare& comp = key_compare(),
 					const allocator_type& alloc = allocator_type()):
@@ -92,15 +108,14 @@ namespace ft
 //        const key_compare& comp = key_compare(),
 //        const allocator_type& alloc = allocator_type());
 
-		// copy (3)	
-		// map (const map& x);
+
 		map( const map& x )
 		{
 			*this = x;
 		}
 
 		// Destructor
-		~map();
+		~map(){}
 
 
 		map& operator= (const map& x)
@@ -108,6 +123,7 @@ namespace ft
 			_compare = x._compare;
 			_allocator = x._allocator;
 			_tree = x._tree;
+//TODO OPERATOR= TREE WITH DEEP COPY
 			return *this;
 		}
 
@@ -169,41 +185,76 @@ namespace ft
 // }
 
 
-//std::map::insert
-// single element (1)	
-// pair<iterator,bool> insert (const value_type& val);
+
+		ft::pair<iterator,bool> insert (const value_type& val)
+		{
+			_tree.set_root(_tree.insert(_tree.get_root(), val));
+std::cout << "coucou " << std::endl;
+			ft::pair<iterator,bool> ret = _tree.get_last_insert();
+			//ft::pair<iterator,bool> ret = ft::make_pair(iterator(_tree.get_last_insert().first), _tree.get_last_insert().second);
+			return ret;
+		}
 
 // with hint (2)	
 // iterator insert (iterator position, const value_type& val);
 
-// range (3)	
-// template <class InputIterator>
-//   void insert (InputIterator first, InputIterator last);
+
+		template <class InputIterator>
+		void insert (InputIterator first, InputIterator last)
+		{	
+			while (first != last)
+			{
+				_tree.set_root(_tree.insert(_tree.get_root(), *first));
+				first++;
+			}
+		}
 
 
-// std::map::erase
-// (1)	
-//      void erase (iterator position);
+		void erase (iterator position)
+		{
+			_tree.set_root(_tree.erase(_tree.get_root(), *(position).first));
+		}
 
-// (2)	
-// size_type erase (const key_type& k);
+	
+		size_type erase (const key_type& k)
+		{
+			_tree.set_root(_tree.erase(_tree.get_root(), k));
+			return _tree.get_last_erase();
+		}
 
-// (3)	
-//      void erase (iterator first, iterator last);
+
+		void erase (iterator first, iterator last)
+		{
+			ft::vector<Key> values;
+
+			while (first != last)
+			{
+				values.push_back(*(first).first);
+				first++;
+			}
+
+			ft::vector<int>::iterator it = values.begin();
+			ft::vector<int>::iterator ite = values.end();
+			while (it != ite)
+			{
+				_tree.set_root(_tree.erase(_tree.get_root(), *it));
+				it++;
+			}
+		}
 
 //void swap (map& x);
 
 //void clear();
 
-key_compare key_comp() const
-{
-	return _compare;
-}
+		key_compare key_comp() const
+		{
+			return _compare;
+		}
 
-value_compare value_comp() const
-{
-	return value_compare();
-}
+		value_compare value_comp() const
+		{
+			return value_compare();
+		}
 
 //  iterator find (const key_type& k);
 
@@ -232,9 +283,7 @@ value_compare value_comp() const
 		private:
 		key_compare		_compare;
 		allocator_type	_allocator;
-		//pointer			_tree;
-		Tree<T, Alloc, Compare>			_tree;
-		//size_type		_size;
+		Tree<value_type, Alloc, key_compare>			_tree;
 
 
 
