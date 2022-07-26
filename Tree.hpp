@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/25 23:59:42 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/26 11:02:10 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,12 @@ namespace ft
 			//clear toutes les nodes
 		}
 
+		tree_type &operator= (const tree_type & rhs)
+		{
+			//clear le tree avec ancien allocator
+			//copy allocator/compare
+			//deep copy, iter over rhs tree and insert into this
+		}
 
 		iterator begin()
 		{
@@ -83,8 +89,6 @@ namespace ft
 			return const_iterator(*ret, this);
 		}
 
-
-
 		int difference(node_type *parent)
 		{
 			int left_height;
@@ -99,27 +103,14 @@ namespace ft
 				right_height = parent->right->height;
 			else
 				right_height = 0;
-
-// std::cout << "node: " << *(parent->data) 
-// << " LH = " << left_height 
-// << " RH = " << right_height 
-// << " diff = " << (left_height - right_height) 
-// << std::endl;
-
 			return (left_height - right_height);
 		}
-
-
-
 
 		void update_height(node_type *parent)
 		{
 			if(!parent)
 				return;
-//std::cout << "node " << *(parent->data) << " OH = " << parent->height;
-			parent->height =  1 + std::max((parent->left != NULL ? parent->left->height : 0), (parent->right != NULL ? parent->right->height : 0));
-//std::cout << " NH = " << parent->height << std::endl;
-		
+			parent->height =  1 + std::max((parent->left != NULL ? parent->left->height : 0), (parent->right != NULL ? parent->right->height : 0));	
 		}
 
 		int get_size() const { return _size; } 
@@ -138,18 +129,17 @@ namespace ft
 		{
 			node_type *newparent;
 			node_type *tmp;
-//std::cout << "rotating left on node: " << *(parent->data) << std::endl;
-			newparent = parent->right; // H = U->right;
+
+			newparent = parent->right;
 			tmp = newparent->left;
-			parent->right = newparent->left;  //U->right = I = H->left; 
-			newparent->left = parent; // H->left = U; 
+			parent->right = newparent->left; 
+			newparent->left = parent;
 
 			if (tmp != NULL)
 				tmp->parent = parent;
 			newparent->parent = parent->parent;
 			parent->parent = newparent;
 
-			//update heights
 			update_height(parent);
 			update_height(newparent);
 			return newparent;
@@ -159,7 +149,7 @@ namespace ft
 		{
 			node_type *newparent;
 			node_type *tmp;
-//std::cout << "rotating right on node: " << *(parent->data) << std::endl;
+
 			newparent = parent->left;
 			tmp = newparent->right;
 			parent->left = newparent->right;
@@ -170,7 +160,6 @@ namespace ft
 			newparent->parent = parent->parent;
 			parent->parent = newparent;
 
-//update heights parent et newparent
 			update_height(parent);
 			update_height(newparent);		
 			return newparent;
@@ -180,7 +169,7 @@ namespace ft
 		node_type *double_r_rotate(node_type *parent)
 		{
 			node_type *tmp;
-//std::cout << "rotating double r on node: " << *(parent->data) << std::endl;
+
 			tmp = parent->left;
 			parent->left = left_rotate(tmp);
 			return right_rotate(parent);
@@ -189,7 +178,7 @@ namespace ft
 		node_type *double_l_rotate(node_type *parent)
 		{
 			node_type *tmp;
-//std::cout << "rotating double l on node: " << *(parent->data) << std::endl;
+
 			tmp = parent->right;
 			parent->right = right_rotate(tmp);
 			return left_rotate(parent);
@@ -198,8 +187,6 @@ namespace ft
 		node_type *balance(node_type *parent)
 		{
 			int balance = difference(parent);
-// std::cout << "balancing node " << *(parent->data);
-// std::cout << "    diff " << balance << std::endl;
 			if (balance > 1)
 			{
 				if (difference(parent->left) > 0)
@@ -224,8 +211,6 @@ namespace ft
 			{
 				try 
 				{
-					//current_root = _allocator.allocate(sizeof(node_type));
-					//current_root = std::allocator<node_type>().allocate(sizeof(node_type));
 					current_root = std::allocator<node_type>().allocate(1);
 				}
 				catch (std::bad_alloc& ba)
@@ -235,14 +220,10 @@ namespace ft
 					throw;
 					return current_root;
 				}
-
-				//construct la node ?
-				//node constructor qui construit la pair ?
 				_allocator.construct(current_root, node_type());
 
 				try 
 				{
-					//current_root->data = _allocator.allocate(sizeof(T));
 					current_root->data = _allocator.allocate(1);
 				}
 				catch (std::bad_alloc& ba)
@@ -253,35 +234,22 @@ namespace ft
 					return current_root;
 				}
 				_allocator.construct(current_root->data, data);
-				//current_root->data = data;
-//std::cout << "inserted " << *(current_root->data) << std::endl;
-				// current_root->left = NULL;
-				// current_root->right = NULL;
 				_size++;
 				return current_root;
 			}
-			//else if (data < *(current_root->data))
 			else if (_compare(*(current_root->data), data))
 			{
 				current_root->left = insert(current_root->left, data);
 				current_root->left->parent = current_root;
 				update_height(current_root);
-
-
-				
-				//limiter balance pour opti ?
-				//r = balance(r);
 				current_root = balance(current_root);
 			}
-			//else if (data >= *(current_root->data))
 			else if (_compare(data, *(current_root->data)))
 			{
 				current_root->right = insert(current_root->right, data);
 				current_root->right->parent = current_root;
 				
 				update_height(current_root);
-				//limiter balance pour opti ?
-				//r = balance(r);
 				current_root = balance(current_root);
 			}
 			else
@@ -294,7 +262,17 @@ namespace ft
 
 
 
-	node_type *find_lowest(node_type* node)
+	// node_type *find_lowest(node_type* node)
+	// {
+	// 	node_type* current = node;
+	
+	// 	while (current->left != NULL)
+	// 		current = current->left;
+	
+	// 	return current;
+	// }
+
+	node_type *find_lowest(node_type* node) const
 	{
 		node_type* current = node;
 	
@@ -304,15 +282,15 @@ namespace ft
 		return current;
 	}
 
-	node_type *find_highest(node_type* node)
-	{
-		node_type* current = node;
+	// node_type *find_highest(node_type* node)
+	// {
+	// 	node_type* current = node;
 	
-		while (current->right != NULL)
-			current = current->right;
+	// 	while (current->right != NULL)
+	// 		current = current->right;
 	
-		return current;
-	}
+	// 	return current;
+	// }
 
 	node_type *find_highest(node_type* node) const
 	{
@@ -326,17 +304,8 @@ namespace ft
 
 	node_type* erase(node_type* parent, T key)
 	{
-		
-		//value not found
 		if (parent == NULL)
 			return parent;
-
-
-// if (/*key ==  50 || */key == 45)
-// {
-// 	std::cout << "key " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
-// 	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
-// }
 
 		if (_compare(*(parent->data), key))
 		{
@@ -348,7 +317,6 @@ namespace ft
 		}
 		else
 		{
-			// node with only one child or no child
 			if( (parent->left == NULL) ||
 				(parent->right == NULL) )
 			{
@@ -356,19 +324,12 @@ namespace ft
 							parent->left :
 							parent->right;
 	
-				// No child case
 				if (temp == NULL)
 				{
-// if (/*key ==  50 || */key == 45)
-// {
-// 	std::cout << "key nochild" << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
-// 	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
-// }
-
 					temp = parent;
 					parent = NULL;
 				}
-				else // One child case
+				else
 				{
 					_allocator.destroy(parent->data);
 					_allocator.construct(parent->data, *(temp->data));
@@ -384,42 +345,12 @@ namespace ft
 					std::allocator<node_type>().deallocate(temp, 1);
 					_size--;
 				}
-// if ( key == 45) { std::cout << "coucou" << std::endl;}
-// if (/*key ==  50 || */ key == 45)
-// {
-// 	if (parent)
-// 	{
-// 		std::cout << "onechild key " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
-// 		<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
-
-// 	}
-
-// 	// 	std::cout << "onechild key " << key << " val " << *(temp->data) << " ptrs: tmp = " << temp 
-// 	// << " lc = " << temp->left << " rc = " << temp->right << std::endl;
-// }
-
 			}
 			else
 			{
-				// node with two children: Get the inorder
-				// successor (smallest in the right subtree)
 				node_type* temp = find_lowest(parent->right);
-	
-				// Copy the inorder successor's
-				// data to this node
-			//	parent->data = temp->data;
-					_allocator.destroy(parent->data);
-					_allocator.construct(parent->data, *(temp->data));
-// if (/*key ==  50 || */ key == 45)
-// {
-// 	std::cout << "twochild key " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
-// 	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
-
-// 		std::cout << "twochild key " << key << " val " << *(temp->data) << " ptrs: tmp = " << temp 
-// 	<< " lc = " << temp->left << " rc = " << temp->right << std::endl;
-// }
-	
-				// Delete the inorder successor
+				_allocator.destroy(parent->data);
+				_allocator.construct(parent->data, *(temp->data));
 				parent->right = erase(parent->right,
 										*(temp->data));
 			}
@@ -431,14 +362,7 @@ namespace ft
 	
 
 		update_height(parent);
-		parent = balance(parent);
-// if (/*key ==  50 || */key == 45)
-// {
-// 	std::cout << "ENDkey " << key << " val " << *(parent->data) << " ptrs: parent = " << parent 
-// 	<< " lc = " << parent->left << " rc = " << parent->right << std::endl;
-
-// }
-	
+		parent = balance(parent);	
 		return parent;
 	}
 

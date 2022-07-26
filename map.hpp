@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/26 00:01:01 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/26 10:52:16 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,6 @@ namespace ft
 		{
 			return NULL;
 		}
-
 
 		reverse_iterator rbegin()
 		{
