@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/26 20:11:48 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/27 16:28:22 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void show_map(ft::map<Key, T> &map)
 
 	while(it != ite)
 	{
-		std::cout << "key: " << *(it).first << " value: " << *(it).second << std::endl;
+		std::cout << "key: " << it->first/*.first */<< " value: " << it->second /*.second */<< std::endl;
 		it++;
 	}
 }
@@ -109,7 +109,7 @@ void map_tests()
 	// show_map(map_a);
 	ft::map<int, int> a;
 	a.insert( ft::make_pair<int, int>( 5, 5 ) );
-	//show_map(a);
+	show_map(a);
 
 }
 

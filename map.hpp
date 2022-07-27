@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/26 20:13:17 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/27 17:07:01 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 #include <functional>
 #include <memory>
-#include "utility.hpp"
 #include "Tree.hpp"
+#include "utility.hpp"
 #include "iterator.hpp"
 #include "vector.hpp"
 
@@ -48,7 +48,7 @@ namespace ft
 		typedef typename allocator_type::const_reference const_reference;
 		typedef typename allocator_type::pointer pointer;
 		typedef typename allocator_type::const_pointer const_pointer;
-		typedef Tree<T, Alloc, Compare>	 tree;
+		typedef Tree<value_type, Alloc, Compare>	 tree;
 		typedef ft::__tree_iterator<value_type, tree>	 iterator;
 		typedef ft::__tree_iterator<const value_type, tree>		const_iterator;	
 		typedef	ft::reverse_iterator<iterator>						reverse_iterator;
@@ -139,12 +139,12 @@ namespace ft
 
 		iterator end()
 		{
-			return NULL;
+			return iterator(NULL, &_tree);
 		}
 
 		const_iterator end() const
 		{
-			return NULL;
+			return const_iterator(NULL, &_tree);
 		}
 
 		reverse_iterator rbegin()
@@ -186,13 +186,15 @@ namespace ft
 
 
 
-		ft::pair<iterator,bool> insert (const value_type& val)
+		//ft::pair<iterator,bool> insert (const value_type& val)
+		void insert (const value_type& val)
 		{
 			_tree.set_root(_tree.insert(_tree.get_root(), val));
 std::cout << "coucou " << std::endl;
-			ft::pair<iterator,bool> ret = _tree.get_last_insert();
+			//ft::pair<iterator,bool> ret = _tree.get_last_insert();
+		//	ft::pair<iterator,bool> ret = ft::make_pair(begin(), true);
 			//ft::pair<iterator,bool> ret = ft::make_pair(iterator(_tree.get_last_insert().first), _tree.get_last_insert().second);
-			return ret;
+		//	return ret;
 		}
 
 // with hint (2)	

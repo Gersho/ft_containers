@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/26 20:34:10 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/27 17:17:49 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -464,23 +464,34 @@ namespace ft
 	}
 
 
-	// template <class Key, class Value>
-	// struct node
-	// {
-	// 	struct node left_child;
-	// 	struct node right_child;
-	// 	//struct node parent;
-	// 	size_t left_height;
-	// 	size_t right_height;
-	// 	struct pair<Key, Value> *data;
-	// };
+	template <class T>
+	struct node
+	{
+		struct node<T> *left;
+		struct node<T> *right;
+		struct node<T> *parent;
+		int height;
+		T *data;
+
+		node():
+		left(NULL),
+		right(NULL),
+		parent(NULL),
+		height(1),
+		data(NULL)
+		{}
+
+		~node(){}
+	};
+
 
 	template < class T, class Treebase >
 	class  __tree_iterator
 	{
 
 		private:
-		struct node<T>;
+		// template<class>
+		// struct node;
 
 		struct node<T> *_it;
 		Treebase *_tree;
@@ -500,7 +511,7 @@ namespace ft
 		typedef T*   									pointer;
 		typedef T& 										reference;
 		typedef std::ptrdiff_t  						difference_type;
-		typedef __tree_iterator<node<T> >, Treebase>				iterator;
+		typedef __tree_iterator<T , Treebase>				iterator;
 		typedef const iterator								const_iterator;
 
 // Is default-constructible, copy-constructible, copy-assignable and destructible	
@@ -561,9 +572,9 @@ namespace ft
 
 		reference operator*() const
 		{
-			if (_it && _it->data)
-				return _it->data;
-			return NULL;
+			//if (_it && _it->data)
+				return *(_it->data);
+			//return NULL;
 		}
 
 		pointer operator->() const
@@ -585,37 +596,37 @@ namespace ft
 
 	iterator &operator++ ()
 	{
-		iterator *tmp;
+		node<T> *tmp;
 		
-		if (this->_it == NULL)
+		if (_it == NULL)
 		{
-			this->_it = _tree->get_root();
+			_it = _tree->get_root();
 			
 			// error! ++ requested for an empty tree
 //TODO check this case
-			if (this->_it == NULL)
-				return NULL;
+			if (_it == NULL)
+				return *this;
 
-			while (this->_it->left != NULL)
-				this->_it = this->_it->left;
+			while (_it->left != NULL)
+				_it = _it->left;
 		}
 		else
 		{			
-			if (this->_it->right != NULL)
+			if (_it->right != NULL)
 			{
-				this->_it = this->_it->right;
-				while (this->_it->left != NULL)
-					this->_it = this->_it->left;
+				_it = _it->right;
+				while (_it->left != NULL)
+					_it = _it->left;
 			}
 			else
 			{
-				tmp = this->_it->parent;
-				while (tmp != NULL && this->_it == tmp->right)
+				tmp = _it->parent;
+				while (tmp != NULL && _it == tmp->right)
 				{
-					this->_it = tmp;
+					_it = tmp;
 					tmp = tmp->parent;
 				}
-				this->_it = tmp;
+				_it = tmp;
 			}
 		}
 		
@@ -682,29 +693,29 @@ namespace ft
 
 
 
-	template <class T, class Treebase>
-	bool operator==( __tree_iterator<ft::node<T>, Treebase>  & lhs, __tree_iterator<ft::node<T>, Treebase>  & rhs )
-	{
-		return &*lhs == &*rhs;
-	}
+	// template <class T, class Treebase>
+	// bool operator==( __tree_iterator<T , Treebase>  & lhs, __tree_iterator<T , Treebase>  & rhs )
+	// {
+	// 	return &*lhs == &*rhs;
+	// }
 
-	template <class T, class Treebase>
-	bool operator!=( __tree_iterator<ft::node<T>, Treebase>  & lhs, __tree_iterator<ft::node<T>, Treebase>  & rhs )
-	{
-		return &*lhs != &*rhs;
-	}
+	// template <class T, class Treebase>
+	// bool operator!=( __tree_iterator<T , Treebase>  & lhs, __tree_iterator<T , Treebase>  & rhs )
+	// {
+	// 	return &*lhs != &*rhs;
+	// }
 	
-	template <class T, class Treebase>
-	bool operator==( const __tree_iterator<ft::node<T>, Treebase>  & lhs, const __tree_iterator<ft::node<T>, Treebase> & rhs )
-	{
-		return &*lhs == &*rhs;
-	}
+	// template <class T, class Treebase>
+	// bool operator==( const __tree_iterator<T , Treebase>  & lhs, const __tree_iterator<T , Treebase> & rhs )
+	// {
+	// 	return &*lhs == &*rhs;
+	// }
 
-	template <class T, class Treebase>
-	bool operator!=( const __tree_iterator<ft::node<T>, Treebase>  & lhs, const __tree_iterator<ft::node<T>, Treebase>  & rhs )
-	{
-		return &*lhs != &*rhs;
-	}
+	// template <class T, class Treebase>
+	// bool operator!=( const __tree_iterator<T , Treebase>  & lhs, const __tree_iterator<T , Treebase>  & rhs )
+	// {
+	// 	return &*lhs != &*rhs;
+	// }
 
 
 

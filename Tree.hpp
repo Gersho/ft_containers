@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/26 20:20:52 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/27 17:05:17 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,32 +18,32 @@
 #include <iostream>
 #include <stdexcept>
 #include "vector.hpp"
-#include "iterator.hpp"
 #include "utility.hpp"
+#include "iterator.hpp"
 
 
 namespace ft
 {
 
-	template <class T>
-	struct node
-	{
-		struct node<T> *left;
-		struct node<T> *right;
-		struct node<T> *parent;
-		int height;
-		T *data;
+	// template <class T>
+	// struct node
+	// {
+	// 	struct node<T> *left;
+	// 	struct node<T> *right;
+	// 	struct node<T> *parent;
+	// 	int height;
+	// 	T *data;
 
-		node():
-		left(NULL),
-		right(NULL),
-		parent(NULL),
-		height(1),
-		data(NULL)
-		{}
+	// 	node():
+	// 	left(NULL),
+	// 	right(NULL),
+	// 	parent(NULL),
+	// 	height(1),
+	// 	data(NULL)
+	// 	{}
 
-		~node(){}
-	};
+	// 	~node(){}
+	// };
 
 	template <class T, class Allocator, class Compare>
 	class Tree
@@ -54,8 +54,8 @@ namespace ft
 		typedef Tree<T, Allocator, Compare> tree_type;
 		typedef Allocator allocator_type;
 		typedef Compare key_compare;
-		typedef ft::__tree_iterator<node_type, Tree>	 iterator;
-		typedef ft::__tree_iterator<const node_type, Tree>		const_iterator;	
+		typedef ft::__tree_iterator<T, Tree>	 iterator;
+		typedef ft::__tree_iterator<const T, Tree>		const_iterator;	
 //constructors
 		Tree(): _root(NULL), _allocator(allocator_type()), _compare(key_compare()), _size(0)
 		{
@@ -91,14 +91,23 @@ namespace ft
 
 		iterator begin()
 		{
-			iterator ret;
-			ret->_it = get_root();
-			if (ret->_it == NULL)
-				return NULL;
+			// iterator ret;
+			// ret->_it = get_root();
+			// iterator ret = iterator(get_root(), this);
+			// if (ret->_it == NULL)
+			// 	return NULL;
 
-			while (ret->_it->left != NULL)
-				ret->_it = ret->_it->left;
-			return *ret;		
+			// while (ret->_it->left != NULL)
+			// 	ret->_it = ret->_it->left;
+			// return ret;
+
+
+			node_type *ptr = get_root();
+			if(!ptr)
+				return iterator(NULL, this);
+			while(ptr->left != NULL)
+				ptr = ptr->left;
+			return iterator(ptr, this);
 		}
 
 		const_iterator begin() const
@@ -130,8 +139,6 @@ namespace ft
 				return;
 			parent->height =  1 + std::max((parent->left != NULL ? parent->left->height : 0), (parent->right != NULL ? parent->right->height : 0));	
 		}
-
-
 
 		node_type *left_rotate(node_type *parent)
 		{
@@ -243,8 +250,8 @@ namespace ft
 				}
 				_allocator.construct(current_root->data, data);
 std::cout << "pwet" << std::endl;
-				_last_insert = ft::make_pair(iterator(current_root, this), true);
-std::cout << "last insert " << _last_insert.first->data << std::endl;
+// 				_last_insert = ft::make_pair(iterator(current_root, this), true);
+// std::cout << "last insert " << *(_last_insert.first) << std::endl;
 				_size++;
 				return current_root;
 			}
@@ -266,7 +273,7 @@ std::cout << "last insert " << _last_insert.first->data << std::endl;
 			else
 			{
 //std::cout << "atchoum" << std::endl;
-				_last_insert = ft::make_pair(iterator(current_root, this), false);
+	//			_last_insert = ft::make_pair(iterator(current_root, this), false);
 			}
 			return current_root;
 		}
