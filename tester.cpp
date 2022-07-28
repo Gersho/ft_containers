@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/27 16:28:22 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/28 14:18:36 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,26 @@ void map_tests()
 	// map_a.insert(ft::make_pair<int, std::string>(35, "all4554o"));
 	// show_map(map_a);
 	ft::map<int, int> a;
+	ft::map<int, int> b;
+
 	a.insert( ft::make_pair<int, int>( 5, 5 ) );
+	a.insert( ft::make_pair<int, int>( 8, 1 ) );
+	a.insert( ft::make_pair<int, int>( 0, 2 ) );
+	a.insert( ft::make_pair<int, int>( 2, 3 ) );
+
+	a.insert( ft::make_pair<int, int>( 2, 3 ) );
+	std::cout << "printing map a" << std::endl;
 	show_map(a);
 
+	b.insert(a.begin(), a.end());
+	std::cout << "printing map b" << std::endl;
+	show_map(b);
+
+//	b.erase(b.begin());
+	b.erase(8);
+	// a.erase(b.begin(), b.end());
+	// show_map(a);
+	show_map(b);
 }
 
 void vector_tests()

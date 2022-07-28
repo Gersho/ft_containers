@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/27 17:05:17 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/28 14:22:39 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,12 @@ namespace ft
 		~Tree()
 		{
 			//clear toutes les nodes
+			clear(_root);
 		}
 
 		int get_size() const { return _size; } 
+		allocator_type get_allocator() const { return _allocator; }
+		key_compare get_compare() const { return _compare; }
 		node_type *get_root() const { return _root; }
 		ft::pair<iterator, bool> &get_last_insert()  { return _last_insert; }
 		int get_last_erase() const { return _last_erase; } 
@@ -82,26 +85,18 @@ namespace ft
 			_size = size;
 		}
 
-		// tree_type &operator= (const tree_type & rhs)
-		// {
-		// 	//clear le tree avec ancien allocator
-		// 	//copy allocator/compare
-		// 	//deep copy, iter over rhs tree and insert into this
-		// }
+		tree_type &operator= (const tree_type & rhs)
+		{
+			clear(_root);
+			_root = rhs.get_root();
+			_allocator = rhs.get_allocator();
+			_compare = rhs.get_compare();
+			set_root(insert(rhs.begin(), rhs.end()));
+			return *this;
+		}
 
 		iterator begin()
 		{
-			// iterator ret;
-			// ret->_it = get_root();
-			// iterator ret = iterator(get_root(), this);
-			// if (ret->_it == NULL)
-			// 	return NULL;
-
-			// while (ret->_it->left != NULL)
-			// 	ret->_it = ret->_it->left;
-			// return ret;
-
-
 			node_type *ptr = get_root();
 			if(!ptr)
 				return iterator(NULL, this);
@@ -114,6 +109,19 @@ namespace ft
 		{
 			iterator ret = begin();
 			return const_iterator(*ret, this);
+		}
+
+		void clear(node_type *parent)
+		{
+			if (parent->left)
+				clear(parent->left);
+			if (parent->right)
+				clear(parent->right);
+			_allocator.destroy(parent->data);
+			_allocator.deallocate(parent->data, 1);
+			std::allocator<node_type>().destroy(parent);
+			std::allocator<node_type>().deallocate(parent, 1);
+			_size = 0;
 		}
 
 		int difference(node_type *parent)
@@ -249,20 +257,18 @@ namespace ft
 					return current_root;
 				}
 				_allocator.construct(current_root->data, data);
-std::cout << "pwet" << std::endl;
-// 				_last_insert = ft::make_pair(iterator(current_root, this), true);
-// std::cout << "last insert " << *(_last_insert.first) << std::endl;
+ 				_last_insert = ft::make_pair(iterator(current_root, this), true);
 				_size++;
 				return current_root;
 			}
-			else if (_compare(current_root->data->first, data.first))
+			else if (_compare(data.first, current_root->data->first))
 			{
 				current_root->left = insert(current_root->left, data);
 				current_root->left->parent = current_root;
 				update_height(current_root);
 				current_root = balance(current_root);
 			}
-			else if (_compare(data.first, current_root->data->first))
+			else if (_compare(current_root->data->first, data.first))
 			{
 				current_root->right = insert(current_root->right, data);
 				current_root->right->parent = current_root;
@@ -272,8 +278,8 @@ std::cout << "pwet" << std::endl;
 			}
 			else
 			{
-//std::cout << "atchoum" << std::endl;
-	//			_last_insert = ft::make_pair(iterator(current_root, this), false);
+
+				_last_insert = ft::make_pair(iterator(current_root, this), false);
 			}
 			return current_root;
 		}
@@ -328,11 +334,13 @@ std::cout << "pwet" << std::endl;
 			return parent;
 		}
 
-		if (_compare(parent->data->first, key))
+		//if (_compare(parent->data->first, key))
+		if (_compare(key.first, parent->data->first))
 		{
 			parent->left = erase(parent->left, key);
 		}
-		else if (_compare(key, parent->data->first))
+		// else if (_compare(key, parent->data->first))
+		else if (_compare(parent->data->first, key.first))
 		{
 			parent->right = erase(parent->right, key);
 		}

@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/27 17:07:01 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/28 14:24:20 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,14 +99,16 @@ namespace ft
 					_allocator(alloc)
 					{}
 
-
-
-
-// range (2)	
-// template <class InputIterator>
-//   map (InputIterator first, InputIterator last,
-//        const key_compare& comp = key_compare(),
-//        const allocator_type& alloc = allocator_type());
+	
+		template <class InputIterator>
+		map (InputIterator first, InputIterator last,
+			const key_compare& comp = key_compare(),
+			const allocator_type& alloc = allocator_type()):
+			_compare(comp),
+			_allocator(alloc)
+			{
+				insert(first, last);
+			}
 
 
 		map( const map& x )
@@ -186,15 +188,16 @@ namespace ft
 
 
 
-		//ft::pair<iterator,bool> insert (const value_type& val)
-		void insert (const value_type& val)
+		// void insert (const value_type& val)
+		ft::pair<iterator,bool> insert (const value_type& val)
 		{
 			_tree.set_root(_tree.insert(_tree.get_root(), val));
-std::cout << "coucou " << std::endl;
-			//ft::pair<iterator,bool> ret = _tree.get_last_insert();
+//std::cout << "coucou " << std::endl;
+			// ft::pair<iterator,bool> ret = _tree.get_last_insert();
 		//	ft::pair<iterator,bool> ret = ft::make_pair(begin(), true);
 			//ft::pair<iterator,bool> ret = ft::make_pair(iterator(_tree.get_last_insert().first), _tree.get_last_insert().second);
-		//	return ret;
+			//return ret;
+			return _tree.get_last_insert();
 		}
 
 // with hint (2)	
@@ -214,13 +217,19 @@ std::cout << "coucou " << std::endl;
 
 		void erase (iterator position)
 		{
-			_tree.set_root(_tree.erase(_tree.get_root(), *(position).first));
+//			(void) position;
+// 			Key target = position->first;
+// std::cout << "target " << target << std::endl;
+			
+			_tree.set_root(_tree.erase(_tree.get_root(),  *position));
+// 			_tree.set_root(_tree.erase(_tree.get_root(),  target));
 		}
 
 	
 		size_type erase (const key_type& k)
 		{
-			_tree.set_root(_tree.erase(_tree.get_root(), k));
+			pair<const key_type, mapped_type> tmp = ft::make_pair(k, mapped_type());
+			_tree.set_root(_tree.erase(_tree.get_root(), tmp));
 			return _tree.get_last_erase();
 		}
 
@@ -246,7 +255,10 @@ std::cout << "coucou " << std::endl;
 
 //void swap (map& x);
 
-//void clear();
+		void clear()
+		{
+			_tree.clear(_tree.get_root());			
+		}
 
 		key_compare key_comp() const
 		{
@@ -286,26 +298,6 @@ std::cout << "coucou " << std::endl;
 		key_compare		_compare;
 		allocator_type	_allocator;
 		Tree<value_type, Alloc, key_compare>			_tree;
-
-
-
-		// pointer _try_alloc()
-		// {
-		// 	pointer ptr;
-
-		// 	try 
-		// 	{
-		// 		ptr = _allocator.allocate(sizeof(node));
-		// 	}
-		// 	catch (std::bad_alloc& ba)
-		// 	{
-		// 		std::cerr << "Error allocating node: " << ba.what() << '\n';
-		// 		ptr = NULL;
-		// 		throw;
-		// 		return ptr;
-		// 	}
-		// 	return ptr;
-		// }
 
 	};
 
