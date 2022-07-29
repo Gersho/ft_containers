@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/29 14:01:51 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 20:31:14 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ void map_tests_basics()
 	ft::map<int, int> a;
 	ft::map<int, int> b;
 
+
 	a.insert( ft::make_pair<int, int>( 5, 5 ) );
 	a.insert( ft::make_pair<int, int>( 8, 1 ) );
 	a.insert( ft::make_pair<int, int>( 0, 2 ) );
@@ -149,7 +150,6 @@ void map_tests_basics()
 
 
 	b.erase(b.begin(), b.end());
-	// show_map(a);
 	std::cout << "printing map b" << std::endl;
 	show_map(b);
 
@@ -157,9 +157,30 @@ void map_tests_basics()
 	std::cout << b.empty() << std::endl;
 	std::cout << a.size() << std::endl;
 	std::cout << b.size() << std::endl;
-	std::cout << a.max_size() << std::endl;
-	std::cout << b.max_size() << std::endl;
-//	std::cout << "print a[2]" << a[2] << std::endl;
+
+
+	ft::map<int, int >::iterator it = a.find(8);
+	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.find(2);
+	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.find(0);
+	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+
+
+	
+//BROKEN SHIT
+	// std::cout << a.max_size() << std::endl;
+	// std::cout << b.max_size() << std::endl;
+
+	//std::cout << "print a[2]" << a[2] << std::endl;
+
+	//ft::map<const int, int >::const_iterator cit = a.find(8);
+	// std::cout << "key: " << cit->first<< " value: " << cit->second << std::endl;	
+
+
+
+
+
 }
 
 void map_tests()

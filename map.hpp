@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/29 13:58:46 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 20:26:18 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,19 @@
 //TODO COPY CONSTRUCTOR MAP (CONST PROBLEMS && OPERATOR= TREE)
 //TODO operator[]
 //TODO repair reverse iterator
-
-
+//TODO max_size
+//TODO const iterators?
+//TODO insert2 (with hint)
+//TODO swap (RELATED TO FIX OPERATOR= TREE)
+//  iterator find (const key_type& k);
+// const_iterator find (const key_type& k) const;
+//size_type count (const key_type& k) const;
+//       iterator lower_bound (const key_type& k);
+// const_iterator lower_bound (const key_type& k) const;
+//      iterator upper_bound (const key_type& k);
+// const_iterator upper_bound (const key_type& k) const;
+// pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
+// pair<iterator,iterator>             equal_range (const key_type& k);
 
 namespace ft
 {
@@ -276,24 +287,117 @@ namespace ft
 			return value_compare();
 		}
 
-//  iterator find (const key_type& k);
+	iterator find (const key_type& k)
+	{
+		node<value_type> *tmp = _tree.get_root();
+		while(tmp)
+		{
+			if(_compare(k, tmp->data->first))
+				tmp = tmp->left;
+			else if(_compare(tmp->data->first, k))
+				tmp = tmp->right;
+			else
+				return iterator(tmp, &_tree);
+		}
+		return end();
+	}
 
-// const_iterator find (const key_type& k) const;
+	const_iterator find (const key_type& k) const
+	{
+		node<value_type> *tmp = _tree.get_root();
+		while(tmp)
+		{
+			if(_compare(k, tmp->data->first))
+				tmp = tmp->left;
+			else if(_compare(tmp->data->first, k))
+				tmp = tmp->right;
+			else
+				return const_iterator(tmp, &_tree);
+		}
+		return end();		
+	}
 
 
-//size_type count (const key_type& k) const;
+	size_type count (const key_type& k) const
+	{
+		typename ft::map<Key, T>::const_iterator it = find(k);
+		return it == end() ? 0 : 1;
+	}
 
-//       iterator lower_bound (const key_type& k);
+	iterator lower_bound (const key_type& k)
+	{
+		// The function uses its internal comparison object (key_comp)
+		//  to determine this, returning an iterator to the first element
+		//   for which key_comp(element_key,k) would return false.
+		typename ft::map<Key, T>::iterator it = begin();
+		typename ft::map<Key, T>::iterator ite = end();
 
-// const_iterator lower_bound (const key_type& k) const;
+		while (it != ite)
+		{
+			if (!key_comp(it->first,k))
+				return it;
+			it++;
+		}
+		return end();
+	}
 
-//      iterator upper_bound (const key_type& k);
+	const_iterator lower_bound (const key_type& k) const
+	{
+		typename ft::map<Key, T>::const_iterator it = begin();
+		typename ft::map<Key, T>::const_iterator ite = end();
 
-// const_iterator upper_bound (const key_type& k) const;
+		while (it != ite)
+		{
+			if (!key_comp(it->first,k))
+				return it;
+			it++;
+		}
+		return end();	
+	}
 
-// pair<const_iterator,const_iterator> equal_range (const key_type& k) const;
+	iterator upper_bound (const key_type& k)
+	{
+		typename ft::map<Key, T>::iterator it = begin();
+		typename ft::map<Key, T>::iterator ite = end();
 
-// pair<iterator,iterator>             equal_range (const key_type& k);
+		while (it != ite)
+		{
+			if (key_comp(k, it->first))
+				return it;
+			it++;
+		}
+		return end();	
+	}
+
+	const_iterator upper_bound (const key_type& k) const
+	{
+		typename ft::map<Key, T>::const_iterator it = begin();
+		typename ft::map<Key, T>::const_iterator ite = end();
+
+		while (it != ite)
+		{
+			if (key_comp(k, it->first))
+				return it;
+			it++;
+		}
+		return end();	
+	}
+
+
+	pair<iterator,iterator> equal_range (const key_type& k)
+	{
+		// The function returns a pair, whose member
+		//  pair::first is the lower bound of the range (the same as lower_bound),
+		//   and pair::second is the upper bound (the same as upper_bound).
+		return make_pair(lower_bound(k), upper_bound(k));
+	}
+
+
+	pair<const_iterator,const_iterator> equal_range (const key_type& k) const
+	{
+		return make_pair(lower_bound(k), upper_bound(k));
+	}
+
 
 
 		allocator_type get_allocator() const { return _allocator; };
