@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/29 12:22:31 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 20:45:04 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,11 @@ namespace ft
 		int get_size() const { return _size; } 
 		allocator_type get_allocator() const { return _allocator; }
 		key_compare get_compare() const { return _compare; }
+
 		node_type *get_root() const { return _root; }
+		// node_type *get_root() { return _root; }
+		// const node_type *get_root() const { return _root; }
+
 		ft::pair<iterator, bool> &get_last_insert()  { return _last_insert; }
 		int get_last_erase() const { return _last_erase; } 
 

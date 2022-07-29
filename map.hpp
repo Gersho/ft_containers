@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/29 20:26:18 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 20:46:02 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@
 //TODO const iterators?
 //TODO insert2 (with hint)
 //TODO swap (RELATED TO FIX OPERATOR= TREE)
-//  iterator find (const key_type& k);
 // const_iterator find (const key_type& k) const;
 //size_type count (const key_type& k) const;
 //       iterator lower_bound (const key_type& k);
@@ -304,6 +303,7 @@ namespace ft
 
 	const_iterator find (const key_type& k) const
 	{
+		//const node<value_type> *tmp = _tree.get_root();
 		node<value_type> *tmp = _tree.get_root();
 		while(tmp)
 		{

@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/29 20:31:14 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 20:47:22 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,12 +122,9 @@ void map_tests_basics()
 	a.insert( ft::make_pair<int, int>( 2, 3 ) );
 
 	ft::map<int, int> c(a.begin(), a.end());
-	//ft::map<int, int> d(c);
 
 	std::cout << "printing map c" << std::endl;
 	show_map(c);
-	// std::cout << "printing map d" << std::endl;
-	// show_map(d);
 
 	a.insert( ft::make_pair<int, int>( 2, 3 ) );
 	std::cout << "printing map a" << std::endl;
@@ -167,7 +164,9 @@ void map_tests_basics()
 	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
 
 
-	
+	//std::cout << a.count(8) << std::endl;
+	// std::cout << a.count(0) << std::endl;
+
 //BROKEN SHIT
 	// std::cout << a.max_size() << std::endl;
 	// std::cout << b.max_size() << std::endl;
@@ -178,6 +177,9 @@ void map_tests_basics()
 	// std::cout << "key: " << cit->first<< " value: " << cit->second << std::endl;	
 
 
+	//ft::map<int, int> d(c);
+	// std::cout << "printing map d" << std::endl;
+	// show_map(d);
 
 
 
