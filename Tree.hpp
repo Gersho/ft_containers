@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/28 14:22:39 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 12:22:31 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,11 @@ namespace ft
 			return *this;
 		}
 
-		iterator begin()
+		iterator begin() 
 		{
+//std::cout << "coucou" << std::endl;
 			node_type *ptr = get_root();
+//std::cout << "coucou2 ptr" << ptr << std::endl;
 			if(!ptr)
 				return iterator(NULL, this);
 			while(ptr->left != NULL)
@@ -111,8 +113,15 @@ namespace ft
 			return const_iterator(*ret, this);
 		}
 
+		iterator end(){ return iterator(NULL, this); }
+
+
+		const_iterator end() const{ return const_iterator(NULL, this); }
+
 		void clear(node_type *parent)
 		{
+			if(!parent)
+				return;
 			if (parent->left)
 				clear(parent->left);
 			if (parent->right)

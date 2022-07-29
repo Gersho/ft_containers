@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/27 17:17:49 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 13:53:00 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -543,7 +543,7 @@ namespace ft
 		// Treebase *_tree;
 //TODO GERER LES GETTER
 		// Treebase *get_tree() const { return _tree;}
-		// Node *get_it() const{ return _it; }
+		 struct node<T> *get_it() const{ return _it; }
 
 
 // Can be compared for equivalence using the equality/inequality operators
@@ -564,6 +564,9 @@ namespace ft
 
 		bool operator !=(const_iterator & rhs) const
 		{
+// std::cout << "in != operator" << std::endl;
+// std::cout << "test " << (_it!=rhs._it) << std::endl;
+// std::cout << "_it: " << _it << " rhs._it: " << rhs._it << std::endl; 
 			return _it!=rhs._it;
 		}
 // Can be dereferenced as an rvalue (if in a dereferenceable state).	
@@ -574,6 +577,7 @@ namespace ft
 		{
 			//if (_it && _it->data)
 				return *(_it->data);
+				
 			//return NULL;
 		}
 
@@ -693,29 +697,34 @@ namespace ft
 
 
 
-	// template <class T, class Treebase>
-	// bool operator==( __tree_iterator<T , Treebase>  & lhs, __tree_iterator<T , Treebase>  & rhs )
-	// {
-	// 	return &*lhs == &*rhs;
-	// }
+	template <class T, class Treebase>
+	bool operator==( __tree_iterator<T , Treebase>  & lhs, __tree_iterator<T , Treebase>  & rhs )
+	{
+		//return &*lhs == &*rhs;
+		return lhs.operator==(rhs);
+	}
 
-	// template <class T, class Treebase>
-	// bool operator!=( __tree_iterator<T , Treebase>  & lhs, __tree_iterator<T , Treebase>  & rhs )
-	// {
-	// 	return &*lhs != &*rhs;
-	// }
+	template <class T, class Treebase>
+	bool operator!=( __tree_iterator<T , Treebase>  & lhs, __tree_iterator<T , Treebase>  & rhs )
+	{
+//std::cout<< "plop" <<std::endl;
+		//return &*lhs != &*rhs;
+		return lhs.operator!=(rhs);
+	}
 	
-	// template <class T, class Treebase>
-	// bool operator==( const __tree_iterator<T , Treebase>  & lhs, const __tree_iterator<T , Treebase> & rhs )
-	// {
-	// 	return &*lhs == &*rhs;
-	// }
+	template <class T, class Treebase>
+	bool operator==( const __tree_iterator<T , Treebase>  & lhs, const __tree_iterator<T , Treebase> & rhs )
+	{
+		//return &*lhs == &*rhs;
+		return lhs.operator==(rhs);
+	}
 
-	// template <class T, class Treebase>
-	// bool operator!=( const __tree_iterator<T , Treebase>  & lhs, const __tree_iterator<T , Treebase>  & rhs )
-	// {
-	// 	return &*lhs != &*rhs;
-	// }
+	template <class T, class Treebase>
+	bool operator!=( const __tree_iterator<T , Treebase>  & lhs, const __tree_iterator<T , Treebase>  & rhs )
+	{
+		// return &*lhs != &*rhs;
+		return lhs.operator!=(rhs);
+	}
 
 
 

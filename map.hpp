@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/28 14:24:20 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 13:58:46 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@
 #include "utility.hpp"
 #include "iterator.hpp"
 #include "vector.hpp"
+
+
+//TODO COPY CONSTRUCTOR MAP (CONST PROBLEMS && OPERATOR= TREE)
+//TODO operator[]
+//TODO repair reverse iterator
+
+
 
 namespace ft
 {
@@ -125,13 +132,12 @@ namespace ft
 			_compare = x._compare;
 			_allocator = x._allocator;
 			_tree = x._tree;
-//TODO OPERATOR= TREE WITH DEEP COPY
 			return *this;
 		}
 
 		iterator begin()
 		{
-		return _tree.begin();
+			return _tree.begin();
 		}
 
 		const_iterator begin() const
@@ -181,10 +187,10 @@ namespace ft
 
 		size_type max_size() const { return _allocator.max_size(); }
 
-// mapped_type& operator[] (const key_type& k)
-// {
-// 	(*((this->insert(make_pair(k,mapped_type()))).first)).second;
-// }
+		// mapped_type& operator[] (const key_type& k)
+		// {
+		// 	return (*((this->insert(make_pair(k,mapped_type()))).first)).second;
+		// }
 
 
 
@@ -240,7 +246,7 @@ namespace ft
 
 			while (first != last)
 			{
-				values.push_back(*(first).first);
+				values.push_back(first->first);
 				first++;
 			}
 
@@ -248,7 +254,7 @@ namespace ft
 			ft::vector<int>::iterator ite = values.end();
 			while (it != ite)
 			{
-				_tree.set_root(_tree.erase(_tree.get_root(), *it));
+				_tree.set_root(_tree.erase(_tree.get_root(), make_pair(*it, mapped_type())));
 				it++;
 			}
 		}

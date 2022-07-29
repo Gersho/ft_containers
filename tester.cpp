@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/28 14:18:36 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/29 14:01:51 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,24 +89,29 @@ void show_map(ft::map<Key, T> &map)
 {
 	typename ft::map<Key, T>::iterator it = map.begin();
 	typename ft::map<Key, T>::iterator ite = map.end();
-
+// std::cout << "in show map it: " << it.get_it() << " ite: " << ite.get_it() << std::endl; 
+	std::cout << "normal order" << std::endl;
 	while(it != ite)
 	{
-		std::cout << "key: " << it->first/*.first */<< " value: " << it->second /*.second */<< std::endl;
+// std::cout << "in the loop" << " it: " << it.get_it() << " ite: " << ite.get_it() << std::endl;
+		std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
 		it++;
 	}
+
+	// typename ft::map<Key, T>::reverse_iterator rit = map.rbegin();
+	// typename ft::map<Key, T>::reverse_iterator rite = map.rend();
+
+	// std::cout << "reverse order" << std::cout;
+	// while(rit != rite)
+	// {
+	// 	std::cout << "key: " << rit->first<< " value: " << rit->second << std::endl;
+	// 	rit++;
+	// }
 }
 
-void map_tests()
+void map_tests_basics()
 {
-	// ft::map<int, std::string> map_a;
 
-	// map_a.insert(ft::make_pair<int, std::string>(5, "allo"));
-	// map_a.insert(ft::make_pair<int, std::string>(15, "al45lo"));
-	// map_a.insert(ft::make_pair<int, std::string>(55, "al04lo"));
-	// map_a.insert(ft::make_pair<int, std::string>(25, "a12llo"));
-	// map_a.insert(ft::make_pair<int, std::string>(35, "all4554o"));
-	// show_map(map_a);
 	ft::map<int, int> a;
 	ft::map<int, int> b;
 
@@ -114,6 +119,14 @@ void map_tests()
 	a.insert( ft::make_pair<int, int>( 8, 1 ) );
 	a.insert( ft::make_pair<int, int>( 0, 2 ) );
 	a.insert( ft::make_pair<int, int>( 2, 3 ) );
+
+	ft::map<int, int> c(a.begin(), a.end());
+	//ft::map<int, int> d(c);
+
+	std::cout << "printing map c" << std::endl;
+	show_map(c);
+	// std::cout << "printing map d" << std::endl;
+	// show_map(d);
 
 	a.insert( ft::make_pair<int, int>( 2, 3 ) );
 	std::cout << "printing map a" << std::endl;
@@ -123,11 +136,36 @@ void map_tests()
 	std::cout << "printing map b" << std::endl;
 	show_map(b);
 
-//	b.erase(b.begin());
-	b.erase(8);
-	// a.erase(b.begin(), b.end());
-	// show_map(a);
+	b.erase(b.begin());
+
+	std::cout << "printing map b" << std::endl;
 	show_map(b);
+
+
+	b.erase(8);
+
+	std::cout << "printing map b" << std::endl;
+	show_map(b);
+
+
+	b.erase(b.begin(), b.end());
+	// show_map(a);
+	std::cout << "printing map b" << std::endl;
+	show_map(b);
+
+	std::cout << a.empty() << std::endl;
+	std::cout << b.empty() << std::endl;
+	std::cout << a.size() << std::endl;
+	std::cout << b.size() << std::endl;
+	std::cout << a.max_size() << std::endl;
+	std::cout << b.max_size() << std::endl;
+//	std::cout << "print a[2]" << a[2] << std::endl;
+}
+
+void map_tests()
+{
+	map_tests_basics();
+	//map_tests_big();
 }
 
 void vector_tests()
