@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/29 20:46:02 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/30 15:17:52 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ namespace ft
 		typedef typename allocator_type::const_pointer const_pointer;
 		typedef Tree<value_type, Alloc, Compare>	 tree;
 		typedef ft::__tree_iterator<value_type, tree>	 iterator;
-		typedef ft::__tree_iterator<const value_type, tree>		const_iterator;	
+		typedef tree::const_iterator		const_iterator;	
 		typedef	ft::reverse_iterator<iterator>						reverse_iterator;
 		typedef	ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 		typedef typename iterator_traits<iterator>::difference_type  difference_type;
@@ -304,7 +304,9 @@ namespace ft
 	const_iterator find (const key_type& k) const
 	{
 		//const node<value_type> *tmp = _tree.get_root();
-		node<value_type> *tmp = _tree.get_root();
+		node<const value_type> *tmp = _tree.get_root();
+		//node<const pair<const int, int> > *
+		//node<ft::pair<const int, int> > *
 		while(tmp)
 		{
 			if(_compare(k, tmp->data->first))
@@ -313,6 +315,9 @@ namespace ft
 				tmp = tmp->right;
 			else
 				return const_iterator(tmp, &_tree);
+				//node<pair<const int, int> > *
+				//node<const ft::pair<const int, int> > *
+				
 		}
 		return end();		
 	}

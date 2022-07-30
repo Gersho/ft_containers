@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/29 20:45:04 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/30 15:14:26 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,12 @@ namespace ft
 		public:
 
 		typedef node<T> node_type;
+		typedef node<const T> const_node_type;
 		typedef Tree<T, Allocator, Compare> tree_type;
 		typedef Allocator allocator_type;
 		typedef Compare key_compare;
 		typedef ft::__tree_iterator<T, Tree>	 iterator;
-		typedef ft::__tree_iterator<const T, Tree>		const_iterator;	
+		typedef ft::__const_tree_iterator<const T, Tree>		const_iterator;	
 //constructors
 		Tree(): _root(NULL), _allocator(allocator_type()), _compare(key_compare()), _size(0)
 		{
@@ -72,9 +73,9 @@ namespace ft
 		allocator_type get_allocator() const { return _allocator; }
 		key_compare get_compare() const { return _compare; }
 
-		node_type *get_root() const { return _root; }
-		// node_type *get_root() { return _root; }
-		// const node_type *get_root() const { return _root; }
+		// node_type *get_root() const { return _root; }
+		node_type *get_root() { return _root; }
+		const_node_type *get_root() const { return _root; }
 
 		ft::pair<iterator, bool> &get_last_insert()  { return _last_insert; }
 		int get_last_erase() const { return _last_erase; } 

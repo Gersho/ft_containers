@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/29 20:47:22 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/30 15:20:53 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,17 +155,21 @@ void map_tests_basics()
 	std::cout << a.size() << std::endl;
 	std::cout << b.size() << std::endl;
 
-
+//std::map<int, int >::iterator it = a.find(8);
 	ft::map<int, int >::iterator it = a.find(8);
 	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
 	it = a.find(2);
 	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
 	it = a.find(0);
 	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.find(50);
+	if (it == a.end())
+	{
+		std::cout << "not found" << std::endl;
+	}
 
-
-	//std::cout << a.count(8) << std::endl;
-	// std::cout << a.count(0) << std::endl;
+	std::cout << a.count(8) << std::endl;
+	//std::cout << a.count(0) << std::endl;
 
 //BROKEN SHIT
 	// std::cout << a.max_size() << std::endl;

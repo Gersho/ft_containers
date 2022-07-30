@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/29 13:53:00 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/07/30 15:18:47 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -512,7 +512,10 @@ namespace ft
 		typedef T& 										reference;
 		typedef std::ptrdiff_t  						difference_type;
 		typedef __tree_iterator<T , Treebase>				iterator;
-		typedef const iterator								const_iterator;
+	//	typedef const iterator								const_iterator;
+	//	typedef __const_tree_iterator<T, Treebase>		const_iterator;
+
+
 
 // Is default-constructible, copy-constructible, copy-assignable and destructible	
 // X a;
@@ -695,6 +698,200 @@ namespace ft
 
 	};
 
+
+	template < class T, class Treebase >
+	class  __const_tree_iterator
+	{
+
+		private:
+
+		struct node<T> *_it;
+		Treebase *_tree;
+
+		protected:
+		public:
+
+		typedef ft::bidirectional_iterator_tag 			iterator_category;
+		typedef const T       								value_type;
+		typedef const T*   									pointer;
+		typedef const T& 										reference;
+		typedef std::ptrdiff_t  						difference_type;
+		typedef __tree_iterator<T , Treebase>				iterator;
+		typedef const iterator							const_iterator;
+
+// Is default-constructible, copy-constructible, copy-assignable and destructible	
+// X a;
+// X b(a);
+// b = a;
+// ~X()
+		__const_tree_iterator()
+			: _it(NULL)
+		{
+		}
+
+		__const_tree_iterator(node<T> *ptr, Treebase *tree)
+			: _it(ptr), _tree(tree)
+		{
+		}
+
+		template <class U, class V>
+		__const_tree_iterator(const __tree_iterator<U, V> & src)
+		{
+			*this = src;
+		}
+
+		~__const_tree_iterator(){}
+
+
+		// Node *_it;
+		// Treebase *_tree;
+//TODO GERER LES GETTER
+		// Treebase *get_tree() const { return _tree;}
+		 struct node<T> *get_it() const{ return _it; }
+
+
+// Can be compared for equivalence using the equality/inequality operators
+// (meaningful when both iterator values iterate over the same underlying sequence).	
+// a == b
+// a != b
+		iterator& operator=( iterator const & rhs )
+		{
+			_it = rhs._it;
+			_tree = rhs._tree;
+			return *this;
+		}
+
+		bool operator==( const_iterator & rhs) const
+		{
+			return _it==rhs._it;
+		}
+
+		bool operator !=(const_iterator & rhs) const
+		{
+// std::cout << "in != operator" << std::endl;
+// std::cout << "test " << (_it!=rhs._it) << std::endl;
+// std::cout << "_it: " << _it << " rhs._it: " << rhs._it << std::endl; 
+			return _it!=rhs._it;
+		}
+// Can be dereferenced as an rvalue (if in a dereferenceable state).	
+// *a
+// a->m
+
+		reference operator*() const
+		{
+			//if (_it && _it->data)
+				return *(_it->data);
+				
+			//return NULL;
+		}
+
+		pointer operator->() const
+		{
+			return &(operator*());
+		}
+
+// For mutable iterators (non-constant iterators):
+// Can be dereferenced as an lvalue (if in a dereferenceable state).
+//	*a = t
+
+// Can be incremented (if in a dereferenceable state).
+// The result is either also dereferenceable or a past-the-end iterator.
+// Two iterators that compare equal, keep comparing equal after being both increased.
+// 	++a
+// a++
+// *a++
+
+
+	iterator &operator++ ()
+	{
+		node<T> *tmp;
+		
+		if (_it == NULL)
+		{
+			_it = _tree->get_root();
+			
+			// error! ++ requested for an empty tree
+//TODO check this case
+			if (_it == NULL)
+				return *this;
+
+			while (_it->left != NULL)
+				_it = _it->left;
+		}
+		else
+		{			
+			if (_it->right != NULL)
+			{
+				_it = _it->right;
+				while (_it->left != NULL)
+					_it = _it->left;
+			}
+			else
+			{
+				tmp = _it->parent;
+				while (tmp != NULL && _it == tmp->right)
+				{
+					_it = tmp;
+					tmp = tmp->parent;
+				}
+				_it = tmp;
+			}
+		}
+		
+			return *this;
+	}
+
+	iterator operator++( int )
+	{
+		iterator tmp = *this;
+		++( *this );
+		return tmp;
+	}
+
+
+	iterator &operator-- ()
+	{
+		iterator *tmp;
+		
+		if (this->_it == NULL)
+		{
+			this->_it = _tree->get_root();
+			if (this->_it == NULL)
+				return NULL;
+			while (this->_it->right != NULL)
+				this->_it = this->_it->right;
+		}
+		else
+		{			
+			if (this->_it->left != NULL)
+			{
+				this->_it = this->_it->left;
+				while (this->_it->right != NULL)
+					this->_it = this->_it->right;
+			}
+			else
+			{
+				tmp = this->_it->parent;
+				while (tmp != NULL && this->_it == tmp->left)
+				{
+					this->_it = tmp;
+					tmp = tmp->parent;
+				}
+				this->_it = tmp;
+			}
+		}
+		
+			return *this;
+	}
+
+	iterator operator--( int )
+	{
+		iterator tmp = *this;
+		--( *this );
+		return tmp;
+	}
+
+	};
 
 
 	template <class T, class Treebase>
