@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/30 15:20:53 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/01 23:15:49 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ void show_map(ft::map<Key, T> &map)
 
 void map_tests_basics()
 {
-
 	ft::map<int, int> a;
 	ft::map<int, int> b;
 
@@ -163,25 +162,70 @@ void map_tests_basics()
 	it = a.find(0);
 	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
 	it = a.find(50);
+
 	if (it == a.end())
 	{
 		std::cout << "not found" << std::endl;
 	}
 
+
+	it = a.lower_bound(2);
+	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.lower_bound(1);
+	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.lower_bound(0);
+	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.lower_bound(7);
+	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+
+
+	it = a.upper_bound(2);
+	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.upper_bound(1);
+	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.upper_bound(0);
+	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.upper_bound(7);
+	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+
+
+	ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>  pair_A =  a.equal_range(2);
+	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
+			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
+	
+	pair_A =  a.equal_range(1);
+	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
+			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
+
+	pair_A =  a.equal_range(0);
+	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
+			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
+
+	pair_A =  a.equal_range(7);
+	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
+			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
+
+
+
+
+
+	std::cout << "print a[2] " << a[2] << std::endl;
+	
 	std::cout << a.count(8) << std::endl;
 	//std::cout << a.count(0) << std::endl;
 
+std::cout << "############################still alive" << std::endl;
 //BROKEN SHIT
-	// std::cout << a.max_size() << std::endl;
+	//std::cout << a.max_size() << std::endl;
 	// std::cout << b.max_size() << std::endl;
 
-	//std::cout << "print a[2]" << a[2] << std::endl;
+
 
 	//ft::map<const int, int >::const_iterator cit = a.find(8);
-	// std::cout << "key: " << cit->first<< " value: " << cit->second << std::endl;	
+	//std::cout << "key: " << cit->first<< " value: " << cit->second << std::endl;	
 
 
-	//ft::map<int, int> d(c);
+//	ft::map<int, int> d(c);
 	// std::cout << "printing map d" << std::endl;
 	// show_map(d);
 

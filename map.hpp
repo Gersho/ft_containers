@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/30 15:17:52 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/01 23:15:44 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 
 
 //TODO COPY CONSTRUCTOR MAP (CONST PROBLEMS && OPERATOR= TREE)
-//TODO operator[]
 //TODO repair reverse iterator
 //TODO max_size
 //TODO const iterators?
@@ -53,6 +52,19 @@ namespace ft
 		class value_comp;
 
 
+//  const Tree
+//  	<
+// 	ft::map<int, int, std::less<int>, std::allocator<ft::pair<const int, int> > >::value_type,
+// 	  std::allocator<ft::pair<const int, int> >, ft::map<int, int, std::less<int>,
+// 	    std::allocator<ft::pair<const int, int> > >::key_compare
+// 	> *'
+//  // (aka 'const Tree
+//  	<
+// 	pair<const int, int>,
+// 	 std::allocator<ft::pair<const int, int> >
+// 	 , std::less<int> > *')) would lose const qualifier
+                
+
 		public:
 
 		typedef Key key_type;
@@ -67,7 +79,8 @@ namespace ft
 		typedef typename allocator_type::const_pointer const_pointer;
 		typedef Tree<value_type, Alloc, Compare>	 tree;
 		typedef ft::__tree_iterator<value_type, tree>	 iterator;
-		typedef tree::const_iterator		const_iterator;	
+		//typedef typename tree::const_iterator		const_iterator;	
+		typedef ft::__const_tree_iterator<value_type, tree>		const_iterator;	
 		typedef	ft::reverse_iterator<iterator>						reverse_iterator;
 		typedef	ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 		typedef typename iterator_traits<iterator>::difference_type  difference_type;
@@ -124,7 +137,9 @@ namespace ft
 			_compare(comp),
 			_allocator(alloc)
 			{
+// std::cout << "map iterator constructor P1" << std::endl;
 				insert(first, last);
+// std::cout << "map iterator constructor P2" << std::endl;
 			}
 
 
@@ -197,10 +212,10 @@ namespace ft
 
 		size_type max_size() const { return _allocator.max_size(); }
 
-		// mapped_type& operator[] (const key_type& k)
-		// {
-		// 	return (*((this->insert(make_pair(k,mapped_type()))).first)).second;
-		// }
+		mapped_type& operator[] (const key_type& k)
+		{
+			return (*((this->insert(make_pair(k,mapped_type()))).first)).second;
+		}
 
 
 
@@ -222,9 +237,13 @@ namespace ft
 
 		template <class InputIterator>
 		void insert (InputIterator first, InputIterator last)
-		{	
+		{
+// std::cout << "coucou first: " << first.get_it() << " last:" << last.get_it() << std::endl;
+// std::cout << "test1 " << (first != last) << std::endl;
+// std::cout << "test " << first->second << std::endl;
 			while (first != last)
 			{
+//std::cout << "new first " << first.get_it() << std::endl;
 				_tree.set_root(_tree.insert(_tree.get_root(), *first));
 				first++;
 			}
@@ -289,6 +308,7 @@ namespace ft
 	iterator find (const key_type& k)
 	{
 		node<value_type> *tmp = _tree.get_root();
+// std::cout << "coucou" <<std::endl;
 		while(tmp)
 		{
 			if(_compare(k, tmp->data->first))
@@ -304,9 +324,10 @@ namespace ft
 	const_iterator find (const key_type& k) const
 	{
 		//const node<value_type> *tmp = _tree.get_root();
-		node<const value_type> *tmp = _tree.get_root();
+		node<value_type> *tmp = _tree.get_root();
 		//node<const pair<const int, int> > *
 		//node<ft::pair<const int, int> > *
+		//std::cout << "coucou" <<std::endl;
 		while(tmp)
 		{
 			if(_compare(k, tmp->data->first))
@@ -325,7 +346,7 @@ namespace ft
 
 	size_type count (const key_type& k) const
 	{
-		typename ft::map<Key, T>::const_iterator it = find(k);
+		iterator it = find(k);
 		return it == end() ? 0 : 1;
 	}
 
@@ -339,7 +360,7 @@ namespace ft
 
 		while (it != ite)
 		{
-			if (!key_comp(it->first,k))
+			if (!_compare(it->first,k))
 				return it;
 			it++;
 		}
@@ -353,7 +374,7 @@ namespace ft
 
 		while (it != ite)
 		{
-			if (!key_comp(it->first,k))
+			if (!_compare(it->first,k))
 				return it;
 			it++;
 		}
@@ -367,7 +388,7 @@ namespace ft
 
 		while (it != ite)
 		{
-			if (key_comp(k, it->first))
+			if (_compare(k, it->first))
 				return it;
 			it++;
 		}
@@ -381,7 +402,7 @@ namespace ft
 
 		while (it != ite)
 		{
-			if (key_comp(k, it->first))
+			if (_compare(k, it->first))
 				return it;
 			it++;
 		}
@@ -394,13 +415,13 @@ namespace ft
 		// The function returns a pair, whose member
 		//  pair::first is the lower bound of the range (the same as lower_bound),
 		//   and pair::second is the upper bound (the same as upper_bound).
-		return make_pair(lower_bound(k), upper_bound(k));
+		return ft::make_pair(lower_bound(k), upper_bound(k));
 	}
 
 
 	pair<const_iterator,const_iterator> equal_range (const key_type& k) const
 	{
-		return make_pair(lower_bound(k), upper_bound(k));
+		return ft::make_pair(lower_bound(k), upper_bound(k));
 	}
 
 

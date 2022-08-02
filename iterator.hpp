@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/30 15:18:47 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/01 23:13:44 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -560,14 +560,16 @@ namespace ft
 			return *this;
 		}
 
-		bool operator==( const_iterator & rhs) const
+		bool operator==( iterator & rhs) const
 		{
-			return _it==rhs._it;
+ std::cout << "in == operator member" << std::endl;
+			//return _it==rhs._it;
+			return (get_it() == rhs.get_it());
 		}
 
-		bool operator !=(const_iterator & rhs) const
+		bool operator !=(iterator & rhs) const
 		{
-// std::cout << "in != operator" << std::endl;
+ //std::cout << "in != operator" << std::endl;
 // std::cout << "test " << (_it!=rhs._it) << std::endl;
 // std::cout << "_it: " << _it << " rhs._it: " << rhs._it << std::endl; 
 			return _it!=rhs._it;
@@ -711,13 +713,18 @@ namespace ft
 		protected:
 		public:
 
-		typedef ft::bidirectional_iterator_tag 			iterator_category;
-		typedef const T       								value_type;
-		typedef const T*   									pointer;
-		typedef const T& 										reference;
-		typedef std::ptrdiff_t  						difference_type;
+		typedef ft::bidirectional_iterator_tag 				iterator_category;
+		typedef T       									value_type;
+		typedef T*   										pointer;
+		typedef T& 											reference;
+		typedef const T*   									const_pointer;
+		typedef const T& 									const_reference;
+		typedef std::ptrdiff_t  							difference_type;
 		typedef __tree_iterator<T , Treebase>				iterator;
-		typedef const iterator							const_iterator;
+		typedef __const_tree_iterator<T , Treebase>			const_iterator;
+
+
+
 
 // Is default-constructible, copy-constructible, copy-assignable and destructible	
 // X a;
@@ -732,6 +739,12 @@ namespace ft
 		__const_tree_iterator(node<T> *ptr, Treebase *tree)
 			: _it(ptr), _tree(tree)
 		{
+		}
+
+		template <class U, class V>
+		__const_tree_iterator(const __const_tree_iterator<U, V> & src)
+		{
+			*this = src;
 		}
 
 		template <class U, class V>
@@ -754,7 +767,7 @@ namespace ft
 // (meaningful when both iterator values iterate over the same underlying sequence).	
 // a == b
 // a != b
-		iterator& operator=( iterator const & rhs )
+		const_iterator& operator=( const_iterator const & rhs )
 		{
 			_it = rhs._it;
 			_tree = rhs._tree;
@@ -768,7 +781,7 @@ namespace ft
 
 		bool operator !=(const_iterator & rhs) const
 		{
-// std::cout << "in != operator" << std::endl;
+//std::cout << "in const != operator" << std::endl;
 // std::cout << "test " << (_it!=rhs._it) << std::endl;
 // std::cout << "_it: " << _it << " rhs._it: " << rhs._it << std::endl; 
 			return _it!=rhs._it;
@@ -777,7 +790,7 @@ namespace ft
 // *a
 // a->m
 
-		reference operator*() const
+		const_reference operator*() const
 		{
 			//if (_it && _it->data)
 				return *(_it->data);
@@ -785,7 +798,7 @@ namespace ft
 			//return NULL;
 		}
 
-		pointer operator->() const
+		const_pointer operator->() const
 		{
 			return &(operator*());
 		}
@@ -802,7 +815,7 @@ namespace ft
 // *a++
 
 
-	iterator &operator++ ()
+	const_iterator &operator++ ()
 	{
 		node<T> *tmp;
 		
@@ -841,17 +854,17 @@ namespace ft
 			return *this;
 	}
 
-	iterator operator++( int )
+	const_iterator operator++( int )
 	{
-		iterator tmp = *this;
+		const_iterator tmp = *this;
 		++( *this );
 		return tmp;
 	}
 
 
-	iterator &operator-- ()
+	const_iterator &operator-- ()
 	{
-		iterator *tmp;
+		const_iterator *tmp;
 		
 		if (this->_it == NULL)
 		{
@@ -884,9 +897,9 @@ namespace ft
 			return *this;
 	}
 
-	iterator operator--( int )
+	const_iterator operator--( int )
 	{
-		iterator tmp = *this;
+		const_iterator tmp = *this;
 		--( *this );
 		return tmp;
 	}
@@ -895,34 +908,45 @@ namespace ft
 
 
 	template <class T, class Treebase>
-	bool operator==( __tree_iterator<T , Treebase>  & lhs, __tree_iterator<T , Treebase>  & rhs )
+	bool operator==( __tree_iterator<T , Treebase>  const & lhs, __tree_iterator<T , Treebase>  const & rhs )
 	{
-		//return &*lhs == &*rhs;
-		return lhs.operator==(rhs);
+//		 std::cout << "in == operator" << std::endl;
+		// return *lhs == *rhs;
+		//return lhs.operator==(rhs);
+		return (lhs.get_it() == rhs.get_it());
+		//return lhs == rhs;
 	}
 
 	template <class T, class Treebase>
-	bool operator!=( __tree_iterator<T , Treebase>  & lhs, __tree_iterator<T , Treebase>  & rhs )
+	bool operator!=( __tree_iterator<T , Treebase>  const & lhs, __tree_iterator<T , Treebase>  const & rhs )
 	{
-//std::cout<< "plop" <<std::endl;
-		//return &*lhs != &*rhs;
-		return lhs.operator!=(rhs);
+//std::cout<< "**plop operator !=" <<std::endl;
+		//return lhs->first != rhs->first;
+		//return lhs.operator!=(rhs);
+		//return lhs != rhs;
+		return (lhs.get_it() != rhs.get_it());
 	}
 	
+	
 	template <class T, class Treebase>
-	bool operator==( const __tree_iterator<T , Treebase>  & lhs, const __tree_iterator<T , Treebase> & rhs )
+	bool operator==( const __const_tree_iterator<T , Treebase>  & lhs, const __const_tree_iterator<T , Treebase> & rhs )
 	{
-		//return &*lhs == &*rhs;
-		return lhs.operator==(rhs);
+		//  std::cout << "in == operator" << std::endl;
+		// return *lhs == *rhs;
+		//return lhs.operator==(rhs);
+		return (lhs.get_it() == rhs.get_it());
+		// return lhs == rhs;
 	}
 
 	template <class T, class Treebase>
-	bool operator!=( const __tree_iterator<T , Treebase>  & lhs, const __tree_iterator<T , Treebase>  & rhs )
+	bool operator!=( const __const_tree_iterator<T , Treebase>  & lhs, const __const_tree_iterator<T , Treebase>  & rhs )
 	{
-		// return &*lhs != &*rhs;
-		return lhs.operator!=(rhs);
+//std::cout<< "plop CONST operator !=" <<std::endl;
+		// return *lhs != *rhs;
+		//return lhs.operator!=(rhs);
+		// return lhs != rhs;
+		return (lhs.get_it() != rhs.get_it());
 	}
-
 
 
 } // namespace ft end

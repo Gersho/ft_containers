@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/30 15:14:26 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/01 23:13:47 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ namespace ft
 		allocator_type get_allocator() const { return _allocator; }
 		key_compare get_compare() const { return _compare; }
 
-		// node_type *get_root() const { return _root; }
-		node_type *get_root() { return _root; }
-		const_node_type *get_root() const { return _root; }
+		node_type *get_root() const { return _root; }
+		// node_type *get_root() { return _root; }
+		//const_node_type *get_root() const { return _root; }
 
 		ft::pair<iterator, bool> &get_last_insert()  { return _last_insert; }
 		int get_last_erase() const { return _last_erase; } 
@@ -96,7 +96,21 @@ namespace ft
 			_root = rhs.get_root();
 			_allocator = rhs.get_allocator();
 			_compare = rhs.get_compare();
-			set_root(insert(rhs.begin(), rhs.end()));
+
+			const_iterator it = rhs.begin();
+			const_iterator ite = rhs.end();
+
+			// iterator it = rhs.begin();
+			// iterator ite = rhs.end();
+
+			while (it != ite)
+			{
+				set_root(insert(get_root(), *it));
+				it++;
+			}
+
+			//set_root(insert(rhs.begin(), rhs.end()));
+
 			return *this;
 		}
 
@@ -114,8 +128,21 @@ namespace ft
 
 		const_iterator begin() const
 		{
-			iterator ret = begin();
-			return const_iterator(*ret, this);
+
+			node_type *ptr = get_root();
+
+			if(!ptr)
+				return const_iterator(NULL, this);
+			while(ptr->left != NULL)
+				ptr = ptr->left;
+			return const_iterator(ptr, this);
+
+
+
+			// iterator ret = begin();
+			// return const_iterator(*ret, this);
+
+			//return const_iterator(begin());
 		}
 
 		iterator end(){ return iterator(NULL, this); }
