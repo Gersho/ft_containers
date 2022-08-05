@@ -6,9 +6,12 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/01 23:15:49 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/02 13:10:35 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
+
+
+//TODO how to test get_allocator ?
 
 #ifdef STD
 	#include <map>
@@ -27,6 +30,13 @@
 #include <fstream>
 #include <string>
 
+
+void stack_test()
+{
+
+}
+
+
 template<class T>
 void test_print_vec(ft::vector<T> &vec )
 {
@@ -35,7 +45,6 @@ void test_print_vec(ft::vector<T> &vec )
 	std::cout << "size(): " << vec.size() << std::endl;
 	std::cout << "maxsize(): " << vec.max_size() << std::endl;
 	std::cout << "capacity(): " << vec.capacity() << std::endl;
-	std::cout << "end() - begin(): " << vec.end() - vec.begin() << std::endl;
 
 	ft::vector<int>::reverse_iterator it = vec.rbegin();
 	ft::vector<int>::reverse_iterator ite = vec.rend();
@@ -211,14 +220,14 @@ void map_tests_basics()
 
 	std::cout << "print a[2] " << a[2] << std::endl;
 	
-	std::cout << a.count(8) << std::endl;
-	//std::cout << a.count(0) << std::endl;
 
 std::cout << "############################still alive" << std::endl;
 //BROKEN SHIT
 	//std::cout << a.max_size() << std::endl;
 	// std::cout << b.max_size() << std::endl;
 
+	//std::cout << a.count(8) << std::endl;
+	//std::cout << a.count(0) << std::endl;
 
 
 	//ft::map<const int, int >::const_iterator cit = a.find(8);
@@ -242,11 +251,9 @@ void map_tests()
 void vector_tests()
 {
 	ft::vector<int> vec_a;
-	ft::vector<int> vec_b(400, 5);
+	ft::vector<int> vec_b(400, 72);
 	ft::vector<int> vec_c(vec_b.begin()+2, vec_b.end());
 	ft::vector<int> vec_d(vec_c);
-
-
 
 	struct s_vect<int> vects;
 	vects.vec_a = &vec_a;
@@ -290,6 +297,8 @@ void vector_tests()
 	std::cout << std::boolalpha << "vec_d <= vec_b : " << (vec_d <= vec_b) << std::endl;
 	std::cout << std::boolalpha << "vec_d >= vec_b : " << (vec_d >= vec_b) << std::endl;
 
+	test_vects(vects);
+
 	std::cout << "Testing Vector::resize() ans Vector::reserve()" << std::endl;
 	vec_a.resize(20);
 	test_print_vec(vec_a);
@@ -302,6 +311,7 @@ void vector_tests()
 	fill_vect(vec_a, 12425);
 
 	vec_b.reserve(1700);
+	vec_b.reserve(17000);
 
 	test_vects(vects);
 
@@ -312,7 +322,8 @@ void vector_tests()
 
 	test_vects(vects);
 
-	vec_b.swap(vec_a);
+	vec_a.swap(vec_b);
+	swap(vec_c, vec_d);
 
 	test_vects(vects);
 
@@ -365,14 +376,16 @@ void vector_tests()
 
 	std::cout << "Testing Vector::insert()" << std::endl;
 
+	//(1) single elem
 	vec_b.insert(vec_b.begin() + 5, 75);
 	vec_b.insert(vec_b.begin() + 2, 22);
 	vec_b.insert(vec_b.begin() + 11, 875);
 
-	vec_b.insert(vec_b.begin() + 1, vec_a.begin() + 12, vec_a.begin() +24);
-
-	vec_c.insert(vec_c.begin() + 2, 12, 55);
+	//(2) fill
 	vec_a.insert(vec_a.begin() + 2, 41, 5175);
+
+	//(3) range
+	vec_b.insert(vec_b.begin() + 1, vec_a.begin() + 12, vec_a.begin() +24);
 
 	test_vects(vects);
 
@@ -380,7 +393,6 @@ void vector_tests()
 
 	vec_d.erase(vec_d.begin() + 2);
 	vec_b.erase(vec_b.begin() + 5, vec_b.begin() + 8);
-
 
 	std::cout << "Testing Vector::clear()" << std::endl;
 	vec_a.clear();
@@ -405,12 +417,12 @@ int main(void)
 	time_vect = clock() - start_test;
 	start_test = clock();
 	
-//	stack_tests();
+	stack_tests();
 
 	time_stack = clock() - start_test;
 	start_test = clock();
 
-	map_tests();
+//	map_tests();
 
 	time_map = clock() - start_test;
 

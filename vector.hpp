@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/07/16 11:45:23 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/02 12:21:02 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,10 @@ namespace ft
 
 		vector& operator= (const vector& x)
 		{
+			clear();
+			//_size = x._size;
+			
+
 			assign(x.begin(), x.end());
 			return *this;
 		}
