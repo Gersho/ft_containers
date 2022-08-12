@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/12 13:36:12 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/12 15:10:43 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,23 +101,34 @@ namespace ft
 		//	(4) Constructs a container with a copy of each of the elements in x, in the same order.
 		vector( const vector& src )
 		{
-			_size = src._size;
-			_capacity = src._capacity;
-			_allocator = src._allocator;
-			if (src._capacity > 0)
+			if (src._ptr != NULL)
 			{
-				if (!_try_alloc(&_ptr, _capacity, "bad_alloc caught in vector( const vector& src ): "))
+				_size = src._size;
+				_capacity = src._capacity;
+				_allocator = src._allocator;
+				if (src._capacity > 0)
 				{
-					_size = 0;
-					_capacity = 0;
-					_ptr = NULL;
-					return;					
+					if (!_try_alloc(&_ptr, _capacity, "bad_alloc caught in vector( const vector& src ): "))
+					{
+						_size = 0;
+						_capacity = 0;
+						_ptr = NULL;
+						return;					
+					}
+				}
+				for (size_type i = 0; i <_size; i++)
+				{
+					_allocator.construct(&_ptr[i], src._ptr[i]);
 				}
 			}
-			for (size_type i = 0; i <_size; i++)
+			else
 			{
-				_allocator.construct(&_ptr[i], src._ptr[i]);
+				_size = 0;
+				_capacity = 0;
+				_allocator = src._allocator;
+				_ptr = NULL;		
 			}
+
 		}
 
 		// This destroys all container elements, and deallocates all the storage capacity allocated by the vector using its allocator.
@@ -339,8 +350,11 @@ namespace ft
 
 		void	pop_back()
 		{
-			_allocator.destroy(&_ptr[_size - 1]);
-			_size--;
+			if (_size > 0)
+			{
+				_allocator.destroy(&_ptr[_size - 1]);
+				_size--;
+			}
 		}
 
 		iterator insert (iterator position, const value_type& val)

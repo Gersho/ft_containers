@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/12 13:30:37 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/12 15:11:00 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,134 @@
 #include <fstream>
 #include <string>
 
-void stack_test()
-{
+//for stack tests
+#include <vector>
 
+void stack_tests()
+{
+	{ 	
+		ft::stack<int> s_a;
+		ft::stack<int> s_b;
+
+		std::cout << std::boolalpha << "s_a.empty() " << s_a.empty() << std::endl;
+		std::cout << "s_a.size() " << s_a.size() << std::endl;
+		
+		std::cout << std::boolalpha << "s_a == s_b : " << (s_a == s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a != s_b : " << (s_a != s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a < s_b : " << (s_a < s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a > s_b : " << (s_a > s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a <= s_b : " << (s_a <= s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a >= s_b : " << (s_a >= s_b) << std::endl;
+
+		std::cout << "s_a.push(10)" <<std::endl;
+		s_a.push(10);
+		std::cout << std::boolalpha << "s_a.empty() " << s_a.empty() << std::endl;
+		std::cout << "s_a.size() " << s_a.size() << std::endl;
+		
+		std::cout << std::boolalpha << "s_a == s_b : " << (s_a == s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a != s_b : " << (s_a != s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a < s_b : " << (s_a < s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a > s_b : " << (s_a > s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a <= s_b : " << (s_a <= s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a >= s_b : " << (s_a >= s_b) << std::endl;
+
+		s_b.push(10);
+
+		std::cout << std::boolalpha << "s_a == s_b : " << (s_a == s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a != s_b : " << (s_a != s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a < s_b : " << (s_a < s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a > s_b : " << (s_a > s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a <= s_b : " << (s_a <= s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a >= s_b : " << (s_a >= s_b) << std::endl;
+
+		std::cout << "s_a.top() " << s_a.top() << std::endl;
+		std::cout << "s_b.top() " << s_b.top() << std::endl;
+
+		s_a.push(10);
+		s_a.push(15);
+		s_a.push(12);
+		s_a.push(17);
+
+		std::cout << std::boolalpha << "s_a == s_b : " << (s_a == s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a != s_b : " << (s_a != s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a < s_b : " << (s_a < s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a > s_b : " << (s_a > s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a <= s_b : " << (s_a <= s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a >= s_b : " << (s_a >= s_b) << std::endl;
+
+		while (!s_a.empty())
+		{
+			std::cout << "top: " << s_a.top() << std::endl;
+			s_a.pop();
+		}
+		s_a.pop();
+		s_a.pop();
+		s_a.pop();
+		
+	}
+
+
+
+	{
+		std::cout << "tests with std vector as underlying container" << std::endl;
+		ft::stack<int, std::vector<int> > s_a;
+		ft::stack<int, std::vector<int> > s_b;
+
+		std::cout << std::boolalpha << "s_a.empty() " << s_a.empty() << std::endl;
+		std::cout << "s_a.size() " << s_a.size() << std::endl;
+		
+		std::cout << std::boolalpha << "s_a == s_b : " << (s_a == s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a != s_b : " << (s_a != s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a < s_b : " << (s_a < s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a > s_b : " << (s_a > s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a <= s_b : " << (s_a <= s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a >= s_b : " << (s_a >= s_b) << std::endl;
+
+		std::cout << "s_a.push(10)" <<std::endl;
+		s_a.push(10);
+		std::cout << std::boolalpha << "s_a.empty() " << s_a.empty() << std::endl;
+		std::cout << "s_a.size() " << s_a.size() << std::endl;
+		
+		std::cout << std::boolalpha << "s_a == s_b : " << (s_a == s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a != s_b : " << (s_a != s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a < s_b : " << (s_a < s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a > s_b : " << (s_a > s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a <= s_b : " << (s_a <= s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a >= s_b : " << (s_a >= s_b) << std::endl;
+
+		s_b.push(10);
+
+		std::cout << std::boolalpha << "s_a == s_b : " << (s_a == s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a != s_b : " << (s_a != s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a < s_b : " << (s_a < s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a > s_b : " << (s_a > s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a <= s_b : " << (s_a <= s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a >= s_b : " << (s_a >= s_b) << std::endl;
+
+		std::cout << "s_a.top() " << s_a.top() << std::endl;
+		std::cout << "s_b.top() " << s_b.top() << std::endl;
+
+		s_a.push(10);
+		s_a.push(15);
+		s_a.push(12);
+		s_a.push(17);
+
+		std::cout << std::boolalpha << "s_a == s_b : " << (s_a == s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a != s_b : " << (s_a != s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a < s_b : " << (s_a < s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a > s_b : " << (s_a > s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a <= s_b : " << (s_a <= s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a >= s_b : " << (s_a >= s_b) << std::endl;
+
+		while (!s_a.empty())
+		{
+			std::cout << "top: " << s_a.top() << std::endl;
+			s_a.pop();
+		}
+		s_a.pop();
+		s_a.pop();
+		s_a.pop();
+	}
 }
 
 template<class T>
@@ -446,12 +571,12 @@ int main(void)
 	time_vect = clock() - start_test;
 	start_test = clock();
 	
-//	stack_tests();
+	stack_tests();
 
 	time_stack = clock() - start_test;
 	start_test = clock();
 
-	map_tests();
+//	map_tests();
 
 	time_map = clock() - start_test;
 
