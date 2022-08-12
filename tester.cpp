@@ -6,12 +6,9 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/02 13:10:35 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/12 13:30:37 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
-
-
-//TODO how to test get_allocator ?
 
 #ifdef STD
 	#include <map>
@@ -30,12 +27,10 @@
 #include <fstream>
 #include <string>
 
-
 void stack_test()
 {
 
 }
-
 
 template<class T>
 void test_print_vec(ft::vector<T> &vec )
@@ -84,7 +79,8 @@ void test_vects(struct s_vect<T> vects)
 	test_print_vec(*(vects.vec_d));
 }
 
-void fill_vect(ft::vector<int> &vec, size_t qt)
+template<class T>
+void fill_vect(ft::vector<T> &vec, size_t qt)
 {
 	while (qt)
 	{
@@ -118,7 +114,7 @@ void show_map(ft::map<Key, T> &map)
 	// }
 }
 
-void map_tests_basics()
+void map_tests_normal()
 {
 	ft::map<int, int> a;
 	ft::map<int, int> b;
@@ -242,12 +238,6 @@ std::cout << "############################still alive" << std::endl;
 
 }
 
-void map_tests()
-{
-	map_tests_basics();
-	//map_tests_big();
-}
-
 void vector_tests()
 {
 	ft::vector<int> vec_a;
@@ -323,7 +313,7 @@ void vector_tests()
 	test_vects(vects);
 
 	vec_a.swap(vec_b);
-	swap(vec_c, vec_d);
+	ft::swap(vec_c, vec_d);
 
 	test_vects(vects);
 
@@ -398,7 +388,47 @@ void vector_tests()
 	vec_a.clear();
 	vec_a.clear();
 
-	 test_vects(vects);
+	test_vects(vects);
+
+	ft::vector<int>::const_iterator const_it = vec_c.begin();
+	ft::vector<int>::const_iterator const_ite = vec_c.end();
+	int j = 0;
+	while (const_it != const_ite)
+	{
+		std::cout << "j: " << j << " *it: " << *const_it << std::endl;
+		const_it++;
+		j++;
+	}
+
+	ft::vector<int>::const_reverse_iterator const_rit = vec_c.rbegin();
+	ft::vector<int>::const_reverse_iterator const_rite = vec_c.rend();
+	j = 0;
+	while (const_rit != const_rite)
+	{
+		std::cout << "j: " << j << " *it: " << *const_rit << std::endl;
+		const_rit++;
+		j++;
+	}
+
+	ft::vector<int>::const_reference const_ref_a = vec_c[2];
+	std::cout << const_ref_a << std::endl;
+
+	ft::vector<int>::const_reference const_ref_b = vec_c.at(2);
+	std::cout << const_ref_b << std::endl;
+
+	ft::vector<int>::const_reference const_ref_c = vec_c.front();
+	std::cout << const_ref_c << std::endl;
+
+	ft::vector<int>::const_reference const_ref_d = vec_c.back();
+	std::cout << const_ref_d << std::endl;
+
+	test_vects(vects);
+}
+
+void map_tests()
+{
+	map_tests_normal();
+	//map_tests_big();
 }
 
 int main(void)
@@ -408,21 +438,20 @@ int main(void)
 	clock_t time_stack;
 	clock_t time_map;
 
-	//srand(std::time(NULL));
 	srand(0);
 	start_test = clock();
 
-//	vector_tests();
+	vector_tests();
 
 	time_vect = clock() - start_test;
 	start_test = clock();
 	
-	stack_tests();
+//	stack_tests();
 
 	time_stack = clock() - start_test;
 	start_test = clock();
 
-//	map_tests();
+	map_tests();
 
 	time_map = clock() - start_test;
 
@@ -454,5 +483,4 @@ int main(void)
 	time_f = ((float)time_map)/CLOCKS_PER_SEC;
   	outfile << "   Map: " << time_f << " sec (" << time_map << " CT.)" << std::endl;
   	outfile.close();
-
 }

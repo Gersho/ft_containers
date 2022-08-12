@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/02 12:21:02 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/12 13:36:12 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,13 @@
 
 #include <memory>
 #include <stdexcept>
-#include <iostream>
-#include <sstream>
 #include "iterator.hpp"
 #include "algorithm.hpp"
 #include "type_traits.hpp"
+
+// includes for linux errors
+// #include <iostream>
+// #include <sstream>
 
 namespace ft 
 {
@@ -32,18 +34,22 @@ namespace ft
 		typedef	Allocator											allocator_type;
 		typedef	std::size_t											size_type;
 		typedef	std::ptrdiff_t										difference_type;
-		typedef	value_type&											reference;
-		typedef	const value_type&									const_reference;
 	 	typedef typename allocator_type::pointer					pointer;
 		typedef typename allocator_type::const_pointer 				const_pointer;
+		typedef typename allocator_type::reference 					reference;
+		typedef typename allocator_type::const_reference 			const_reference;
 		typedef ft::__generic_iterator<value_type>					iterator;
 		typedef ft::__generic_iterator<const value_type>			const_iterator;	
 		typedef	ft::reverse_iterator<iterator>						reverse_iterator;
 		typedef	ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
 		// (1) Constructs an empty container, with no elements.
-		explicit vector( const Allocator& alloc = allocator_type())
-		: _capacity(0), _size(0), _allocator(alloc), _ptr(NULL)
+		// explicit vector( const Allocator& alloc = allocator_type())
+		// : _capacity(0), _size(0), _allocator(alloc), _ptr(NULL)
+		// {
+		// }
+		explicit vector()
+		: _capacity(0), _size(0), _allocator(allocator_type()), _ptr(NULL)
 		{
 		}
 
@@ -118,14 +124,14 @@ namespace ft
 		~vector()
 		{
 			clear();
-			_allocator.deallocate(_ptr, _capacity);
+			if (_capacity > 0)
+				_allocator.deallocate(_ptr, _capacity);
 		}
 
 		vector& operator= (const vector& x)
 		{
 			clear();
-			//_size = x._size;
-			
+			_allocator = x._allocator;
 
 			assign(x.begin(), x.end());
 			return *this;
@@ -133,37 +139,31 @@ namespace ft
 
 		iterator begin()
 		{
-			iterator it = __generic_iterator<T>(_ptr);
-			return it;
+			return iterator(_ptr);
 		}
 
 		const_iterator begin() const
 		{
-			const_iterator it = __generic_iterator<const T>(_ptr);
-			return it;
+			return const_iterator(_ptr);
 		}
 
 		iterator end()
 		{
-			iterator it = begin() + _size;
-			return it;
+			return iterator(_ptr + _size);
 		}
 
 		const_iterator end() const
 		{
-			const_iterator it = begin() + _size;
-			return it;
+			return const_iterator(_ptr + _size);
 		}
 
 		reverse_iterator rbegin()
 		{
-//std::cout << "rbegin" << std::endl;
 			return reverse_iterator(end());
 		}
 
 		const_reverse_iterator rbegin() const 
 		{
-//std::cout << "rbegin const" << std::endl;
 			return const_reverse_iterator(end());
 		}
 
