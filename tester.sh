@@ -40,29 +40,29 @@ fi
 echo -e "\033[33mTime spent:\033[0m"
 pr -mt logs/ft.time logs/std.time
 
-if command -v valgrind &> /dev/null
-then
-	echo -e "\033[33mMemory Check with valgrind:\033[0m"
-	valgrind -s --log-file="logs/ft.val" ./containers > /dev/null 2> /dev/null
-	valgrind -s --log-file="logs/std.val" ./containers_std > /dev/null 2> /dev/null
-	ftval=$(($(wc -l < logs/ft.val)))
-	stdval=$(($(wc -l < logs/std.val)))
-	if [ $ftval -eq $stdval ]
-	then
-		echo -e "\033[32mMemory Check OK !\033[0m"
-	else
-		echo -e "\033[31mERROR ! cat logs/ft.val for more info.\033[0m"
-	fi
-elif command -v leaks &> /dev/null
-then
-	echo -e "\033[33mMemory Check with leaks -atExit:\033[0m"
-	leaks -atExit -- ./containers > /dev/null 2> /dev/null
-	if [ $? -eq 0 ]
-	then
-		echo -e "\033[32mMemory Check OK !\033[0m"
-	else
-		echo -e "\033[31mERROR ! \`leaks -atExit -- ./containers\` for more info.\033[0m"
-	fi	
-else
-	echo "Unable to Test Memory"
-fi
+# if command -v valgrind &> /dev/null
+# then
+# 	echo -e "\033[33mMemory Check with valgrind:\033[0m"
+# 	valgrind -s --log-file="logs/ft.val" ./containers > /dev/null 2> /dev/null
+# 	valgrind -s --log-file="logs/std.val" ./containers_std > /dev/null 2> /dev/null
+# 	ftval=$(($(wc -l < logs/ft.val)))
+# 	stdval=$(($(wc -l < logs/std.val)))
+# 	if [ $ftval -eq $stdval ]
+# 	then
+# 		echo -e "\033[32mMemory Check OK !\033[0m"
+# 	else
+# 		echo -e "\033[31mERROR ! cat logs/ft.val for more info.\033[0m"
+# 	fi
+# elif command -v leaks &> /dev/null
+# then
+# 	echo -e "\033[33mMemory Check with leaks -atExit:\033[0m"
+# 	leaks -atExit -- ./containers > /dev/null 2> /dev/null
+# 	if [ $? -eq 0 ]
+# 	then
+# 		echo -e "\033[32mMemory Check OK !\033[0m"
+# 	else
+# 		echo -e "\033[31mERROR ! \`leaks -atExit -- ./containers\` for more info.\033[0m"
+# 	fi	
+# else
+# 	echo "Unable to Test Memory"
+# fi

@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/12 13:42:29 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/13 15:51:34 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,9 +245,22 @@ namespace ft
 
 		reference operator*() const
 		{
-			iterator_type rev_it = _it - 1;
+			//v1 used with vector, check if vector still works before removing
+			// iterator_type rev_it = _it - 1;
 			
-			return *rev_it;
+			// return *rev_it;
+
+			//from jojo
+				// _Iterator tmp = _current;
+				// return *(--tmp);
+			iterator_type rev_it = _it;
+			return *(--rev_it);
+
+			//v2
+			// iterator_type rev_it = _it;
+			// rev_it--;
+			
+			// return *rev_it;		
 		}
 
 		reverse_iterator operator+ (difference_type n) const
@@ -259,6 +272,7 @@ namespace ft
 
 		reverse_iterator& operator++()
 		{
+std::cout << "superwesh " << std::endl;
 			_it--;
 			return *this;
 		};
@@ -398,6 +412,9 @@ namespace ft
 
 		~node(){}
 	};
+
+	// template < class T, class Treebase >
+	// class  __const_tree_iterator;
 
 	template < class T, class Treebase >
 	class  __tree_iterator
@@ -566,13 +583,62 @@ namespace ft
 
 	iterator &operator-- ()
 	{
-		iterator *tmp;
+// 		iterator *tmp;
 		
-		if (this->_it == NULL)
+// 		if (this->_it == NULL)
+// 		{
+// 			this->_it = _tree->get_root();
+// 			if (this->_it == NULL)
+// 			{
+// 				// return NULL;
+// 				///return __const_tree_iterator<T, Treebase>(NULL, _tree);
+// //test au cas ou, ca vas surement exploser
+// 				return *this;
+// 			}
+// 			while (this->_it->right != NULL)
+// 				this->_it = this->_it->right;
+// 		}
+// 		else
+// 		{			
+// 			if (this->_it->left != NULL)
+// 			{
+// 				this->_it = this->_it->left;
+// 				while (this->_it->right != NULL)
+// 					this->_it = this->_it->right;
+// 			}
+// 			else
+// 			{
+// 				tmp = this->_it->parent;
+// 				while (tmp != NULL && this->_it == tmp->left)
+// 				{
+// 					this->_it = tmp;
+// 					tmp = tmp->parent;
+// 				}
+// 				this->_it = tmp;
+// 			}
+// 		}
+		
+// 			return *this;
+
+ 		struct node<T> *tmp;
+		//tmp = this->_it;
+std::cout << "wesh " << std::endl;
+if (this->_it != NULL)
+{
+	//fjlhldkfjhlkjh
+std::cout << "debug first: " << this->_it->data->first << " second: " << this->_it->data->second << std::endl;
+std::cout << "debug ptr: " << this->_it <<  " left: " << this->_it->left << " right: " << this->_it->right << " par: " << this->_it->parent << std::endl; 
+}
+ 		if (this->_it == NULL)
 		{
 			this->_it = _tree->get_root();
 			if (this->_it == NULL)
-				return NULL;
+			{
+				// return NULL;
+				///return __const_tree_iterator<T, Treebase>(NULL, _tree);
+//test au cas ou, ca vas surement exploser
+				return *this;
+			}
 			while (this->_it->right != NULL)
 				this->_it = this->_it->right;
 		}
@@ -589,6 +655,7 @@ namespace ft
 				tmp = this->_it->parent;
 				while (tmp != NULL && this->_it == tmp->left)
 				{
+std::cout << "still here" << std::endl;
 					this->_it = tmp;
 					tmp = tmp->parent;
 				}
@@ -597,6 +664,7 @@ namespace ft
 		}
 		
 			return *this;
+
 	}
 
 	iterator operator--( int )

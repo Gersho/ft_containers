@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/12 15:11:00 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/13 15:53:26 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,15 +228,15 @@ void show_map(ft::map<Key, T> &map)
 		it++;
 	}
 
-	// typename ft::map<Key, T>::reverse_iterator rit = map.rbegin();
-	// typename ft::map<Key, T>::reverse_iterator rite = map.rend();
-
-	// std::cout << "reverse order" << std::cout;
-	// while(rit != rite)
-	// {
-	// 	std::cout << "key: " << rit->first<< " value: " << rit->second << std::endl;
-	// 	rit++;
-	// }
+// 	typename ft::map<Key, T>::reverse_iterator rit = map.rbegin();
+// 	typename ft::map<Key, T>::reverse_iterator rite = map.rend();
+// //50 80 30 20
+// 	std::cout << "reverse order" << std::endl;
+// 	while(rit != rite)
+// 	{
+// 		std::cout << "reverse key: " << rit->first<< " value: " << rit->second << std::endl;
+// 		rit++;
+// 	}
 }
 
 void map_tests_normal()
@@ -245,10 +245,10 @@ void map_tests_normal()
 	ft::map<int, int> b;
 
 
-	a.insert( ft::make_pair<int, int>( 5, 5 ) );
-	a.insert( ft::make_pair<int, int>( 8, 1 ) );
-	a.insert( ft::make_pair<int, int>( 0, 2 ) );
-	a.insert( ft::make_pair<int, int>( 2, 3 ) );
+	a.insert( ft::make_pair<int, int>( 50, 5000 ) );
+	a.insert( ft::make_pair<int, int>( 80, 8000 ) );
+	a.insert( ft::make_pair<int, int>( 30, 3000 ) );
+	a.insert( ft::make_pair<int, int>( 20, 2000 ) );
 
 	ft::map<int, int> c(a.begin(), a.end());
 
@@ -515,6 +515,7 @@ void vector_tests()
 
 	test_vects(vects);
 
+	std::cout << "Testing const versions" << std::endl;
 	ft::vector<int>::const_iterator const_it = vec_c.begin();
 	ft::vector<int>::const_iterator const_ite = vec_c.end();
 	int j = 0;
@@ -566,17 +567,17 @@ int main(void)
 	srand(0);
 	start_test = clock();
 
-	vector_tests();
+//	vector_tests();
 
 	time_vect = clock() - start_test;
 	start_test = clock();
 	
-	stack_tests();
+//	stack_tests();
 
 	time_stack = clock() - start_test;
 	start_test = clock();
 
-//	map_tests();
+	map_tests();
 
 	time_map = clock() - start_test;
 
