@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/16 13:46:05 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/16 19:00:58 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -339,11 +339,9 @@ void map_tests_normal()
 	a.insert( ft::make_pair<int, int>( 70, 7000 ) );
 	std::cout << "printing map a" << std::endl;
 	show_map(a);
-
 	b.insert(a.begin(), a.end());
 	std::cout << "printing map b" << std::endl;
 	show_map(b);
-
 	b.erase(b.begin());
 
 	std::cout << "printing map b" << std::endl;
@@ -377,6 +375,7 @@ void map_tests_normal()
 		std::cout << "not found" << std::endl;
 	}
 
+std::cout << "############################still alive" << std::endl;
 
 	// it = a.lower_bound(30);
 	// std::cout << "lower_bound key: " << it->first<< " value: " << it->second << std::endl;
@@ -416,11 +415,13 @@ void map_tests_normal()
 
 
 
+// std::cout << "printing map a" << std::endl;
+// show_map(a);
+// std::cout << "@@@@@@@@@@@@@@@@@@@@jusque ici tout vas bien " << std::endl;
 
 
 	std::cout << "print a[2] " << a[2] << std::endl;
 	
-std::cout << "############################still alive" << std::endl;
 
 //BROKEN SHIT
 	//std::cout << a.max_size() << std::endl;
@@ -432,14 +433,17 @@ std::cout << "############################still alive" << std::endl;
 
 	//ft::map<const int, int >::const_iterator cit = a.find(8);
 	//std::cout << "key: " << cit->first<< " value: " << cit->second << std::endl;	
+std::cout << "printing map a" << std::endl;
+show_map(a);
+
+	//ft::map<int, int> d(a);
+	// a.clear();
+	//std::cout << "printing map d" << std::endl;
+	//show_map(d);
 
 
-	ft::map<int, int> d(c);
-	std::cout << "printing map d" << std::endl;
-	show_map(d);
 
-
-
+std::cout << "############################still alive END" << std::endl;
 }
 
 void vector_tests()

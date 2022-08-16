@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/16 12:21:11 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/16 18:59:03 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ namespace ft
 		key_compare get_compare() const { return _compare; }
 
 		node_type *get_root() const { return _root; }
-		// node_type *get_root() { return _root; }
-		//const_node_type *get_root() const { return _root; }
+		// node_type *get_root() const { return _root; }
+		// const_node_type *get_root() const { return _root; }
 		node_type *get_after_last() { return &_after_last; }
 		node_type *get_before_first() { return &_before_first; }
 
@@ -101,7 +101,7 @@ namespace ft
 		tree_type &operator= (const tree_type & rhs)
 		{
 			clear(_root);
-			_root = rhs.get_root();
+			//_root = rhs.get_root();
 			_allocator = rhs.get_allocator();
 			_compare = rhs.get_compare();
 
@@ -262,6 +262,55 @@ namespace ft
 /////////////////////////////////////////////////////////
 
 
+	template<class X>
+	iterator find (const X& k)
+	{
+		node_type *tmp = get_root();
+// std::cout << "coucou" <<std::endl;
+		while(tmp)
+		{
+			if(_compare(k, tmp->data->first))
+			{
+// std::cout << "tmp first: " << tmp->data->first << " going left" << std::endl;
+				tmp = tmp->left;
+			}
+			else if(_compare(tmp->data->first, k))
+			{
+// std::cout << "tmp first: " << tmp->data->first << " going right" << std::endl;
+				tmp = tmp->right;
+			}
+			else
+			{
+// std::cout << "tmp first: " << tmp->data->first << " returning" << std::endl;
+				return iterator(tmp, this);
+			}
+		}
+		//return end();
+		return end();
+	}
+
+	template<class X>
+	const_iterator find (const X& k) const
+	{
+		//const node<value_type> *tmp = _tree.get_root();
+		node_type *tmp = get_root();
+		//node<const pair<const int, int> > *
+		//node<ft::pair<const int, int> > *
+		//std::cout << "coucou" <<std::endl;
+		while(tmp)
+		{
+			if(_compare(k, tmp->data->first))
+				tmp = tmp->left;
+			else if(_compare(tmp->data->first, k))
+				tmp = tmp->right;
+			else
+				return const_iterator(tmp, this);
+				//node<pair<const int, int> > *
+				//node<const ft::pair<const int, int> > *
+				
+		}
+		return end();		
+	}
 
 
 
@@ -282,17 +331,52 @@ namespace ft
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////
 
 
 
 		void clear(node_type *parent)
 		{
-			if(!parent)
+//std::cout << " test parent " << parent << "" << std::endl;
+			if(!parent || parent->after_last || parent->before_first )
 				return;
 			if (parent->left)
+			{
 				clear(parent->left);
+				parent->left = NULL;
+			}
 			if (parent->right)
+			{
 				clear(parent->right);
+				parent->right = NULL;
+			}
 			_allocator.destroy(parent->data);
 			_allocator.deallocate(parent->data, 1);
 			std::allocator<node_type>().destroy(parent);

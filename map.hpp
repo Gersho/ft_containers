@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/16 12:32:40 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/16 18:46:16 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,13 +142,27 @@ namespace ft
 			}
 
 
-		map( const map& x )
+		// map( const map& x )
+		// {
+		// 	*this = x;
+		// }
+
+		//map( const map& x ): _compare(x._compare), _allocator(x.get_allocator()), _tree(x._tree) {}
+
+		map( const map& x ): _compare(x._compare), _allocator(x.get_allocator())
 		{
-			*this = x;
+			clear();
+			const_iterator it = x.begin();
+			const_iterator ite = x.end();
+			insert(it, ite);
 		}
 
+
 		// Destructor
-		~map(){}
+		~map()
+		{
+//std::cout << "destructing map" << std::endl;
+		}
 
 
 		map& operator= (const map& x)
@@ -226,7 +240,8 @@ namespace ft
 
 		mapped_type& operator[] (const key_type& k)
 		{
-			return (*((this->insert(make_pair(k,mapped_type()))).first)).second;
+			//return (*((this->insert(make_pair(k,mapped_type()))).first)).second;
+			return insert(ft::make_pair(k, mapped_type())).first->second;
 		}
 
 
@@ -319,58 +334,68 @@ namespace ft
 			return value_compare();
 		}
 
+// 	iterator find (const key_type& k)
+// 	{
+// 		node<value_type> *tmp = _tree.get_root();
+// // std::cout << "coucou" <<std::endl;
+// 		while(tmp)
+// 		{
+// 			if(_compare(k, tmp->data->first))
+// 			{
+// // std::cout << "tmp first: " << tmp->data->first << " going left" << std::endl;
+// 				tmp = tmp->left;
+// 			}
+// 			else if(_compare(tmp->data->first, k))
+// 			{
+// // std::cout << "tmp first: " << tmp->data->first << " going right" << std::endl;
+// 				tmp = tmp->right;
+// 			}
+// 			else
+// 			{
+// // std::cout << "tmp first: " << tmp->data->first << " returning" << std::endl;
+// 				return iterator(tmp, &_tree);
+// 			}
+// 		}
+// 		//return end();
+// 		return _tree.end();
+// 	}
+
 	iterator find (const key_type& k)
 	{
-		node<value_type> *tmp = _tree.get_root();
-// std::cout << "coucou" <<std::endl;
-		while(tmp)
-		{
-			if(_compare(k, tmp->data->first))
-			{
-// std::cout << "tmp first: " << tmp->data->first << " going left" << std::endl;
-				tmp = tmp->left;
-			}
-			else if(_compare(tmp->data->first, k))
-			{
-// std::cout << "tmp first: " << tmp->data->first << " going right" << std::endl;
-				tmp = tmp->right;
-			}
-			else
-			{
-// std::cout << "tmp first: " << tmp->data->first << " returning" << std::endl;
-				return iterator(tmp, &_tree);
-			}
-		}
-		//return end();
-		return _tree.end();
+		return _tree.find(k);
 	}
 
 	const_iterator find (const key_type& k) const
 	{
-		//const node<value_type> *tmp = _tree.get_root();
-		node<value_type> *tmp = _tree.get_root();
-		//node<const pair<const int, int> > *
-		//node<ft::pair<const int, int> > *
-		//std::cout << "coucou" <<std::endl;
-		while(tmp)
-		{
-			if(_compare(k, tmp->data->first))
-				tmp = tmp->left;
-			else if(_compare(tmp->data->first, k))
-				tmp = tmp->right;
-			else
-				return const_iterator(tmp, &_tree);
-				//node<pair<const int, int> > *
-				//node<const ft::pair<const int, int> > *
-				
-		}
-		return end();		
+		return _tree.find(k);
 	}
+
+	// const_iterator find (const key_type& k) const
+	// {
+	// 	//const node<value_type> *tmp = _tree.get_root();
+	// 	node<value_type> *tmp = _tree.get_root();
+	// 	//node<const pair<const int, int> > *
+	// 	//node<ft::pair<const int, int> > *
+	// 	//std::cout << "coucou" <<std::endl;
+	// 	while(tmp)
+	// 	{
+	// 		if(_compare(k, tmp->data->first))
+	// 			tmp = tmp->left;
+	// 		else if(_compare(tmp->data->first, k))
+	// 			tmp = tmp->right;
+	// 		else
+	// 			return const_iterator(tmp, &_tree);
+	// 			//node<pair<const int, int> > *
+	// 			//node<const ft::pair<const int, int> > *
+				
+	// 	}
+	// 	return end();		
+	// }
 
 
 	size_type count (const key_type& k) const
 	{
-		iterator it = find(k);
+		const_iterator it = find(k);
 		return it == end() ? 0 : 1;
 	}
 
