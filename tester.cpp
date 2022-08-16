@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/13 15:53:26 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/16 11:38:01 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,18 @@
 #include <ctime>
 #include <fstream>
 #include <string>
+#include <signal.h>
 
 //for stack tests
 #include <vector>
+#include <list>
+
+
+
+void abort_proc(int)
+{
+	throw std::runtime_error("ABORT");
+}
 
 void stack_tests()
 {
@@ -155,6 +164,74 @@ void stack_tests()
 		s_a.pop();
 		s_a.pop();
 	}
+
+
+	{
+		std::cout << "tests with std list as underlying container" << std::endl;
+		ft::stack<int, std::list<int> > s_a;
+		ft::stack<int, std::list<int> > s_b;
+
+		std::cout << std::boolalpha << "s_a.empty() " << s_a.empty() << std::endl;
+		std::cout << "s_a.size() " << s_a.size() << std::endl;
+		
+		std::cout << std::boolalpha << "s_a == s_b : " << (s_a == s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a != s_b : " << (s_a != s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a < s_b : " << (s_a < s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a > s_b : " << (s_a > s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a <= s_b : " << (s_a <= s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a >= s_b : " << (s_a >= s_b) << std::endl;
+
+		std::cout << "s_a.push(10)" <<std::endl;
+		s_a.push(10);
+		std::cout << std::boolalpha << "s_a.empty() " << s_a.empty() << std::endl;
+		std::cout << "s_a.size() " << s_a.size() << std::endl;
+		
+		std::cout << std::boolalpha << "s_a == s_b : " << (s_a == s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a != s_b : " << (s_a != s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a < s_b : " << (s_a < s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a > s_b : " << (s_a > s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a <= s_b : " << (s_a <= s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a >= s_b : " << (s_a >= s_b) << std::endl;
+
+		s_b.push(10);
+
+		std::cout << std::boolalpha << "s_a == s_b : " << (s_a == s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a != s_b : " << (s_a != s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a < s_b : " << (s_a < s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a > s_b : " << (s_a > s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a <= s_b : " << (s_a <= s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a >= s_b : " << (s_a >= s_b) << std::endl;
+
+		std::cout << "s_a.top() " << s_a.top() << std::endl;
+		std::cout << "s_b.top() " << s_b.top() << std::endl;
+
+		s_a.push(10);
+		s_a.push(15);
+		s_a.push(12);
+		s_a.push(17);
+
+		std::cout << std::boolalpha << "s_a == s_b : " << (s_a == s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a != s_b : " << (s_a != s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a < s_b : " << (s_a < s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a > s_b : " << (s_a > s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a <= s_b : " << (s_a <= s_b) << std::endl;
+		std::cout << std::boolalpha << "s_a >= s_b : " << (s_a >= s_b) << std::endl;
+
+		while (!s_a.empty())
+		{
+			std::cout << "top: " << s_a.top() << std::endl;
+			s_a.pop();
+		}
+
+		try 
+		{
+			s_a.pop();
+		}
+		catch(std::exception& e)
+		{
+			std::cout << "abort test ok: " << e.what() << std::endl;
+		}
+	}
 }
 
 template<class T>
@@ -230,7 +307,7 @@ void show_map(ft::map<Key, T> &map)
 
 // 	typename ft::map<Key, T>::reverse_iterator rit = map.rbegin();
 // 	typename ft::map<Key, T>::reverse_iterator rite = map.rend();
-// //50 80 30 20
+// //50 80 30 20 70
 // 	std::cout << "reverse order" << std::endl;
 // 	while(rit != rite)
 // 	{
@@ -255,7 +332,7 @@ void map_tests_normal()
 	std::cout << "printing map c" << std::endl;
 	show_map(c);
 
-	a.insert( ft::make_pair<int, int>( 2, 3 ) );
+	a.insert( ft::make_pair<int, int>( 70, 7000 ) );
 	std::cout << "printing map a" << std::endl;
 	show_map(a);
 
@@ -284,14 +361,12 @@ void map_tests_normal()
 	std::cout << a.size() << std::endl;
 	std::cout << b.size() << std::endl;
 
-//std::map<int, int >::iterator it = a.find(8);
-	ft::map<int, int >::iterator it = a.find(8);
-	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
-	it = a.find(2);
-	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+
+	ft::map<int, int >::iterator it = a.find(50);
+	std::cout << "find key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.find(30);
+	std::cout << "find key: " << it->first<< " value: " << it->second << std::endl;
 	it = a.find(0);
-	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
-	it = a.find(50);
 
 	if (it == a.end())
 	{
@@ -299,41 +374,41 @@ void map_tests_normal()
 	}
 
 
-	it = a.lower_bound(2);
-	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
-	it = a.lower_bound(1);
-	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
-	it = a.lower_bound(0);
-	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
-	it = a.lower_bound(7);
-	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+	// it = a.lower_bound(30);
+	// std::cout << "lower_bound key: " << it->first<< " value: " << it->second << std::endl;
+	// it = a.lower_bound(20);
+	// std::cout << "lower_bound key: " << it->first<< " value: " << it->second << std::endl;
+	// it = a.lower_bound(50);
+	// std::cout << "lower_bound key: " << it->first<< " value: " << it->second << std::endl;
+	// it = a.lower_bound(0);
+	// std::cout << "lower_bound key: " << it->first<< " value: " << it->second << std::endl;
 
 
-	it = a.upper_bound(2);
-	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
-	it = a.upper_bound(1);
-	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
-	it = a.upper_bound(0);
-	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
-	it = a.upper_bound(7);
-	std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
+	// it = a.upper_bound(30);
+	// std::cout << "upper_bound key: " << it->first<< " value: " << it->second << std::endl;
+	// it = a.upper_bound(80);
+	// std::cout << "upper_bound key: " << it->first<< " value: " << it->second << std::endl;
+	// it = a.upper_bound(20);
+	// std::cout << "upper_bound key: " << it->first<< " value: " << it->second << std::endl;
+	// it = a.upper_bound(0);
+	// std::cout << "upper_bound key: " << it->first<< " value: " << it->second << std::endl;
 
 
-	ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>  pair_A =  a.equal_range(2);
-	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
-			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
+	// ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>  pair_A =  a.equal_range(50);
+	// std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
+	// 		<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
 	
-	pair_A =  a.equal_range(1);
-	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
-			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
+	// pair_A =  a.equal_range(30);
+	// std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
+	// 		<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
 
-	pair_A =  a.equal_range(0);
-	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
-			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
+	// pair_A =  a.equal_range(70);
+	// std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
+	// 		<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
 
-	pair_A =  a.equal_range(7);
-	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
-			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
+	// pair_A =  a.equal_range(0);
+	// std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
+	// 		<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
 
 
 
@@ -341,8 +416,8 @@ void map_tests_normal()
 
 	std::cout << "print a[2] " << a[2] << std::endl;
 	
-
 std::cout << "############################still alive" << std::endl;
+
 //BROKEN SHIT
 	//std::cout << a.max_size() << std::endl;
 	// std::cout << b.max_size() << std::endl;
@@ -564,6 +639,7 @@ int main(void)
 	clock_t time_stack;
 	clock_t time_map;
 
+	signal(SIGABRT, &abort_proc);
 	srand(0);
 	start_test = clock();
 

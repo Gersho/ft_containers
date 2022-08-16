@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/13 15:48:59 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/15 20:15:28 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,9 +137,9 @@ namespace ft
 			_compare(comp),
 			_allocator(alloc)
 			{
-// std::cout << "map iterator constructor P1" << std::endl;
+//  std::cout << "map iterator constructor P1" << std::endl;
 				insert(first, last);
-// std::cout << "map iterator constructor P2" << std::endl;
+//  std::cout << "map iterator constructor P2" << std::endl;
 			}
 
 
@@ -172,12 +172,15 @@ namespace ft
 
 		iterator end()
 		{
-			return iterator(NULL, &_tree);
+			
+			//return iterator(NULL, &_tree);
+			return _tree.end();
 		}
 
 		const_iterator end() const
 		{
-			return const_iterator(NULL, &_tree);
+			//return const_iterator(NULL, &_tree);
+			return _tree.end();
 		}
 
 		reverse_iterator rbegin()
@@ -245,13 +248,15 @@ namespace ft
 		void insert (InputIterator first, InputIterator last)
 		{
 // std::cout << "coucou first: " << first.get_it() << " last:" << last.get_it() << std::endl;
-// std::cout << "test1 " << (first != last) << std::endl;
-// std::cout << "test " << first->second << std::endl;
+// std::cout << "test1 " << std::boolalpha << (first != last) << std::endl;
+//std::cout << "test " << first->second << std::endl;
 			while (first != last)
 			{
-//std::cout << "new first " << first.get_it() << std::endl;
+// std::cout << "in loop first != last: " << std::boolalpha << (first != last) << std::endl;
+// std::cout << "new first " << first.get_it() << std::endl;
 				_tree.set_root(_tree.insert(_tree.get_root(), *first));
 				first++;
+// std::cout << "new first2 " << first.get_it() << std::endl;
 			}
 		}
 
@@ -318,13 +323,23 @@ namespace ft
 		while(tmp)
 		{
 			if(_compare(k, tmp->data->first))
+			{
+// std::cout << "tmp first: " << tmp->data->first << " going left" << std::endl;
 				tmp = tmp->left;
+			}
 			else if(_compare(tmp->data->first, k))
+			{
+// std::cout << "tmp first: " << tmp->data->first << " going right" << std::endl;
 				tmp = tmp->right;
+			}
 			else
+			{
+// std::cout << "tmp first: " << tmp->data->first << " returning" << std::endl;
 				return iterator(tmp, &_tree);
+			}
 		}
-		return end();
+		//return end();
+		return _tree.end();
 	}
 
 	const_iterator find (const key_type& k) const

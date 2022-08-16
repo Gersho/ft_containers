@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/13 15:51:34 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/16 11:34:07 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,7 +272,7 @@ namespace ft
 
 		reverse_iterator& operator++()
 		{
-std::cout << "superwesh " << std::endl;
+// std::cout << "superwesh " << std::endl;
 			_it--;
 			return *this;
 		};
@@ -401,13 +401,17 @@ std::cout << "superwesh " << std::endl;
 		struct node<T> *parent;
 		int height;
 		T *data;
+		bool before_first;
+		bool after_last;
 
 		node():
 		left(NULL),
 		right(NULL),
 		parent(NULL),
 		height(1),
-		data(NULL)
+		data(NULL),
+		before_first(false),
+		after_last(false)
 		{}
 
 		~node(){}
@@ -493,7 +497,7 @@ std::cout << "superwesh " << std::endl;
 
 		bool operator==( iterator & rhs) const
 		{
- std::cout << "in == operator member" << std::endl;
+//  std::cout << "in == operator member" << std::endl;
 			//return _it==rhs._it;
 			return (get_it() == rhs.get_it());
 		}
@@ -536,8 +540,22 @@ std::cout << "superwesh " << std::endl;
 
 	iterator &operator++ ()
 	{
-		node<T> *tmp;
-		
+
+
+	node<T> *tmp;
+
+// 		if (_it && _it == _tree->find_highest(_tree->get_root()))
+// 		{
+// std::cout << "is highest in ++" << std::endl;
+// 			//this->_it =  NULL;
+// 			//*this = NULL;
+// std::cout << "tree end " << _tree->end().get_it() << std::endl;
+// //std::cout << "tree end2 " << _tree->end() << std::endl;
+
+// 			this->_it = _tree->end()._it;
+// 			return *this;	
+// 		}
+
 		if (_it == NULL)
 		{
 			_it = _tree->get_root();
@@ -551,8 +569,26 @@ std::cout << "superwesh " << std::endl;
 				_it = _it->left;
 		}
 		else
-		{			
-			if (_it->right != NULL)
+		{	
+
+			if(this->_it->before_first)
+			{
+				tmp = _tree->get_root();
+				if(!tmp)
+				{
+					this->_it =  NULL;
+					return *this;
+				}
+				while(tmp->left != NULL)
+					tmp = tmp->left;
+				this->_it = tmp;
+			}
+			else if(this->_it->after_last)
+			{
+				this->_it =  NULL;
+				return *this;
+			}		
+			else if (_it->right != NULL)
 			{
 				_it = _it->right;
 				while (_it->left != NULL)
@@ -567,6 +603,10 @@ std::cout << "superwesh " << std::endl;
 					tmp = tmp->parent;
 				}
 				_it = tmp;
+				if(!_it)
+				{
+					this->_it = _tree->get_after_last();
+				}
 			}
 		}
 		
@@ -580,57 +620,29 @@ std::cout << "superwesh " << std::endl;
 		return tmp;
 	}
 
-
 	iterator &operator-- ()
 	{
-// 		iterator *tmp;
-		
-// 		if (this->_it == NULL)
-// 		{
-// 			this->_it = _tree->get_root();
-// 			if (this->_it == NULL)
-// 			{
-// 				// return NULL;
-// 				///return __const_tree_iterator<T, Treebase>(NULL, _tree);
-// //test au cas ou, ca vas surement exploser
-// 				return *this;
-// 			}
-// 			while (this->_it->right != NULL)
-// 				this->_it = this->_it->right;
-// 		}
-// 		else
-// 		{			
-// 			if (this->_it->left != NULL)
-// 			{
-// 				this->_it = this->_it->left;
-// 				while (this->_it->right != NULL)
-// 					this->_it = this->_it->right;
-// 			}
-// 			else
-// 			{
-// 				tmp = this->_it->parent;
-// 				while (tmp != NULL && this->_it == tmp->left)
-// 				{
-// 					this->_it = tmp;
-// 					tmp = tmp->parent;
-// 				}
-// 				this->_it = tmp;
-// 			}
-// 		}
-		
-// 			return *this;
 
  		struct node<T> *tmp;
 		//tmp = this->_it;
-std::cout << "wesh " << std::endl;
-if (this->_it != NULL)
-{
-	//fjlhldkfjhlkjh
-std::cout << "debug first: " << this->_it->data->first << " second: " << this->_it->data->second << std::endl;
-std::cout << "debug ptr: " << this->_it <<  " left: " << this->_it->left << " right: " << this->_it->right << " par: " << this->_it->parent << std::endl; 
-}
- 		if (this->_it == NULL)
+// std::cout << "wesh " << std::endl;
+// if (this->_it != NULL)
+// {
+// 	//fjlhldkfjhlkjh
+// std::cout << "debug first: " << this->_it->data->first << " second: " << this->_it->data->second << std::endl;
+// std::cout << "debug ptr: " << this->_it <<  " left: " << this->_it->left << " right: " << this->_it->right << " par: " << this->_it->parent << std::endl; 
+// }
+
+
+		// if (_it && _it == _tree->find_lowest(_tree->get_root()))
+		// {
+		// 	this->_it =  NULL;
+		// 	return *this;	
+		// }
+		if (this->_it == NULL)
 		{
+
+
 			this->_it = _tree->get_root();
 			if (this->_it == NULL)
 			{
@@ -641,10 +653,29 @@ std::cout << "debug ptr: " << this->_it <<  " left: " << this->_it->left << " ri
 			}
 			while (this->_it->right != NULL)
 				this->_it = this->_it->right;
+				
+	
 		}
 		else
-		{			
-			if (this->_it->left != NULL)
+		{
+			if(this->_it->after_last)
+			{
+				tmp = _tree->get_root();
+				if(!tmp)
+				{
+					this->_it =  NULL;
+					return *this;
+				}
+				while(tmp->right != NULL)
+					tmp = tmp->right;
+				this->_it = tmp;
+			}
+			else if(this->_it->before_first)
+			{
+				this->_it =  NULL;
+				return *this;
+			}
+			else if (this->_it->left != NULL)
 			{
 				this->_it = this->_it->left;
 				while (this->_it->right != NULL)
@@ -655,11 +686,15 @@ std::cout << "debug ptr: " << this->_it <<  " left: " << this->_it->left << " ri
 				tmp = this->_it->parent;
 				while (tmp != NULL && this->_it == tmp->left)
 				{
-std::cout << "still here" << std::endl;
+//std::cout << "still here" << std::endl;
 					this->_it = tmp;
 					tmp = tmp->parent;
 				}
 				this->_it = tmp;
+				if(!_it)
+				{
+					this->_it = _tree->get_before_first();
+				}
 			}
 		}
 		

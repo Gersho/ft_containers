@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/01 23:13:47 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/16 11:27:14 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,14 @@ namespace ft
 		typedef Allocator allocator_type;
 		typedef Compare key_compare;
 		typedef ft::__tree_iterator<T, Tree>	 iterator;
-		typedef ft::__const_tree_iterator<const T, Tree>		const_iterator;	
+		typedef ft::__const_tree_iterator<const T, Tree>		const_iterator;
+		typedef	ft::reverse_iterator<iterator>						reverse_iterator;
+		typedef	ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 //constructors
 		Tree(): _root(NULL), _allocator(allocator_type()), _compare(key_compare()), _size(0)
 		{
-			
+			_before_first.before_first = true;
+			_after_last.after_last = true;
 		}
 //destructor
 		~Tree()
@@ -76,6 +79,11 @@ namespace ft
 		node_type *get_root() const { return _root; }
 		// node_type *get_root() { return _root; }
 		//const_node_type *get_root() const { return _root; }
+		node_type *get_after_last() { return &_after_last; }
+		node_type *get_before_first() { return &_before_first; }
+
+
+		bool is_tree_empty() const { return _root ? false :true; } 
 
 		ft::pair<iterator, bool> &get_last_insert()  { return _last_insert; }
 		int get_last_erase() const { return _last_erase; } 
@@ -117,8 +125,8 @@ namespace ft
 		iterator begin() 
 		{
 //std::cout << "coucou" << std::endl;
-			node_type *ptr = get_root();
 //std::cout << "coucou2 ptr" << ptr << std::endl;
+			node_type *ptr = get_root();
 			if(!ptr)
 				return iterator(NULL, this);
 			while(ptr->left != NULL)
@@ -145,10 +153,135 @@ namespace ft
 			//return const_iterator(begin());
 		}
 
-		iterator end(){ return iterator(NULL, this); }
+		iterator end()
+		{
+// 			node_type ptr;
+// 			ptr.after_last = true;	
+// //std::cout << "###########################prout" << std::endl;
+// 			return iterator(&ptr, this);
+// 			//return iterator(NULL, this);
+			node_type *ptr = get_root();
+//std::cout << "coucou2 ptr" << ptr << std::endl;
+			if(!ptr)
+				return iterator(NULL, this);
+
+			return iterator(get_after_last(), this);
+		}
 
 
-		const_iterator end() const{ return const_iterator(NULL, this); }
+		const_iterator end() const
+		{
+//std::cout << "########################### CONST prout" << std::endl;
+			node_type *ptr = get_root();
+//std::cout << "coucou2 ptr" << ptr << std::endl;
+			if(!ptr)
+				return const_iterator(NULL, this);
+
+			return const_iterator(get_after_last(), this);
+
+		// 	node_type ptr;
+		// 	ptr.after_last = true;	
+		// 	return const_iterator(&ptr, this);
+		// //	return const_iterator(NULL, this);
+		}
+
+
+
+
+
+
+/////////////////////////////////////////////////////////
+
+
+
+
+		reverse_iterator rbegin()
+		{
+			node_type *ptr = get_root();
+			if(!ptr)
+				return reverse_iterator(iterator(NULL, this));
+			return reverse_iterator(iterator(get_after_last,this));
+			// node_type ptr;
+			// ptr.after_last = true;	
+			// return reverse_iterator(iterator(&ptr, this));
+			//return reverse_iterator(_tree.find_highest(_tree.get_root()));
+			//return reverse_iterator(iterator(_tree.find_highest(_tree.get_root()), &_tree));
+			//return reverse_iterator(iterator(NULL, &_tree));
+		}
+
+		const_reverse_iterator rbegin() const 
+		{
+			node_type *ptr = get_root();
+			if(!ptr)
+				return const_reverse_iterator(const_iterator(NULL, this));
+			return const_reverse_iterator(iterator(get_after_last,this));
+
+			// node_type ptr;
+			// ptr.after_last = true;	
+			// return const_reverse_iterator(const_iterator(&ptr, this));
+			//return const_reverse_iterator(_tree.find_highest(_tree.get_root()));
+			//return const_reverse_iterator(const_iterator(_tree.find_highest(_tree.get_root()), &_tree));
+			//return const_reverse_iterator(const_iterator(NULL, &_tree));
+		}
+
+		reverse_iterator rend()
+		{
+
+			node_type *ptr = get_root();
+			if(!ptr)
+				return reverse_iterator(iterator(NULL, this));
+			return reverse_iterator(iterator(get_before_first,this));
+			// //before first
+			// node_type ptr;
+			// ptr.before_first = true;	
+			//return reverse_iterator(iterator(&ptr, this));
+			//return reverse_iterator(NULL);
+			//return reverse_iterator(iterator(NULL, &_tree));
+		}
+
+		const_reverse_iterator rend() const 
+		{
+
+			node_type *ptr = get_root();
+			if(!ptr)
+				return const_reverse_iterator(const_iterator(NULL, this));
+			return const_reverse_iterator(iterator(get_before_first,this));
+			// node_type ptr;
+			// ptr.before_first = true;	
+			// return const_reverse_iterator(const_iterator(&ptr, this));
+			// return const_reverse_iterator(NULL);
+			//return const_reverse_iterator(const_iterator(NULL, &_tree));
+		}
+
+
+
+
+
+/////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 		void clear(node_type *parent)
 		{
@@ -448,6 +581,8 @@ namespace ft
 		int _size;
 		ft::pair<iterator, bool> _last_insert;
 		int _last_erase;
+		node_type _before_first;
+		node_type _after_last;
 	};
 
 }
