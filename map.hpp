@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/15 20:15:28 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/16 12:32:40 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 
 
 //TODO COPY CONSTRUCTOR MAP (CONST PROBLEMS && OPERATOR= TREE)
-//TODO repair reverse iterator
 //TODO max_size
 //TODO const iterators?
 //TODO insert2 (with hint)
@@ -187,26 +186,30 @@ namespace ft
 		{
 			//return reverse_iterator(_tree.find_highest(_tree.get_root()));
 			//return reverse_iterator(iterator(_tree.find_highest(_tree.get_root()), &_tree));
-			return reverse_iterator(iterator(NULL, &_tree));
+			//return reverse_iterator(iterator(NULL, &_tree));
+			return _tree.rbegin();
 		}
 
 		const_reverse_iterator rbegin() const 
 		{
 			//return const_reverse_iterator(_tree.find_highest(_tree.get_root()));
 			//return const_reverse_iterator(const_iterator(_tree.find_highest(_tree.get_root()), &_tree));
-			return const_reverse_iterator(const_iterator(NULL, &_tree));
+			//	return const_reverse_iterator(const_iterator(NULL, &_tree));
+			return _tree.rbegin();
 		}
 
 		reverse_iterator rend()
 		{
 			//return reverse_iterator(NULL);
-			return reverse_iterator(iterator(NULL, &_tree));
+			///return reverse_iterator(iterator(NULL, &_tree));
+			return _tree.rend();
 		}
 
 		const_reverse_iterator rend() const 
 		{
 			// return const_reverse_iterator(NULL);
-			return const_reverse_iterator(const_iterator(NULL, &_tree));
+			//return const_reverse_iterator(const_iterator(NULL, &_tree));
+			return _tree.rend();
 		}
 
 		bool empty() const

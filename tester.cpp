@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/16 11:38:01 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/16 13:46:05 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -294,6 +294,8 @@ void fill_vect(ft::vector<T> &vec, size_t qt)
 template<class Key, class T>
 void show_map(ft::map<Key, T> &map)
 {
+	std::cout << "size: " << map.size() << std::endl;
+
 	typename ft::map<Key, T>::iterator it = map.begin();
 	typename ft::map<Key, T>::iterator ite = map.end();
 // std::cout << "in show map it: " << it.get_it() << " ite: " << ite.get_it() << std::endl; 
@@ -305,15 +307,17 @@ void show_map(ft::map<Key, T> &map)
 		it++;
 	}
 
-// 	typename ft::map<Key, T>::reverse_iterator rit = map.rbegin();
-// 	typename ft::map<Key, T>::reverse_iterator rite = map.rend();
-// //50 80 30 20 70
-// 	std::cout << "reverse order" << std::endl;
-// 	while(rit != rite)
-// 	{
-// 		std::cout << "reverse key: " << rit->first<< " value: " << rit->second << std::endl;
-// 		rit++;
-// 	}
+	typename ft::map<Key, T>::reverse_iterator rit = map.rbegin();
+	typename ft::map<Key, T>::reverse_iterator rite = map.rend();
+//50 80 30 20 70
+// std::cout << "in show map reverse rit: " << rit.base().get_it() << " rite: " << rite.base().get_it()  << std::endl; 
+	std::cout << "reverse order" << std::endl;
+	while(rit != rite)
+	{
+// std::cout << "in LOOP reverse rit: " << rit.base().get_it() << " rite: " << rite.base().get_it()  << std::endl; 
+		std::cout << "reverse key: " << rit->first<< " value: " << rit->second << std::endl;
+		rit++;
+	}
 }
 
 void map_tests_normal()
@@ -430,9 +434,9 @@ std::cout << "############################still alive" << std::endl;
 	//std::cout << "key: " << cit->first<< " value: " << cit->second << std::endl;	
 
 
-//	ft::map<int, int> d(c);
-	// std::cout << "printing map d" << std::endl;
-	// show_map(d);
+	ft::map<int, int> d(c);
+	std::cout << "printing map d" << std::endl;
+	show_map(d);
 
 
 

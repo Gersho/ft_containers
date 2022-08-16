@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/16 11:27:14 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/16 12:21:11 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,7 +200,7 @@ namespace ft
 			node_type *ptr = get_root();
 			if(!ptr)
 				return reverse_iterator(iterator(NULL, this));
-			return reverse_iterator(iterator(get_after_last,this));
+			return reverse_iterator(iterator(get_after_last(),this));
 			// node_type ptr;
 			// ptr.after_last = true;	
 			// return reverse_iterator(iterator(&ptr, this));
@@ -214,7 +214,7 @@ namespace ft
 			node_type *ptr = get_root();
 			if(!ptr)
 				return const_reverse_iterator(const_iterator(NULL, this));
-			return const_reverse_iterator(iterator(get_after_last,this));
+			return const_reverse_iterator(iterator(get_after_last(),this));
 
 			// node_type ptr;
 			// ptr.after_last = true;	
@@ -230,7 +230,8 @@ namespace ft
 			node_type *ptr = get_root();
 			if(!ptr)
 				return reverse_iterator(iterator(NULL, this));
-			return reverse_iterator(iterator(get_before_first,this));
+		//	return reverse_iterator(iterator(get_before_first(),this));
+			return reverse_iterator(iterator(find_lowest(get_root()),this));
 			// //before first
 			// node_type ptr;
 			// ptr.before_first = true;	
@@ -245,7 +246,8 @@ namespace ft
 			node_type *ptr = get_root();
 			if(!ptr)
 				return const_reverse_iterator(const_iterator(NULL, this));
-			return const_reverse_iterator(iterator(get_before_first,this));
+			//return const_reverse_iterator(iterator(get_before_first(),this));
+			return const_reverse_iterator(iterator(find_lowest(get_root()),this));
 			// node_type ptr;
 			// ptr.before_first = true;	
 			// return const_reverse_iterator(const_iterator(&ptr, this));

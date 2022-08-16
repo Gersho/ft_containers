@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/16 11:34:07 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/16 13:48:32 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -626,12 +626,12 @@ namespace ft
  		struct node<T> *tmp;
 		//tmp = this->_it;
 // std::cout << "wesh " << std::endl;
-// if (this->_it != NULL)
-// {
-// 	//fjlhldkfjhlkjh
-// std::cout << "debug first: " << this->_it->data->first << " second: " << this->_it->data->second << std::endl;
-// std::cout << "debug ptr: " << this->_it <<  " left: " << this->_it->left << " right: " << this->_it->right << " par: " << this->_it->parent << std::endl; 
-// }
+if (this->_it != NULL /*&& (this->_it->after_last() != this->_it) && (this->_it->before_first() != this->_it)*/)
+{
+	//fjlhldkfjhlkjh
+//std::cout << "debug first: " << this->_it->data->first << " second: " << this->_it->data->second << std::endl;
+//std::cout << "debug ptr: " << this->_it <<  " left: " << this->_it->left << " right: " << this->_it->right << " par: " << this->_it->parent << std::endl; 
+}
 
 
 		// if (_it && _it == _tree->find_lowest(_tree->get_root()))
@@ -686,14 +686,15 @@ namespace ft
 				tmp = this->_it->parent;
 				while (tmp != NULL && this->_it == tmp->left)
 				{
-//std::cout << "still here" << std::endl;
 					this->_it = tmp;
 					tmp = tmp->parent;
 				}
 				this->_it = tmp;
 				if(!_it)
 				{
+// std::cout << "still here" << std::endl;
 					this->_it = _tree->get_before_first();
+					//this->_it = _tree->get_after_last();
 				}
 			}
 		}
