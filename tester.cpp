@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/16 19:00:58 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/17 17:52:02 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,23 +298,20 @@ void show_map(ft::map<Key, T> &map)
 
 	typename ft::map<Key, T>::iterator it = map.begin();
 	typename ft::map<Key, T>::iterator ite = map.end();
-// std::cout << "in show map it: " << it.get_it() << " ite: " << ite.get_it() << std::endl; 
+
 	std::cout << "normal order" << std::endl;
 	while(it != ite)
 	{
-// std::cout << "in the loop" << " it: " << it.get_it() << " ite: " << ite.get_it() << std::endl;
 		std::cout << "key: " << it->first<< " value: " << it->second << std::endl;
 		it++;
 	}
 
 	typename ft::map<Key, T>::reverse_iterator rit = map.rbegin();
 	typename ft::map<Key, T>::reverse_iterator rite = map.rend();
-//50 80 30 20 70
-// std::cout << "in show map reverse rit: " << rit.base().get_it() << " rite: " << rite.base().get_it()  << std::endl; 
+ 
 	std::cout << "reverse order" << std::endl;
 	while(rit != rite)
-	{
-// std::cout << "in LOOP reverse rit: " << rit.base().get_it() << " rite: " << rite.base().get_it()  << std::endl; 
+	{ 
 		std::cout << "reverse key: " << rit->first<< " value: " << rit->second << std::endl;
 		rit++;
 	}
@@ -332,11 +329,34 @@ void map_tests_normal()
 	a.insert( ft::make_pair<int, int>( 20, 2000 ) );
 
 	ft::map<int, int> c(a.begin(), a.end());
+	// ft::map<int, int> d(a);
+	// std::cout << "printing map d" << std::endl;
+	// show_map(d);
+
+	// std::cout << "Testing map relational operators" << std::endl;
+	// std::cout << std::boolalpha << "a == c : " << (a == c) << std::endl;
+	// std::cout << std::boolalpha << "a != c : " << (a != c) << std::endl;
+	// std::cout << std::boolalpha << "a < c : " << (a < c) << std::endl;
+	// std::cout << std::boolalpha << "a > c : " << (a > c) << std::endl;
+	// std::cout << std::boolalpha << "a <= c : " << (a <= c) << std::endl;
+	// std::cout << std::boolalpha << "a >= c : " << (a >= c) << std::endl;
 
 	std::cout << "printing map c" << std::endl;
 	show_map(c);
 
 	a.insert( ft::make_pair<int, int>( 70, 7000 ) );
+	a.insert(a.begin(), ft::make_pair<int, int>( 60, 6000 ));
+	// std::cout << "Testing map relational operators" << std::endl;
+	// std::cout << std::boolalpha << "a == c : " << (a == c) << std::endl;
+	// std::cout << std::boolalpha << "a != c : " << (a != c) << std::endl;
+	// std::cout << std::boolalpha << "a < c : " << (a < c) << std::endl;
+	// std::cout << std::boolalpha << "a > c : " << (a > c) << std::endl;
+	// std::cout << std::boolalpha << "a <= c : " << (a <= c) << std::endl;
+	// std::cout << std::boolalpha << "a >= c : " << (a >= c) << std::endl;
+
+	// std::cout << "max size a: " << a.max_size() << std::endl;
+	// std::cout << "max size b: " << b.max_size() << std::endl;
+
 	std::cout << "printing map a" << std::endl;
 	show_map(a);
 	b.insert(a.begin(), a.end());
@@ -347,12 +367,10 @@ void map_tests_normal()
 	std::cout << "printing map b" << std::endl;
 	show_map(b);
 
-
 	b.erase(8);
 
 	std::cout << "printing map b" << std::endl;
 	show_map(b);
-
 
 	b.erase(b.begin(), b.end());
 	std::cout << "printing map b" << std::endl;
@@ -362,7 +380,6 @@ void map_tests_normal()
 	std::cout << b.empty() << std::endl;
 	std::cout << a.size() << std::endl;
 	std::cout << b.size() << std::endl;
-
 
 	ft::map<int, int >::iterator it = a.find(50);
 	std::cout << "find key: " << it->first<< " value: " << it->second << std::endl;
@@ -375,8 +392,10 @@ void map_tests_normal()
 		std::cout << "not found" << std::endl;
 	}
 
-std::cout << "############################still alive" << std::endl;
+	std::cout << "print a[2] " << a[2] << std::endl;
+	std::cout << "print a[2] " << a[80] << std::endl;
 
+	
 	// it = a.lower_bound(30);
 	// std::cout << "lower_bound key: " << it->first<< " value: " << it->second << std::endl;
 	// it = a.lower_bound(20);
@@ -386,7 +405,6 @@ std::cout << "############################still alive" << std::endl;
 	// it = a.lower_bound(0);
 	// std::cout << "lower_bound key: " << it->first<< " value: " << it->second << std::endl;
 
-
 	// it = a.upper_bound(30);
 	// std::cout << "upper_bound key: " << it->first<< " value: " << it->second << std::endl;
 	// it = a.upper_bound(80);
@@ -395,7 +413,6 @@ std::cout << "############################still alive" << std::endl;
 	// std::cout << "upper_bound key: " << it->first<< " value: " << it->second << std::endl;
 	// it = a.upper_bound(0);
 	// std::cout << "upper_bound key: " << it->first<< " value: " << it->second << std::endl;
-
 
 	// ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>  pair_A =  a.equal_range(50);
 	// std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
@@ -414,36 +431,80 @@ std::cout << "############################still alive" << std::endl;
 	// 		<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
 
 
+std::cout << "############################still alive" << std::endl;
 
-// std::cout << "printing map a" << std::endl;
-// show_map(a);
-// std::cout << "@@@@@@@@@@@@@@@@@@@@jusque ici tout vas bien " << std::endl;
+	std::cout << "Testing const stuff" << std::endl;
 
 
-	std::cout << "print a[2] " << a[2] << std::endl;
+	// ft::map<int, int >::const_iterator cit = a.find(50);
+	// std::cout << "find key: " << cit->first<< " value: " << cit->second << std::endl;
+	// cit = a.find(30);
+	// std::cout << "find key: " << cit->first<< " value: " << cit->second << std::endl;
+	// cit = a.find(0);
+
+	// if (cit == a.end())
+	// {
+	// 	std::cout << "not found" << std::endl;
+	// }
+
+	// cit = a.lower_bound(30);
+	// std::cout << "lower_bound key: " << cit->first<< " value: " << cit->second << std::endl;
+	// cit = a.lower_bound(20);
+	// std::cout << "lower_bound key: " << cit->first<< " value: " << cit->second << std::endl;
+	// cit = a.lower_bound(50);
+	// std::cout << "lower_bound key: " << cit->first<< " value: " << cit->second << std::endl;
+	// cit = a.lower_bound(0);
+	// std::cout << "lower_bound key: " << cit->first<< " value: " << cit->second << std::endl;
+
+
+	// cit = a.upper_bound(30);
+	// std::cout << "upper_bound key: " << cit->first<< " value: " << cit->second << std::endl;
+	// cit = a.upper_bound(80);
+	// std::cout << "upper_bound key: " << cit->first<< " value: " << cit->second << std::endl;
+	// cit = a.upper_bound(20);
+	// std::cout << "upper_bound key: " << cit->first<< " value: " << cit->second << std::endl;
+	// cit = a.upper_bound(0);
+	// std::cout << "upper_bound key: " << cit->first<< " value: " << cit->second << std::endl;
+
+
+	// ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::const_iterator>  cpair_A =  a.equal_range(50);
+	// std::cout << "keyA: " << cpair_A.first->first << " valueA: " << cpair_A.first->second 
+	// 		<<  " keyB: " << cpair_A.second->first << " valueB: " << cpair_A.second->second << std::endl;
 	
+	// cpair_A =  a.equal_range(30);
+	// std::cout << "keyA: " << cpair_A.first->first << " valueA: " << cpair_A.first->second 
+	// 		<<  " keyB: " << cpair_A.second->first << " valueB: " << cpair_A.second->second << std::endl;
 
-//BROKEN SHIT
-	//std::cout << a.max_size() << std::endl;
-	// std::cout << b.max_size() << std::endl;
+	// cpair_A =  a.equal_range(70);
+	// std::cout << "keyA: " << cpair_A.first->first << " valueA: " << cpair_A.first->second 
+	// 		<<  " keyB: " << cpair_A.second->first << " valueB: " << cpair_A.second->second << std::endl;
 
-	//std::cout << a.count(8) << std::endl;
+	// cpair_A =  a.equal_range(0);
+	// std::cout << "keyA: " << cpair_A.first->first << " valueA: " << cpair_A.first->second 
+	// 		<<  " keyB: " << cpair_A.second->first << " valueB: " << cpair_A.second->second << std::endl;
+
+
+	//std::cout << a.count(80) << std::endl;
 	//std::cout << a.count(0) << std::endl;
 
 
-	//ft::map<const int, int >::const_iterator cit = a.find(8);
-	//std::cout << "key: " << cit->first<< " value: " << cit->second << std::endl;	
-std::cout << "printing map a" << std::endl;
-show_map(a);
+	std::cout << "testing swap" << std::endl;
 
-	//ft::map<int, int> d(a);
-	// a.clear();
-	//std::cout << "printing map d" << std::endl;
-	//show_map(d);
+	a.swap(b);
+	ft::swap(b, c);
 
-
+	std::cout << "reprint all maps" << std::endl;
+	std::cout << "printing map a" << std::endl;
+	show_map(a);
+	std::cout << "printing map b" << std::endl;
+	show_map(b);
+	std::cout << "printing map c" << std::endl;
+	show_map(c);
+	// std::cout << "printing map d" << std::endl;
+	// show_map(d);
 
 std::cout << "############################still alive END" << std::endl;
+
 }
 
 void vector_tests()

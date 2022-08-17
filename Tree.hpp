@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/16 18:59:03 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/17 17:23:45 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ namespace ft
 		key_compare get_compare() const { return _compare; }
 
 		node_type *get_root() const { return _root; }
-		// node_type *get_root() const { return _root; }
+		// node_type *get_root() { return _root; }
 		// const_node_type *get_root() const { return _root; }
 		node_type *get_after_last() { return &_after_last; }
 		node_type *get_before_first() { return &_before_first; }
@@ -188,13 +188,6 @@ namespace ft
 
 
 
-
-
-/////////////////////////////////////////////////////////
-
-
-
-
 		reverse_iterator rbegin()
 		{
 			node_type *ptr = get_root();
@@ -258,10 +251,6 @@ namespace ft
 
 
 
-
-/////////////////////////////////////////////////////////
-
-
 	template<class X>
 	iterator find (const X& k)
 	{
@@ -317,49 +306,23 @@ namespace ft
 
 
 
+	template<class X>
+	size_t count (const X& k) const
+	{
+		const_iterator it = find(k);
+		//iterator it = find(k);
+		return it == end() ? 0 : 1;
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//////////////////////////////////////////////////////////////
-
+	void swap(Tree& x)
+	{
+		std::swap(_root, x._root);
+		std::swap(_last_insert, x._last_insert);
+		std::swap(_last_erase, x._last_erase);
+		std::swap(_before_first, x._before_first);
+		std::swap(_after_last, x._after_last);
+		std::swap(_size, x._size);
+	}
 
 
 		void clear(node_type *parent)
