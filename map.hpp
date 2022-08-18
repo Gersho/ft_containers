@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/17 17:47:48 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/18 13:24:56 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,58 +354,62 @@ namespace ft
 		// The function uses its internal comparison object (key_comp)
 		//  to determine this, returning an iterator to the first element
 		//   for which key_comp(element_key,k) would return false.
-		typename ft::map<Key, T>::iterator it = begin();
-		typename ft::map<Key, T>::iterator ite = end();
+		// typename ft::map<Key, T>::iterator it = begin();
+		// typename ft::map<Key, T>::iterator ite = end();
 
-		while (it != ite)
-		{
-			if (!_compare(it->first,k))
-				return it;
-			it++;
-		}
-		return end();
+		// while (it != ite)
+		// {
+		// 	if (!_compare(it->first,k))
+		// 		return it;
+		// 	it++;
+		// }
+		// return end();
+		return _tree.lower_bound(k);
 	}
 
 	const_iterator lower_bound (const key_type& k) const
 	{
-		typename ft::map<Key, T>::const_iterator it = begin();
-		typename ft::map<Key, T>::const_iterator ite = end();
+		// typename ft::map<Key, T>::const_iterator it = begin();
+		// typename ft::map<Key, T>::const_iterator ite = end();
 
-		while (it != ite)
-		{
-			if (!_compare(it->first,k))
-				return it;
-			it++;
-		}
-		return end();	
+		// while (it != ite)
+		// {
+		// 	if (!_compare(it->first,k))
+		// 		return it;
+		// 	it++;
+		// }
+		// return end();
+		return _tree.lower_bound(k);
 	}
 
 	iterator upper_bound (const key_type& k)
 	{
-		typename ft::map<Key, T>::iterator it = begin();
-		typename ft::map<Key, T>::iterator ite = end();
+		// typename ft::map<Key, T>::iterator it = begin();
+		// typename ft::map<Key, T>::iterator ite = end();
 
-		while (it != ite)
-		{
-			if (_compare(k, it->first))
-				return it;
-			it++;
-		}
-		return end();	
+		// while (it != ite)
+		// {
+		// 	if (_compare(k, it->first))
+		// 		return it;
+		// 	it++;
+		// }
+		// return end();
+		return _tree.upper_bound(k);	
 	}
 
 	const_iterator upper_bound (const key_type& k) const
 	{
-		typename ft::map<Key, T>::const_iterator it = begin();
-		typename ft::map<Key, T>::const_iterator ite = end();
+		// typename ft::map<Key, T>::const_iterator it = begin();
+		// typename ft::map<Key, T>::const_iterator ite = end();
 
-		while (it != ite)
-		{
-			if (_compare(k, it->first))
-				return it;
-			it++;
-		}
-		return end();	
+		// while (it != ite)
+		// {
+		// 	if (_compare(k, it->first))
+		// 		return it;
+		// 	it++;
+		// }
+		// return end();	
+		return _tree.upper_bound(k);
 	}
 
 

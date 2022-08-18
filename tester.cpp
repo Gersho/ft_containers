@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/17 17:52:02 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/18 14:06:36 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,39 +396,39 @@ void map_tests_normal()
 	std::cout << "print a[2] " << a[80] << std::endl;
 
 	
-	// it = a.lower_bound(30);
-	// std::cout << "lower_bound key: " << it->first<< " value: " << it->second << std::endl;
-	// it = a.lower_bound(20);
-	// std::cout << "lower_bound key: " << it->first<< " value: " << it->second << std::endl;
-	// it = a.lower_bound(50);
-	// std::cout << "lower_bound key: " << it->first<< " value: " << it->second << std::endl;
-	// it = a.lower_bound(0);
-	// std::cout << "lower_bound key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.lower_bound(30);
+	std::cout << "lower_bound 30 key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.lower_bound(20);
+	std::cout << "lower_bound 20 key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.lower_bound(45);
+	std::cout << "lower_bound 45 key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.lower_bound(0);
+	std::cout << "lower_bound 0 key: " << it->first<< " value: " << it->second << std::endl;
 
-	// it = a.upper_bound(30);
-	// std::cout << "upper_bound key: " << it->first<< " value: " << it->second << std::endl;
-	// it = a.upper_bound(80);
-	// std::cout << "upper_bound key: " << it->first<< " value: " << it->second << std::endl;
-	// it = a.upper_bound(20);
-	// std::cout << "upper_bound key: " << it->first<< " value: " << it->second << std::endl;
-	// it = a.upper_bound(0);
-	// std::cout << "upper_bound key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.upper_bound(30);
+	std::cout << "upper_bound 30 key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.upper_bound(20);
+	std::cout << "upper_bound 20 key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.upper_bound(45);
+	std::cout << "upper_bound 45 key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.upper_bound(50);
+	std::cout << "upper_bound 50 key: " << it->first<< " value: " << it->second << std::endl;
 
-	// ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>  pair_A =  a.equal_range(50);
-	// std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
-	// 		<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
+	ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>  pair_A =  a.equal_range(50);
+	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
+			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
 	
-	// pair_A =  a.equal_range(30);
-	// std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
-	// 		<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
+	pair_A =  a.equal_range(30);
+	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
+			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
 
-	// pair_A =  a.equal_range(70);
-	// std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
-	// 		<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
+	pair_A =  a.equal_range(70);
+	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
+			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
 
-	// pair_A =  a.equal_range(0);
-	// std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
-	// 		<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
+	pair_A =  a.equal_range(0);
+	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
+			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
 
 
 std::cout << "############################still alive" << std::endl;
@@ -712,12 +712,12 @@ int main(void)
 	srand(0);
 	start_test = clock();
 
-//	vector_tests();
+	vector_tests();
 
 	time_vect = clock() - start_test;
 	start_test = clock();
 	
-//	stack_tests();
+	stack_tests();
 
 	time_stack = clock() - start_test;
 	start_test = clock();

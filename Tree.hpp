@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/17 17:23:45 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/18 14:05:08 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -313,6 +313,107 @@ namespace ft
 		//iterator it = find(k);
 		return it == end() ? 0 : 1;
 	}
+
+
+
+
+
+
+///////////////////////////////////////////////////////////
+
+
+
+
+/*
+1,2) Returns an iterator pointing to the first element that is not less than
+ (i.e. greater or equal to) key.
+*/
+
+	template<class X>
+	iterator lower_bound(const X& k)
+	{
+		node_type *ptr = get_root();
+		node_type *previous = NULL;
+
+		if (!ptr)
+			return end();
+
+		while ( ptr ) {
+			if ( !_compare( ptr->data->first, k ) && !_compare( k, ptr->data->first ) )
+				return iterator(ptr, this);
+			if ( _compare( ptr->data->first, k ) )
+				ptr = ptr->right;
+			else {
+				if ( previous == NULL || _compare( ptr->data->first, previous->data->first ) )
+					previous = ptr;
+				ptr = ptr->left;
+			}
+		}
+		if ( previous )
+			return iterator(previous, this);
+		return end();
+	}
+
+
+
+
+	template<class X>
+	const_iterator lower_bound(const X& k) const
+	{
+		node_type *ptr = get_root();
+		node_type *previous = NULL;
+
+		if (!ptr)
+			return end();
+
+		while ( ptr ) {
+			if ( !_compare( ptr->data->first, k ) && !_compare( k, ptr->data->first ) )
+				return const_iterator(ptr, this);
+			if ( _compare( ptr->data->first, k ) )
+				ptr = ptr->right;
+			else {
+				if ( previous == NULL || _compare( ptr->data->first, previous->data->first ) )
+					previous = ptr;
+				ptr = ptr->left;
+			}
+		}
+		if ( previous )
+			return const_iterator(previous, this);
+		return end();
+	}
+
+
+
+
+	template<class X>
+	iterator upper_bound (const X& k)
+	{
+		iterator low = lower_bound(k);
+
+		if (_compare( k, low.get_it()->data->first ))
+			return low;
+		low++;
+		return low;
+	}
+
+
+
+	template<class X>
+	const_iterator upper_bound (const X& k) const
+	{
+		const_iterator low = lower_bound(k);
+
+		if (_compare( k, low.get_it()->data->first ))
+			return low;
+		low++;
+		return low;
+	}
+
+
+
+
+
+///////////////////////////////////////////////////////////
 
 	void swap(Tree& x)
 	{
