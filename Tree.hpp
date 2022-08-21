@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/18 14:05:08 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/18 14:23:07 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,26 +25,6 @@
 namespace ft
 {
 
-	// template <class T>
-	// struct node
-	// {
-	// 	struct node<T> *left;
-	// 	struct node<T> *right;
-	// 	struct node<T> *parent;
-	// 	int height;
-	// 	T *data;
-
-	// 	node():
-	// 	left(NULL),
-	// 	right(NULL),
-	// 	parent(NULL),
-	// 	height(1),
-	// 	data(NULL)
-	// 	{}
-
-	// 	~node(){}
-	// };
-
 	template <class T, class Allocator, class Compare>
 	class Tree
 	{
@@ -59,16 +39,15 @@ namespace ft
 		typedef ft::__const_tree_iterator<const T, Tree>		const_iterator;
 		typedef	ft::reverse_iterator<iterator>						reverse_iterator;
 		typedef	ft::reverse_iterator<const_iterator>				const_reverse_iterator;
-//constructors
+
 		Tree(): _root(NULL), _allocator(allocator_type()), _compare(key_compare()), _size(0)
 		{
 			_before_first.before_first = true;
 			_after_last.after_last = true;
 		}
-//destructor
+
 		~Tree()
 		{
-			//clear toutes les nodes
 			clear(_root);
 		}
 
@@ -318,12 +297,6 @@ namespace ft
 
 
 
-
-///////////////////////////////////////////////////////////
-
-
-
-
 /*
 1,2) Returns an iterator pointing to the first element that is not less than
  (i.e. greater or equal to) key.
@@ -410,10 +383,6 @@ namespace ft
 	}
 
 
-
-
-
-///////////////////////////////////////////////////////////
 
 	void swap(Tree& x)
 	{

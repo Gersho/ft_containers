@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/18 14:06:36 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/18 18:47:33 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -393,7 +393,7 @@ void map_tests_normal()
 	}
 
 	std::cout << "print a[2] " << a[2] << std::endl;
-	std::cout << "print a[2] " << a[80] << std::endl;
+	std::cout << "print a[80] " << a[80] << std::endl;
 
 	
 	it = a.lower_bound(30);
@@ -505,6 +505,46 @@ std::cout << "############################still alive" << std::endl;
 
 std::cout << "############################still alive END" << std::endl;
 
+}
+
+void map_tests_big()
+{
+	ft::map<int, int> a;
+	ft::map<int, int> b;
+
+	int i = 1000000;
+	int r;
+
+	a.insert( ft::make_pair<int, int>( 5000, 5000 ) );
+	a.insert( ft::make_pair<int, int>( 8000, 8000 ) );
+	a.insert( ft::make_pair<int, int>( 3000, 3000 ) );
+	a.insert( ft::make_pair<int, int>( 2000, 2000 ) );
+
+	while (i)
+	{
+		r = rand();
+		a.insert( ft::make_pair<int, int>(r, r) );
+		i--;
+	}
+
+	a.erase(3000);
+
+	ft::map<int, int >::iterator it = a.lower_bound(5000);
+	std::cout << "lower_bound 5000 key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.upper_bound(30175);
+	std::cout << "upper_bound 30175 key: " << it->first<< " value: " << it->second << std::endl;
+	it = a.find(8000);
+	std::cout << "find 8000 key: " << it->first<< " value: " << it->second << std::endl;
+
+	std::cout << "print a[2] " << a[2000] << std::endl;
+
+	ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::iterator>  pair_A =  a.equal_range(5000);
+	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
+			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
+
+
+
+	show_map(a);
 }
 
 void vector_tests()
@@ -695,11 +735,6 @@ void vector_tests()
 	test_vects(vects);
 }
 
-void map_tests()
-{
-	map_tests_normal();
-	//map_tests_big();
-}
 
 int main(void)
 {
@@ -722,7 +757,8 @@ int main(void)
 	time_stack = clock() - start_test;
 	start_test = clock();
 
-	map_tests();
+	map_tests_normal();
+	map_tests_big();
 
 	time_map = clock() - start_test;
 
