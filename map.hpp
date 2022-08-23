@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/18 13:24:56 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/23 15:20:42 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,18 +335,24 @@ namespace ft
 
 	iterator find (const key_type& k)
 	{
-		return _tree.find(k);
+		value_type tmp = make_pair<key_type, mapped_type>(k, mapped_type());
+		return _tree.find(tmp);
+	//	return _tree.find(k);
 	}
 
 	const_iterator find (const key_type& k) const
 	{
-		return _tree.find(k);
+		value_type tmp = make_pair<key_type, mapped_type>(k, mapped_type());
+		return _tree.find(tmp);
+		// return _tree.find(k);
 	}
 
 
 	size_type count (const key_type& k) const
 	{
-		return _tree.count(k);
+		value_type tmp = make_pair<key_type, mapped_type>(k, mapped_type());
+		return _tree.count(tmp);
+	//	return _tree.count(k);
 	}
 
 	iterator lower_bound (const key_type& k)

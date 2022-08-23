@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/18 14:23:07 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/23 15:20:16 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ namespace ft
 		typedef Allocator allocator_type;
 		typedef Compare key_compare;
 		typedef ft::__tree_iterator<T, Tree>	 iterator;
-		typedef ft::__const_tree_iterator<const T, Tree>		const_iterator;
+		typedef ft::__const_tree_iterator<T, Tree>		const_iterator;
 		typedef	ft::reverse_iterator<iterator>						reverse_iterator;
 		typedef	ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
@@ -57,9 +57,20 @@ namespace ft
 
 		node_type *get_root() const { return _root; }
 		// node_type *get_root() { return _root; }
-		// const_node_type *get_root() const { return _root; }
-		node_type *get_after_last() { return &_after_last; }
-		node_type *get_before_first() { return &_before_first; }
+		// node<const T> *get_root() const { return _root; }
+		//node<const T> *get_root() const { return const_cast<node<const T> *>(_root); }
+
+		// template<class X>
+		// X *get_root() const
+		// {
+		// 	X* ret = const_cast<X *>(_root);
+		// 	return ret;
+		// }
+
+
+
+		node_type *get_after_last() const { return const_cast<node_type*>(&_after_last); }
+		node_type *get_before_first() const { return const_cast<node_type*>(&_before_first); }
 
 
 		bool is_tree_empty() const { return _root ? false :true; } 
@@ -117,6 +128,7 @@ namespace ft
 		{
 
 			node_type *ptr = get_root();
+			//node<const T> *ptr = get_root();
 
 			if(!ptr)
 				return const_iterator(NULL, this);
@@ -152,6 +164,7 @@ namespace ft
 		{
 //std::cout << "########################### CONST prout" << std::endl;
 			node_type *ptr = get_root();
+			//node<const T> *ptr = get_root();
 //std::cout << "coucou2 ptr" << ptr << std::endl;
 			if(!ptr)
 				return const_iterator(NULL, this);
@@ -184,6 +197,7 @@ namespace ft
 		const_reverse_iterator rbegin() const 
 		{
 			node_type *ptr = get_root();
+			//node<const T> *ptr = get_root();
 			if(!ptr)
 				return const_reverse_iterator(const_iterator(NULL, this));
 			return const_reverse_iterator(iterator(get_after_last(),this));
@@ -216,6 +230,7 @@ namespace ft
 		{
 
 			node_type *ptr = get_root();
+			//node<const T> *ptr = get_root();
 			if(!ptr)
 				return const_reverse_iterator(const_iterator(NULL, this));
 			//return const_reverse_iterator(iterator(get_before_first(),this));
@@ -230,19 +245,19 @@ namespace ft
 
 
 
-	template<class X>
-	iterator find (const X& k)
+
+	iterator find (const T& k)
 	{
+//std::cout << "coucou" <<std::endl;
 		node_type *tmp = get_root();
-// std::cout << "coucou" <<std::endl;
 		while(tmp)
 		{
-			if(_compare(k, tmp->data->first))
+			if(_compare(k.first, tmp->data->first))
 			{
 // std::cout << "tmp first: " << tmp->data->first << " going left" << std::endl;
 				tmp = tmp->left;
 			}
-			else if(_compare(tmp->data->first, k))
+			else if(_compare(tmp->data->first, k.first))
 			{
 // std::cout << "tmp first: " << tmp->data->first << " going right" << std::endl;
 				tmp = tmp->right;
@@ -257,19 +272,21 @@ namespace ft
 		return end();
 	}
 
-	template<class X>
-	const_iterator find (const X& k) const
+
+	const_iterator find (const T& k) const
 	{
-		//const node<value_type> *tmp = _tree.get_root();
+//std::cout << "const coucou" <<std::endl;
+		// const node<value_type> *tmp = _tree.get_root();
+		// node<const T> *tmp = get_root();
 		node_type *tmp = get_root();
 		//node<const pair<const int, int> > *
 		//node<ft::pair<const int, int> > *
 		//std::cout << "coucou" <<std::endl;
 		while(tmp)
 		{
-			if(_compare(k, tmp->data->first))
+			if(_compare(k.first, tmp->data->first))
 				tmp = tmp->left;
-			else if(_compare(tmp->data->first, k))
+			else if(_compare(tmp->data->first, k.first))
 				tmp = tmp->right;
 			else
 				return const_iterator(tmp, this);
@@ -282,18 +299,77 @@ namespace ft
 
 
 
+// 	template<class X>
+// 	iterator find (const X& k)
+// 	{
+// std::cout << "coucou" <<std::endl;
+// 		node_type *tmp = get_root();
+// 		while(tmp)
+// 		{
+// 			if(_compare(k, tmp->data->first))
+// 			{
+// // std::cout << "tmp first: " << tmp->data->first << " going left" << std::endl;
+// 				tmp = tmp->left;
+// 			}
+// 			else if(_compare(tmp->data->first, k))
+// 			{
+// // std::cout << "tmp first: " << tmp->data->first << " going right" << std::endl;
+// 				tmp = tmp->right;
+// 			}
+// 			else
+// 			{
+// // std::cout << "tmp first: " << tmp->data->first << " returning" << std::endl;
+// 				return iterator(tmp, this);
+// 			}
+// 		}
+// 		//return end();
+// 		return end();
+// 	}
+
+// 	template<class X>
+// 	const_iterator find (const X& k) const
+// 	{
+// std::cout << "const coucou" <<std::endl;
+// 		// const node<value_type> *tmp = _tree.get_root();
+// 		// node<const T> *tmp = get_root();
+// 		node_type *tmp = get_root();
+// 		//node<const pair<const int, int> > *
+// 		//node<ft::pair<const int, int> > *
+// 		//std::cout << "coucou" <<std::endl;
+// 		while(tmp)
+// 		{
+// 			if(_compare(k, tmp->data->first))
+// 				tmp = tmp->left;
+// 			else if(_compare(tmp->data->first, k))
+// 				tmp = tmp->right;
+// 			else
+// 				return const_iterator(tmp, this);
+// 				//node<pair<const int, int> > *
+// 				//node<const ft::pair<const int, int> > *
+				
+// 		}
+// 		return end();		
+// 	}
 
 
 
-	template<class X>
-	size_t count (const X& k) const
+
+	// template<class X>
+	// size_t count (const X& k) const
+	// {
+	// 	const_iterator it = find(k);
+	// 	//iterator it = find(k);
+	// 	return it == end() ? 0 : 1;
+	// }
+
+
+
+	size_t count (const T& k) const
 	{
 		const_iterator it = find(k);
 		//iterator it = find(k);
 		return it == end() ? 0 : 1;
 	}
-
-
 
 
 
@@ -335,6 +411,10 @@ namespace ft
 	{
 		node_type *ptr = get_root();
 		node_type *previous = NULL;
+
+		// node<const T> *ptr = get_root();
+		// node<const T> *previous = NULL;
+
 
 		if (!ptr)
 			return end();

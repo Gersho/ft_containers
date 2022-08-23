@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/18 18:47:33 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/23 15:25:12 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -431,43 +431,31 @@ void map_tests_normal()
 			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
 
 
-std::cout << "############################still alive" << std::endl;
+std::cout << "############ normal end ###############" << std::endl;
 
 	std::cout << "Testing const stuff" << std::endl;
 
+	ft::map<int, int >::const_iterator cit;
 
-	// ft::map<int, int >::const_iterator cit = a.find(50);
-	// std::cout << "find key: " << cit->first<< " value: " << cit->second << std::endl;
-	// cit = a.find(30);
-	// std::cout << "find key: " << cit->first<< " value: " << cit->second << std::endl;
-	// cit = a.find(0);
+	cit = a.find(50);
+	std::cout << "find key: " << cit->first<< " value: " << cit->second << std::endl;
+	cit = a.find(30);
+	std::cout << "find key: " << cit->first<< " value: " << cit->second << std::endl;
 
-	// if (cit == a.end())
-	// {
-	// 	std::cout << "not found" << std::endl;
-	// }
+	cit = a.lower_bound(20);
+	std::cout << "lower_bound key: " << cit->first<< " value: " << cit->second << std::endl;
+	cit = a.lower_bound(50);
+	std::cout << "lower_bound key: " << cit->first<< " value: " << cit->second << std::endl;
 
-	// cit = a.lower_bound(30);
-	// std::cout << "lower_bound key: " << cit->first<< " value: " << cit->second << std::endl;
-	// cit = a.lower_bound(20);
-	// std::cout << "lower_bound key: " << cit->first<< " value: " << cit->second << std::endl;
-	// cit = a.lower_bound(50);
-	// std::cout << "lower_bound key: " << cit->first<< " value: " << cit->second << std::endl;
-	// cit = a.lower_bound(0);
-	// std::cout << "lower_bound key: " << cit->first<< " value: " << cit->second << std::endl;
+	cit = a.upper_bound(30);
+	std::cout << "upper_bound key: " << cit->first<< " value: " << cit->second << std::endl;
+	cit = a.upper_bound(20);
+	std::cout << "upper_bound key: " << cit->first<< " value: " << cit->second << std::endl;
+	cit = a.upper_bound(0);
+	std::cout << "upper_bound key: " << cit->first<< " value: " << cit->second << std::endl;
 
 
-	// cit = a.upper_bound(30);
-	// std::cout << "upper_bound key: " << cit->first<< " value: " << cit->second << std::endl;
-	// cit = a.upper_bound(80);
-	// std::cout << "upper_bound key: " << cit->first<< " value: " << cit->second << std::endl;
-	// cit = a.upper_bound(20);
-	// std::cout << "upper_bound key: " << cit->first<< " value: " << cit->second << std::endl;
-	// cit = a.upper_bound(0);
-	// std::cout << "upper_bound key: " << cit->first<< " value: " << cit->second << std::endl;
-
-
-	// ft::pair<ft::map<int, int>::iterator, ft::map<int, int>::const_iterator>  cpair_A =  a.equal_range(50);
+	// ft::pair<ft::map<int, int>::const_iterator, ft::map<int, int>::const_iterator>  cpair_A =  a.equal_range(50);
 	// std::cout << "keyA: " << cpair_A.first->first << " valueA: " << cpair_A.first->second 
 	// 		<<  " keyB: " << cpair_A.second->first << " valueB: " << cpair_A.second->second << std::endl;
 	
@@ -484,14 +472,33 @@ std::cout << "############################still alive" << std::endl;
 	// 		<<  " keyB: " << cpair_A.second->first << " valueB: " << cpair_A.second->second << std::endl;
 
 
-	//std::cout << a.count(80) << std::endl;
-	//std::cout << a.count(0) << std::endl;
+	std::cout << a.count(80) << std::endl;
+	std::cout << a.count(0) << std::endl;
+
 
 
 	std::cout << "testing swap" << std::endl;
 
 	a.swap(b);
 	ft::swap(b, c);
+
+
+	std::cout << "printing map a" << std::endl;
+	show_map(a);
+	std::cout << "printing map b" << std::endl;
+	show_map(b);
+	std::cout << "printing map c" << std::endl;
+	show_map(c);
+
+//	std::cout << "testing operator=" << std::endl;
+//	c = a;
+	std::cout << "printing map a" << std::endl;
+	show_map(a);
+	std::cout << "printing map c" << std::endl;
+	show_map(c);
+
+	
+std::cout << "############################still alive END" << std::endl;
 
 	std::cout << "reprint all maps" << std::endl;
 	std::cout << "printing map a" << std::endl;
@@ -503,8 +510,7 @@ std::cout << "############################still alive" << std::endl;
 	// std::cout << "printing map d" << std::endl;
 	// show_map(d);
 
-std::cout << "############################still alive END" << std::endl;
-
+std::cout << "############################after final print" << std::endl;
 }
 
 void map_tests_big()
@@ -747,18 +753,18 @@ int main(void)
 	srand(0);
 	start_test = clock();
 
-	vector_tests();
+	//vector_tests();
 
 	time_vect = clock() - start_test;
 	start_test = clock();
 	
-	stack_tests();
+	//stack_tests();
 
 	time_stack = clock() - start_test;
 	start_test = clock();
 
 	map_tests_normal();
-	map_tests_big();
+	//map_tests_big();
 
 	time_map = clock() - start_test;
 

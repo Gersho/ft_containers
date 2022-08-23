@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/16 18:57:31 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/23 15:12:57 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -482,7 +482,7 @@ namespace ft
 //TODO GERER LES GETTER
 		// Treebase *get_tree() const { return _tree;}
 		 struct node<T> *get_it() const{ return _it; }
-
+		Treebase *get_tree() const { return _tree; }
 
 // Can be compared for equivalence using the equality/inequality operators
 // (meaningful when both iterator values iterate over the same underlying sequence).	
@@ -936,7 +936,7 @@ if (this->_it != NULL /*&& (this->_it->after_last() != this->_it) && (this->_it-
 		// struct node;
 
 		struct node<T> *_it;
-		Treebase *_tree;
+		const Treebase *_tree;
 
 		protected:
 		public:
@@ -998,7 +998,14 @@ if (this->_it != NULL /*&& (this->_it->after_last() != this->_it) && (this->_it-
 			*this = src;
 		}
 
-		~__const_tree_iterator(){}
+
+		// template <class U, class V>
+		// __const_tree_iterator(const __tree_iterator<U, V> & src)
+		// {
+		// 	*this = src;
+		// }
+
+		~__const_tree_iterator() {}
 
 
 		// Node *_it;
@@ -1006,7 +1013,7 @@ if (this->_it != NULL /*&& (this->_it->after_last() != this->_it) && (this->_it-
 //TODO GERER LES GETTER
 		// Treebase *get_tree() const { return _tree;}
 		 struct node<T> *get_it() const{ return _it; }
-
+		Treebase *get_tree() const { return _tree; }
 
 // Can be compared for equivalence using the equality/inequality operators
 // (meaningful when both iterator values iterate over the same underlying sequence).	
@@ -1014,8 +1021,15 @@ if (this->_it != NULL /*&& (this->_it->after_last() != this->_it) && (this->_it-
 // a != b
 		const_iterator& operator=( const_iterator const & rhs )
 		{
-			_it = rhs._it;
-			_tree = rhs._tree;
+			_it = rhs.get_it();
+			_tree = rhs.get_tree();
+			return *this;
+		}
+
+		const_iterator& operator=( iterator const & rhs )
+		{
+			_it = rhs.get_it();
+			_tree = rhs.get_tree();
 			return *this;
 		}
 
