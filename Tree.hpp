@@ -6,14 +6,13 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/24 12:58:49 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/24 22:14:21 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TREE_HPP
 #define TREE_HPP
 
-//#include "utility.hpp"
 #include <cstdlib>
 #include <iostream>
 #include <stdexcept>
@@ -56,22 +55,8 @@ namespace ft
 		key_compare get_compare() const { return _compare; }
 
 		node_type *get_root() const { return _root; }
-		// node_type *get_root() { return _root; }
-		// node<const T> *get_root() const { return _root; }
-		//node<const T> *get_root() const { return const_cast<node<const T> *>(_root); }
-
-		// template<class X>
-		// X *get_root() const
-		// {
-		// 	X* ret = const_cast<X *>(_root);
-		// 	return ret;
-		// }
-
-
-
 		node_type *get_after_last() const { return const_cast<node_type*>(&_after_last); }
 		node_type *get_before_first() const { return const_cast<node_type*>(&_before_first); }
-
 
 		bool is_tree_empty() const { return _root ? false :true; } 
 
@@ -91,7 +76,6 @@ namespace ft
 		tree_type &operator= (const tree_type & rhs)
 		{
 			clear(_root);
-			//_root = rhs.get_root();
 			_allocator = rhs.get_allocator();
 			_compare = rhs.get_compare();
 
@@ -102,25 +86,18 @@ namespace ft
 			const_iterator it = rhs.begin();
 			const_iterator ite = rhs.end();
 
-			// iterator it = rhs.begin();
-			// iterator ite = rhs.end();
 			while (it != ite)
 			{
-//std::cout << "plop" <<std::endl;
 				set_root(insert(get_root(), *it));
 				it++;
 			}
-
-			//set_root(insert(rhs.begin(), rhs.end()));
-
 			return *this;
 		}
 
 		iterator begin() 
 		{
-//std::cout << "coucou" << std::endl;
-//std::cout << "coucou2 ptr" << ptr << std::endl;
 			node_type *ptr = get_root();
+			
 			if(!ptr)
 				return iterator(NULL, this);
 			while(ptr->left != NULL)
@@ -132,356 +109,197 @@ namespace ft
 		{
 
 			node_type *ptr = get_root();
-			//node<const T> *ptr = get_root();
 
 			if(!ptr)
 				return const_iterator(NULL, this);
 			while(ptr->left != NULL)
 				ptr = ptr->left;
 			return const_iterator(ptr, this);
-
-
-
-			// iterator ret = begin();
-			// return const_iterator(*ret, this);
-
-			//return const_iterator(begin());
 		}
 
 		iterator end()
 		{
-// 			node_type ptr;
-// 			ptr.after_last = true;	
-// //std::cout << "###########################prout" << std::endl;
-// 			return iterator(&ptr, this);
-// 			//return iterator(NULL, this);
 			node_type *ptr = get_root();
-//std::cout << "coucou2 ptr" << ptr << std::endl;
+
 			if(!ptr)
 				return iterator(NULL, this);
-
 			return iterator(get_after_last(), this);
 		}
 
-
 		const_iterator end() const
 		{
-//std::cout << "########################### CONST prout" << std::endl;
 			node_type *ptr = get_root();
-			//node<const T> *ptr = get_root();
-//std::cout << "coucou2 ptr" << ptr << std::endl;
+
 			if(!ptr)
 				return const_iterator(NULL, this);
-
 			return const_iterator(get_after_last(), this);
-
-		// 	node_type ptr;
-		// 	ptr.after_last = true;	
-		// 	return const_iterator(&ptr, this);
-		// //	return const_iterator(NULL, this);
 		}
-
-
-
 
 		reverse_iterator rbegin()
 		{
 			node_type *ptr = get_root();
+
 			if(!ptr)
 				return reverse_iterator(iterator(NULL, this));
 			return reverse_iterator(iterator(get_after_last(),this));
-			// node_type ptr;
-			// ptr.after_last = true;	
-			// return reverse_iterator(iterator(&ptr, this));
-			//return reverse_iterator(_tree.find_highest(_tree.get_root()));
-			//return reverse_iterator(iterator(_tree.find_highest(_tree.get_root()), &_tree));
-			//return reverse_iterator(iterator(NULL, &_tree));
 		}
 
 		const_reverse_iterator rbegin() const 
 		{
 			node_type *ptr = get_root();
-			//node<const T> *ptr = get_root();
+
 			if(!ptr)
 				return const_reverse_iterator(const_iterator(NULL, this));
 			return const_reverse_iterator(iterator(get_after_last(),this));
-
-			// node_type ptr;
-			// ptr.after_last = true;	
-			// return const_reverse_iterator(const_iterator(&ptr, this));
-			//return const_reverse_iterator(_tree.find_highest(_tree.get_root()));
-			//return const_reverse_iterator(const_iterator(_tree.find_highest(_tree.get_root()), &_tree));
-			//return const_reverse_iterator(const_iterator(NULL, &_tree));
 		}
 
 		reverse_iterator rend()
 		{
-
 			node_type *ptr = get_root();
+
 			if(!ptr)
 				return reverse_iterator(iterator(NULL, this));
-		//	return reverse_iterator(iterator(get_before_first(),this));
 			return reverse_iterator(iterator(find_lowest(get_root()),this));
-			// //before first
-			// node_type ptr;
-			// ptr.before_first = true;	
-			//return reverse_iterator(iterator(&ptr, this));
-			//return reverse_iterator(NULL);
-			//return reverse_iterator(iterator(NULL, &_tree));
 		}
 
 		const_reverse_iterator rend() const 
 		{
-
 			node_type *ptr = get_root();
-			//node<const T> *ptr = get_root();
+
 			if(!ptr)
 				return const_reverse_iterator(const_iterator(NULL, this));
-			//return const_reverse_iterator(iterator(get_before_first(),this));
 			return const_reverse_iterator(iterator(find_lowest(get_root()),this));
-			// node_type ptr;
-			// ptr.before_first = true;	
-			// return const_reverse_iterator(const_iterator(&ptr, this));
-			// return const_reverse_iterator(NULL);
-			//return const_reverse_iterator(const_iterator(NULL, &_tree));
 		}
 
-
-
-
-
-	iterator find (const T& k)
-	{
-//std::cout << "coucou" <<std::endl;
-		node_type *tmp = get_root();
-		while(tmp)
+		iterator find (const T& k)
 		{
-			if(_compare(k.first, tmp->data->first))
+			node_type *tmp = get_root();
+
+			while(tmp)
 			{
-// std::cout << "tmp first: " << tmp->data->first << " going left" << std::endl;
-				tmp = tmp->left;
+				if(_compare(k.first, tmp->data->first))
+				{
+					tmp = tmp->left;
+				}
+				else if(_compare(tmp->data->first, k.first))
+				{
+					tmp = tmp->right;
+				}
+				else
+				{
+					return iterator(tmp, this);
+				}
 			}
-			else if(_compare(tmp->data->first, k.first))
-			{
-// std::cout << "tmp first: " << tmp->data->first << " going right" << std::endl;
-				tmp = tmp->right;
-			}
-			else
-			{
-// std::cout << "tmp first: " << tmp->data->first << " returning" << std::endl;
-				return iterator(tmp, this);
-			}
+			return end();
 		}
-		//return end();
-		return end();
-	}
 
-
-	const_iterator find (const T& k) const
-	{
-//std::cout << "const coucou" <<std::endl;
-		// const node<value_type> *tmp = _tree.get_root();
-		// node<const T> *tmp = get_root();
-		node_type *tmp = get_root();
-		//node<const pair<const int, int> > *
-		//node<ft::pair<const int, int> > *
-		//std::cout << "coucou" <<std::endl;
-		while(tmp)
+		const_iterator find (const T& k) const
 		{
-			if(_compare(k.first, tmp->data->first))
-				tmp = tmp->left;
-			else if(_compare(tmp->data->first, k.first))
-				tmp = tmp->right;
-			else
-				return const_iterator(tmp, this);
-				//node<pair<const int, int> > *
-				//node<const ft::pair<const int, int> > *
-				
-		}
-		return end();		
-	}
+			node_type *tmp = get_root();
 
-
-
-// 	template<class X>
-// 	iterator find (const X& k)
-// 	{
-// std::cout << "coucou" <<std::endl;
-// 		node_type *tmp = get_root();
-// 		while(tmp)
-// 		{
-// 			if(_compare(k, tmp->data->first))
-// 			{
-// // std::cout << "tmp first: " << tmp->data->first << " going left" << std::endl;
-// 				tmp = tmp->left;
-// 			}
-// 			else if(_compare(tmp->data->first, k))
-// 			{
-// // std::cout << "tmp first: " << tmp->data->first << " going right" << std::endl;
-// 				tmp = tmp->right;
-// 			}
-// 			else
-// 			{
-// // std::cout << "tmp first: " << tmp->data->first << " returning" << std::endl;
-// 				return iterator(tmp, this);
-// 			}
-// 		}
-// 		//return end();
-// 		return end();
-// 	}
-
-// 	template<class X>
-// 	const_iterator find (const X& k) const
-// 	{
-// std::cout << "const coucou" <<std::endl;
-// 		// const node<value_type> *tmp = _tree.get_root();
-// 		// node<const T> *tmp = get_root();
-// 		node_type *tmp = get_root();
-// 		//node<const pair<const int, int> > *
-// 		//node<ft::pair<const int, int> > *
-// 		//std::cout << "coucou" <<std::endl;
-// 		while(tmp)
-// 		{
-// 			if(_compare(k, tmp->data->first))
-// 				tmp = tmp->left;
-// 			else if(_compare(tmp->data->first, k))
-// 				tmp = tmp->right;
-// 			else
-// 				return const_iterator(tmp, this);
-// 				//node<pair<const int, int> > *
-// 				//node<const ft::pair<const int, int> > *
-				
-// 		}
-// 		return end();		
-// 	}
-
-
-
-
-	// template<class X>
-	// size_t count (const X& k) const
-	// {
-	// 	const_iterator it = find(k);
-	// 	//iterator it = find(k);
-	// 	return it == end() ? 0 : 1;
-	// }
-
-
-
-	size_t count (const T& k) const
-	{
-		const_iterator it = find(k);
-		//iterator it = find(k);
-		return it == end() ? 0 : 1;
-	}
-
-
-
-/*
-1,2) Returns an iterator pointing to the first element that is not less than
- (i.e. greater or equal to) key.
-*/
-
-	template<class X>
-	iterator lower_bound(const X& k)
-	{
-		node_type *ptr = get_root();
-		node_type *previous = NULL;
-
-		if (!ptr)
-			return end();
-
-		while ( ptr ) {
-			if ( !_compare( ptr->data->first, k ) && !_compare( k, ptr->data->first ) )
-				return iterator(ptr, this);
-			if ( _compare( ptr->data->first, k ) )
-				ptr = ptr->right;
-			else {
-				if ( previous == NULL || _compare( ptr->data->first, previous->data->first ) )
-					previous = ptr;
-				ptr = ptr->left;
+			while(tmp)
+			{
+				if(_compare(k.first, tmp->data->first))
+					tmp = tmp->left;
+				else if(_compare(tmp->data->first, k.first))
+					tmp = tmp->right;
+				else
+					return const_iterator(tmp, this);
 			}
+			return end();		
 		}
-		if ( previous )
-			return iterator(previous, this);
-		return end();
-	}
 
+		size_t count (const T& k) const
+		{
+			const_iterator it = find(k);
 
+			return it == end() ? 0 : 1;
+		}
 
+		template<class X>
+		iterator lower_bound(const X& k)
+		{
+			node_type *ptr = get_root();
+			node_type *previous = NULL;
 
-	template<class X>
-	const_iterator lower_bound(const X& k) const
-	{
-		node_type *ptr = get_root();
-		node_type *previous = NULL;
+			if (!ptr)
+				return end();
 
-		// node<const T> *ptr = get_root();
-		// node<const T> *previous = NULL;
-
-
-		if (!ptr)
-			return end();
-
-		while ( ptr ) {
-			if ( !_compare( ptr->data->first, k ) && !_compare( k, ptr->data->first ) )
-				return const_iterator(ptr, this);
-			if ( _compare( ptr->data->first, k ) )
-				ptr = ptr->right;
-			else {
-				if ( previous == NULL || _compare( ptr->data->first, previous->data->first ) )
-					previous = ptr;
-				ptr = ptr->left;
+			while ( ptr ) {
+				if ( !_compare( ptr->data->first, k ) && !_compare( k, ptr->data->first ) )
+					return iterator(ptr, this);
+				if ( _compare( ptr->data->first, k ) )
+					ptr = ptr->right;
+				else {
+					if ( previous == NULL || _compare( ptr->data->first, previous->data->first ) )
+						previous = ptr;
+					ptr = ptr->left;
+				}
 			}
+			if ( previous )
+				return iterator(previous, this);
+			return end();
 		}
-		if ( previous )
-			return const_iterator(previous, this);
-		return end();
-	}
 
+		template<class X>
+		const_iterator lower_bound(const X& k) const
+		{
+			node_type *ptr = get_root();
+			node_type *previous = NULL;
 
+			if (!ptr)
+				return end();
 
+			while ( ptr ) {
+				if ( !_compare( ptr->data->first, k ) && !_compare( k, ptr->data->first ) )
+					return const_iterator(ptr, this);
+				if ( _compare( ptr->data->first, k ) )
+					ptr = ptr->right;
+				else {
+					if ( previous == NULL || _compare( ptr->data->first, previous->data->first ) )
+						previous = ptr;
+					ptr = ptr->left;
+				}
+			}
+			if ( previous )
+				return const_iterator(previous, this);
+			return end();
+		}
 
-	template<class X>
-	iterator upper_bound (const X& k)
-	{
-		iterator low = lower_bound(k);
+		template<class X>
+		iterator upper_bound (const X& k)
+		{
+			iterator low = lower_bound(k);
 
-		if (_compare( k, low.get_it()->data->first ))
+			if (_compare( k, low.get_it()->data->first ))
+				return low;
+			low++;
 			return low;
-		low++;
-		return low;
-	}
+		}
 
+		template<class X>
+		const_iterator upper_bound (const X& k) const
+		{
+			const_iterator low = lower_bound(k);
 
-
-	template<class X>
-	const_iterator upper_bound (const X& k) const
-	{
-		const_iterator low = lower_bound(k);
-
-		if (_compare( k, low.get_it()->data->first ))
+			if (_compare( k, low.get_it()->data->first ))
+				return low;
+			low++;
 			return low;
-		low++;
-		return low;
-	}
+		}
 
-
-
-	void swap(Tree& x)
-	{
-		std::swap(_root, x._root);
-		std::swap(_last_insert, x._last_insert);
-		std::swap(_last_erase, x._last_erase);
-		std::swap(_before_first, x._before_first);
-		std::swap(_after_last, x._after_last);
-		std::swap(_size, x._size);
-	}
-
+		void swap(Tree& x)
+		{
+			std::swap(_root, x._root);
+			std::swap(_last_insert, x._last_insert);
+			std::swap(_last_erase, x._last_erase);
+			std::swap(_before_first, x._before_first);
+			std::swap(_after_last, x._after_last);
+			std::swap(_size, x._size);
+		}
 
 		void clear(node_type *parent)
 		{
-//std::cout << " test parent " << parent << "" << std::endl;
 			if(!parent || parent->after_last || parent->before_first )
 				return;
 			if (parent->left)
@@ -565,7 +383,6 @@ namespace ft
 			return newparent;
 		}
 
-
 		node_type *double_r_rotate(node_type *parent)
 		{
 			node_type *tmp;
@@ -603,7 +420,6 @@ namespace ft
 			}
 			return parent;
 		}
-
 
 		node_type *insert(node_type *current_root,const T &data)
 		{
@@ -661,118 +477,91 @@ namespace ft
 			return current_root;
 		}
 
-
-
-	// node_type *find_lowest(node_type* node)
-	// {
-	// 	node_type* current = node;
-	
-	// 	while (current->left != NULL)
-	// 		current = current->left;
-	
-	// 	return current;
-	// }
-
-	node_type *find_lowest(node_type* node) const
-	{
-		node_type* current = node;
-	
-		while (current->left != NULL)
-			current = current->left;
-	
-		return current;
-	}
-
-	// node_type *find_highest(node_type* node)
-	// {
-	// 	node_type* current = node;
-	
-	// 	while (current->right != NULL)
-	// 		current = current->right;
-	
-	// 	return current;
-	// }
-
-	node_type *find_highest(node_type* node) const
-	{
-		node_type* current = node;
-	
-		while (current->right != NULL)
-			current = current->right;
-	
-		return current;
-	}
-
-	node_type* erase(node_type* parent, T key)
-	{
-		if (parent == NULL)
+		node_type *find_lowest(node_type* node) const
 		{
-			_last_erase = 0;
-			return parent;
+			node_type* current = node;
+		
+			while (current->left != NULL)
+				current = current->left;
+		
+			return current;
 		}
 
-		//if (_compare(parent->data->first, key))
-		if (_compare(key.first, parent->data->first))
+		node_type *find_highest(node_type* node) const
 		{
-			parent->left = erase(parent->left, key);
+			node_type* current = node;
+		
+			while (current->right != NULL)
+				current = current->right;
+		
+			return current;
 		}
-		// else if (_compare(key, parent->data->first))
-		else if (_compare(parent->data->first, key.first))
+
+		node_type* erase(node_type* parent, T key)
 		{
-			parent->right = erase(parent->right, key);
-		}
-		else
-		{
-			if( (parent->left == NULL) ||
-				(parent->right == NULL) )
+			if (parent == NULL)
 			{
-				node_type *temp = parent->left ?
-							parent->left :
-							parent->right;
-	
-				if (temp == NULL)
-				{
-					temp = parent;
-					parent = NULL;
-				}
-				else
-				{
-					_allocator.destroy(parent->data);
-					_allocator.construct(parent->data, *(temp->data));
-					parent->left = NULL;
-					parent->right = NULL;
+				_last_erase = 0;
+				return parent;
+			}
 
-				}
-				if (temp)
-				{
-					_allocator.destroy(temp->data);
-					_allocator.deallocate(temp->data, 1);
-					std::allocator<node_type>().destroy(temp);
-					std::allocator<node_type>().deallocate(temp, 1);
-					_last_erase = 1;
-					_size--;
-				}
+			if (_compare(key.first, parent->data->first))
+			{
+				parent->left = erase(parent->left, key);
+			}
+			else if (_compare(parent->data->first, key.first))
+			{
+				parent->right = erase(parent->right, key);
 			}
 			else
 			{
-				node_type* temp = find_lowest(parent->right);
-				_allocator.destroy(parent->data);
-				_allocator.construct(parent->data, *(temp->data));
-				parent->right = erase(parent->right,
-										*(temp->data));
+				if( (parent->left == NULL) ||
+					(parent->right == NULL) )
+				{
+					node_type *temp = parent->left ?
+								parent->left :
+								parent->right;
+		
+					if (temp == NULL)
+					{
+						temp = parent;
+						parent = NULL;
+					}
+					else
+					{
+						_allocator.destroy(parent->data);
+						_allocator.construct(parent->data, *(temp->data));
+						parent->left = NULL;
+						parent->right = NULL;
+
+					}
+					if (temp)
+					{
+						_allocator.destroy(temp->data);
+						_allocator.deallocate(temp->data, 1);
+						std::allocator<node_type>().destroy(temp);
+						std::allocator<node_type>().deallocate(temp, 1);
+						_last_erase = 1;
+						_size--;
+					}
+				}
+				else
+				{
+					node_type* temp = find_lowest(parent->right);
+					_allocator.destroy(parent->data);
+					_allocator.construct(parent->data, *(temp->data));
+					parent->right = erase(parent->right,
+											*(temp->data));
+				}
 			}
-		}
-	
 
-		if (parent == NULL)
+			if (parent == NULL)
+				return parent;
+
+			update_height(parent);
+			parent = balance(parent);	
 			return parent;
-	
-
-		update_height(parent);
-		parent = balance(parent);	
-		return parent;
-	}
-
+		}
 
 		protected:
 
@@ -789,12 +578,6 @@ namespace ft
 	};
 
 }
-
-
-
-
-
-
 
 
 #endif

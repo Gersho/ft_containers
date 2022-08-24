@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/24 12:20:54 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/24 22:15:39 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -742,18 +742,18 @@ int main(void)
 	srand(0);
 	start_test = clock();
 
-	//vector_tests();
+	vector_tests();
 
 	time_vect = clock() - start_test;
 	start_test = clock();
 	
-	//stack_tests();
+	stack_tests();
 
 	time_stack = clock() - start_test;
 	start_test = clock();
 
 	map_tests_normal();
-	//map_tests_big();
+	map_tests_big();
 
 	time_map = clock() - start_test;
 

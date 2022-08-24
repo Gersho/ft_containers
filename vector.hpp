@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/12 15:10:43 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/24 22:03:38 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ namespace ft
 
 		}
 
-		// This destroys all container elements, and deallocates all the storage capacity allocated by the vector using its allocator.
 		~vector()
 		{
 			clear();
