@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/23 15:20:16 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/24 12:58:49 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,14 +95,18 @@ namespace ft
 			_allocator = rhs.get_allocator();
 			_compare = rhs.get_compare();
 
+			if(rhs.get_size() == 0)
+			{
+				return *this;
+			}
 			const_iterator it = rhs.begin();
 			const_iterator ite = rhs.end();
 
 			// iterator it = rhs.begin();
 			// iterator ite = rhs.end();
-
 			while (it != ite)
 			{
+//std::cout << "plop" <<std::endl;
 				set_root(insert(get_root(), *it));
 				it++;
 			}

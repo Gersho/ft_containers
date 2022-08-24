@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/24 11:59:26 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/24 12:20:54 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,17 +321,26 @@ void map_tests_normal()
 {
 	ft::map<int, int> a;
 	ft::map<int, int> b;
-
+	ft::map<int, int> e;
 
 	a.insert( ft::make_pair<int, int>( 50, 5000 ) );
 	a.insert( ft::make_pair<int, int>( 80, 8000 ) );
 	a.insert( ft::make_pair<int, int>( 30, 3000 ) );
 	a.insert( ft::make_pair<int, int>( 20, 2000 ) );
 
+	
 	ft::map<int, int> c(a.begin(), a.end());
-	// ft::map<int, int> d(a);
-	// std::cout << "printing map d" << std::endl;
-	// show_map(d);
+	ft::map<int, int> d(a);
+	std::cout << "printing map d" << std::endl;
+	show_map(d);
+
+
+	std::cout << "testing operator=" << std::endl;
+	e = a;
+	std::cout << "printing map a" << std::endl;
+	show_map(a);
+	std::cout << "printing map e" << std::endl;
+	show_map(e);
 
 	std::cout << "Testing map relational operators" << std::endl;
 	std::cout << std::boolalpha << "a == c : " << (a == c) << std::endl;
@@ -476,14 +485,6 @@ std::cout << "############ normal end ###############" << std::endl;
 	show_map(b);
 	std::cout << "printing map c" << std::endl;
 	show_map(c);
-
-//	std::cout << "testing operator=" << std::endl;
-//	c = a;
-	std::cout << "printing map a" << std::endl;
-	show_map(a);
-	std::cout << "printing map c" << std::endl;
-	show_map(c);
-
 	
 std::cout << "############################still alive END" << std::endl;
 
@@ -494,9 +495,10 @@ std::cout << "############################still alive END" << std::endl;
 	show_map(b);
 	std::cout << "printing map c" << std::endl;
 	show_map(c);
-	// std::cout << "printing map d" << std::endl;
-	// show_map(d);
-
+	std::cout << "printing map d" << std::endl;
+	show_map(d);
+	std::cout << "printing map e" << std::endl;
+	show_map(e);
 std::cout << "############################after final print" << std::endl;
 }
 
