@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/23 15:12:57 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/24 11:44:07 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -999,11 +999,11 @@ if (this->_it != NULL /*&& (this->_it->after_last() != this->_it) && (this->_it-
 		}
 
 
-		// template <class U, class V>
-		// __const_tree_iterator(const __tree_iterator<U, V> & src)
-		// {
-		// 	*this = src;
-		// }
+		template <class U, class V>
+		__const_tree_iterator(const __tree_iterator<U, V> & src)
+		{
+			*this = src;
+		}
 
 		~__const_tree_iterator() {}
 
@@ -1013,7 +1013,7 @@ if (this->_it != NULL /*&& (this->_it->after_last() != this->_it) && (this->_it-
 //TODO GERER LES GETTER
 		// Treebase *get_tree() const { return _tree;}
 		 struct node<T> *get_it() const{ return _it; }
-		Treebase *get_tree() const { return _tree; }
+		const Treebase *get_tree() const { return _tree; }
 
 // Can be compared for equivalence using the equality/inequality operators
 // (meaningful when both iterator values iterate over the same underlying sequence).	

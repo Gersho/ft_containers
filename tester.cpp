@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/23 15:25:12 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/24 11:59:26 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -333,26 +333,26 @@ void map_tests_normal()
 	// std::cout << "printing map d" << std::endl;
 	// show_map(d);
 
-	// std::cout << "Testing map relational operators" << std::endl;
-	// std::cout << std::boolalpha << "a == c : " << (a == c) << std::endl;
-	// std::cout << std::boolalpha << "a != c : " << (a != c) << std::endl;
-	// std::cout << std::boolalpha << "a < c : " << (a < c) << std::endl;
-	// std::cout << std::boolalpha << "a > c : " << (a > c) << std::endl;
-	// std::cout << std::boolalpha << "a <= c : " << (a <= c) << std::endl;
-	// std::cout << std::boolalpha << "a >= c : " << (a >= c) << std::endl;
+	std::cout << "Testing map relational operators" << std::endl;
+	std::cout << std::boolalpha << "a == c : " << (a == c) << std::endl;
+	std::cout << std::boolalpha << "a != c : " << (a != c) << std::endl;
+	std::cout << std::boolalpha << "a < c : " << (a < c) << std::endl;
+	std::cout << std::boolalpha << "a > c : " << (a > c) << std::endl;
+	std::cout << std::boolalpha << "a <= c : " << (a <= c) << std::endl;
+	std::cout << std::boolalpha << "a >= c : " << (a >= c) << std::endl;
 
 	std::cout << "printing map c" << std::endl;
 	show_map(c);
 
 	a.insert( ft::make_pair<int, int>( 70, 7000 ) );
 	a.insert(a.begin(), ft::make_pair<int, int>( 60, 6000 ));
-	// std::cout << "Testing map relational operators" << std::endl;
-	// std::cout << std::boolalpha << "a == c : " << (a == c) << std::endl;
-	// std::cout << std::boolalpha << "a != c : " << (a != c) << std::endl;
-	// std::cout << std::boolalpha << "a < c : " << (a < c) << std::endl;
-	// std::cout << std::boolalpha << "a > c : " << (a > c) << std::endl;
-	// std::cout << std::boolalpha << "a <= c : " << (a <= c) << std::endl;
-	// std::cout << std::boolalpha << "a >= c : " << (a >= c) << std::endl;
+	std::cout << "Testing map relational operators" << std::endl;
+	std::cout << std::boolalpha << "a == c : " << (a == c) << std::endl;
+	std::cout << std::boolalpha << "a != c : " << (a != c) << std::endl;
+	std::cout << std::boolalpha << "a < c : " << (a < c) << std::endl;
+	std::cout << std::boolalpha << "a > c : " << (a > c) << std::endl;
+	std::cout << std::boolalpha << "a <= c : " << (a <= c) << std::endl;
+	std::cout << std::boolalpha << "a >= c : " << (a >= c) << std::endl;
 
 	// std::cout << "max size a: " << a.max_size() << std::endl;
 	// std::cout << "max size b: " << b.max_size() << std::endl;
@@ -451,29 +451,16 @@ std::cout << "############ normal end ###############" << std::endl;
 	std::cout << "upper_bound key: " << cit->first<< " value: " << cit->second << std::endl;
 	cit = a.upper_bound(20);
 	std::cout << "upper_bound key: " << cit->first<< " value: " << cit->second << std::endl;
-	cit = a.upper_bound(0);
-	std::cout << "upper_bound key: " << cit->first<< " value: " << cit->second << std::endl;
 
+	ft::pair<ft::map<int, int>::const_iterator, ft::map<int, int>::const_iterator>  cpair_A =  a.equal_range(70);
+	std::cout << "keyA: " << cpair_A.first->first << " valueA: " << cpair_A.first->second 
+			<<  " keyB: " << cpair_A.second->first << " valueB: " << cpair_A.second->second << std::endl;
+	cpair_A =  a.equal_range(30);
+	std::cout << "keyA: " << cpair_A.first->first << " valueA: " << cpair_A.first->second 
+			<<  " keyB: " << cpair_A.second->first << " valueB: " << cpair_A.second->second << std::endl;
 
-	// ft::pair<ft::map<int, int>::const_iterator, ft::map<int, int>::const_iterator>  cpair_A =  a.equal_range(50);
-	// std::cout << "keyA: " << cpair_A.first->first << " valueA: " << cpair_A.first->second 
-	// 		<<  " keyB: " << cpair_A.second->first << " valueB: " << cpair_A.second->second << std::endl;
-	
-	// cpair_A =  a.equal_range(30);
-	// std::cout << "keyA: " << cpair_A.first->first << " valueA: " << cpair_A.first->second 
-	// 		<<  " keyB: " << cpair_A.second->first << " valueB: " << cpair_A.second->second << std::endl;
-
-	// cpair_A =  a.equal_range(70);
-	// std::cout << "keyA: " << cpair_A.first->first << " valueA: " << cpair_A.first->second 
-	// 		<<  " keyB: " << cpair_A.second->first << " valueB: " << cpair_A.second->second << std::endl;
-
-	// cpair_A =  a.equal_range(0);
-	// std::cout << "keyA: " << cpair_A.first->first << " valueA: " << cpair_A.first->second 
-	// 		<<  " keyB: " << cpair_A.second->first << " valueB: " << cpair_A.second->second << std::endl;
-
-
-	std::cout << a.count(80) << std::endl;
-	std::cout << a.count(0) << std::endl;
+	std::cout << "a.count(80): " << a.count(80) << std::endl;
+	std::cout << "a.count(0): " << a.count(0) << std::endl;
 
 
 

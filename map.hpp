@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/23 15:20:42 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/24 12:00:09 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -467,7 +467,7 @@ namespace ft
 	bool operator== ( const map<Key,T,Compare,Alloc>& lhs,
 					const map<Key,T,Compare,Alloc>& rhs )
 	{
-		return lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
+		return lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 	}
 
 	template <class Key, class T, class Compare, class Alloc>
