@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/24 22:15:39 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/25 14:45:15 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,6 +232,7 @@ void stack_tests()
 			std::cout << "abort test ok: " << e.what() << std::endl;
 		}
 	}
+	std::cout << "############################ stack complete" << std::endl;
 }
 
 template<class T>
@@ -334,7 +335,6 @@ void map_tests_normal()
 	std::cout << "printing map d" << std::endl;
 	show_map(d);
 
-
 	std::cout << "testing operator=" << std::endl;
 	e = a;
 	std::cout << "printing map a" << std::endl;
@@ -355,6 +355,7 @@ void map_tests_normal()
 
 	a.insert( ft::make_pair<int, int>( 70, 7000 ) );
 	a.insert(a.begin(), ft::make_pair<int, int>( 60, 6000 ));
+
 	std::cout << "Testing map relational operators" << std::endl;
 	std::cout << std::boolalpha << "a == c : " << (a == c) << std::endl;
 	std::cout << std::boolalpha << "a != c : " << (a != c) << std::endl;
@@ -385,10 +386,10 @@ void map_tests_normal()
 	std::cout << "printing map b" << std::endl;
 	show_map(b);
 
-	std::cout << a.empty() << std::endl;
-	std::cout << b.empty() << std::endl;
-	std::cout << a.size() << std::endl;
-	std::cout << b.size() << std::endl;
+	std::cout << "a.empty():" << a.empty() << std::endl;
+	std::cout << "b.empty():" <<b.empty() << std::endl;
+	std::cout << "a.size():" << a.size() << std::endl;
+	std::cout << "b.size():" << b.size() << std::endl;
 
 	ft::map<int, int >::iterator it = a.find(50);
 	std::cout << "find key: " << it->first<< " value: " << it->second << std::endl;
@@ -439,9 +440,6 @@ void map_tests_normal()
 	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
 			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
 
-
-std::cout << "############ normal end ###############" << std::endl;
-
 	std::cout << "Testing const stuff" << std::endl;
 
 	ft::map<int, int >::const_iterator cit;
@@ -471,13 +469,10 @@ std::cout << "############ normal end ###############" << std::endl;
 	std::cout << "a.count(80): " << a.count(80) << std::endl;
 	std::cout << "a.count(0): " << a.count(0) << std::endl;
 
-
-
 	std::cout << "testing swap" << std::endl;
 
 	a.swap(b);
 	ft::swap(b, c);
-
 
 	std::cout << "printing map a" << std::endl;
 	show_map(a);
@@ -486,7 +481,6 @@ std::cout << "############ normal end ###############" << std::endl;
 	std::cout << "printing map c" << std::endl;
 	show_map(c);
 	
-std::cout << "############################still alive END" << std::endl;
 
 	std::cout << "reprint all maps" << std::endl;
 	std::cout << "printing map a" << std::endl;
@@ -499,7 +493,25 @@ std::cout << "############################still alive END" << std::endl;
 	show_map(d);
 	std::cout << "printing map e" << std::endl;
 	show_map(e);
-std::cout << "############################after final print" << std::endl;
+
+	std::cout << "even more testing because why not" << std::endl;
+
+	a.clear();
+	e = a;
+	std::cout << "printing map a" << std::endl;
+	show_map(a);
+	std::cout << "printing map e" << std::endl;
+	show_map(e);
+	a.insert( ft::make_pair<int, int>( 50, 5000 ) );
+	a.insert( ft::make_pair<int, int>( 80, 8000 ) );
+	a.insert( ft::make_pair<int, int>( 30, 3000 ) );
+	a.insert( ft::make_pair<int, int>( 20, 2000 ) );
+	std::cout << "printing map a" << std::endl;
+	show_map(a);
+	std::cout << "printing map e" << std::endl;
+	show_map(e);
+
+	std::cout << "############################ map complete" << std::endl;
 }
 
 void map_tests_big()
@@ -728,6 +740,7 @@ void vector_tests()
 	std::cout << const_ref_d << std::endl;
 
 	test_vects(vects);
+	std::cout << "############################ vector complete" << std::endl;
 }
 
 

@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/24 22:02:32 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/25 14:28:06 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,8 @@ namespace ft
 
 		void clear()
 		{
-			_tree.clear(_tree.get_root());			
+			_tree.clear(_tree.get_root());
+			_tree.set_root(NULL);		
 		}
 
 		key_compare key_comp() const

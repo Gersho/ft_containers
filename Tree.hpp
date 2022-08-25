@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/24 22:14:21 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/25 14:44:13 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ namespace ft
 
 			if(rhs.get_size() == 0)
 			{
+				_root = NULL;
 				return *this;
 			}
 			const_iterator it = rhs.begin();
@@ -97,7 +98,7 @@ namespace ft
 		iterator begin() 
 		{
 			node_type *ptr = get_root();
-			
+
 			if(!ptr)
 				return iterator(NULL, this);
 			while(ptr->left != NULL)
@@ -316,6 +317,7 @@ namespace ft
 			_allocator.deallocate(parent->data, 1);
 			std::allocator<node_type>().destroy(parent);
 			std::allocator<node_type>().deallocate(parent, 1);
+			//parent = NULL;
 			_size = 0;
 		}
 
