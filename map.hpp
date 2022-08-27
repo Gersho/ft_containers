@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/25 14:28:06 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/27 10:15:45 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,9 +163,7 @@ namespace ft
 
 		size_type max_size() const 
 		{
-//WTF ?
-			//return std::allocator<pair<const Key,T> >().max_size();
-			 return _allocator.max_size();
+			 return (_allocator.max_size()/5);
 		}
 
 		mapped_type& operator[] (const key_type& k)

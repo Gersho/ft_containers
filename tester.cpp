@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/25 14:45:15 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/27 10:17:37 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,6 @@ void stack_tests()
 			std::cout << "top: " << s_a.top() << std::endl;
 			s_a.pop();
 		}
-		s_a.pop();
-		s_a.pop();
-		s_a.pop();
 		
 	}
 
@@ -160,9 +157,7 @@ void stack_tests()
 			std::cout << "top: " << s_a.top() << std::endl;
 			s_a.pop();
 		}
-		s_a.pop();
-		s_a.pop();
-		s_a.pop();
+
 	}
 
 
@@ -221,15 +216,6 @@ void stack_tests()
 		{
 			std::cout << "top: " << s_a.top() << std::endl;
 			s_a.pop();
-		}
-
-		try 
-		{
-			s_a.pop();
-		}
-		catch(std::exception& e)
-		{
-			std::cout << "abort test ok: " << e.what() << std::endl;
 		}
 	}
 	std::cout << "############################ stack complete" << std::endl;
@@ -364,8 +350,8 @@ void map_tests_normal()
 	std::cout << std::boolalpha << "a <= c : " << (a <= c) << std::endl;
 	std::cout << std::boolalpha << "a >= c : " << (a >= c) << std::endl;
 
-	// std::cout << "max size a: " << a.max_size() << std::endl;
-	// std::cout << "max size b: " << b.max_size() << std::endl;
+	std::cout << "max size a: " << a.max_size() << std::endl;
+	std::cout << "max size b: " << b.max_size() << std::endl;
 
 	std::cout << "printing map a" << std::endl;
 	show_map(a);
@@ -549,9 +535,9 @@ void map_tests_big()
 	std::cout << "keyA: " << pair_A.first->first << " valueA: " << pair_A.first->second 
 			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
 
-
-
+	b = a;
 	show_map(a);
+	show_map(b);
 }
 
 void vector_tests()
