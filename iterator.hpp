@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/11 14:40:00 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/24 21:57:02 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/09/11 18:46:20 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,11 @@
 
 namespace ft
 {
-	struct random_access_iterator_tag {};
+	struct input_iterator_tag {};
+	struct forward_iterator_tag {};
 	struct bidirectional_iterator_tag {};
+	struct random_access_iterator_tag {};
+
 
 	template< class Iter >
 	struct iterator_traits
@@ -96,15 +99,6 @@ namespace ft
 			return *this;
 		}
 
-		bool operator==( const __generic_iterator<T> & rhs) const
-		{
-			return _it==rhs._it;
-		}
-
-		bool operator !=(const __generic_iterator<T> & rhs) const
-		{
-			return _it!=rhs._it;
-		}
 
 		__generic_iterator<T>&	operator++( void ) {
 			this->_it++;
@@ -128,6 +122,16 @@ namespace ft
 
 			res = --*this;
 			return res;
+		}
+		
+		bool operator==( const __generic_iterator<T> & rhs) const
+		{
+			return _it==rhs._it;
+		}
+
+		bool operator !=(const __generic_iterator<T> & rhs) const
+		{
+			return _it!=rhs._it;
 		}
 
 		bool operator<( const __generic_iterator<T> & rhs ) const
@@ -193,23 +197,85 @@ namespace ft
 		}
 
 		T* _get_ptr() const{ return _it; }
+
+		template<class X, class Y>
+		friend bool operator==( const __generic_iterator<X> & lhs, const __generic_iterator<Y> &rhs);
+
+		template<class X, class Y>
+		friend bool operator !=(const __generic_iterator<X> & lhs, const __generic_iterator<Y> &rhs);
+
+		template<class X, class Y>
+		friend bool operator<( const __generic_iterator<X> & lhs, const __generic_iterator<Y> &rhs );
+
+		template<class X, class Y>
+		friend bool operator>( const __generic_iterator<X> & lhs, const __generic_iterator<Y> &rhs );
+
+		template<class X, class Y>
+		friend bool operator<=( const __generic_iterator<X> & lhs, const __generic_iterator<Y> &rhs );
+
+		template<class X, class Y>
+		friend bool operator>=( const __generic_iterator<X> & lhs, const __generic_iterator<Y> &rhs);
+
 	}; // class iterator end
+
+
+
+
+	template<class X, class Y>
+	bool operator==( const __generic_iterator<X> & lhs, const __generic_iterator<Y> &rhs)
+	{
+		return lhs._it==rhs._it;
+	}
+	template<class X, class Y>
+	bool operator !=(const __generic_iterator<X> & lhs, const __generic_iterator<Y> &rhs)
+	{
+		return lhs._it!=rhs._it;
+	}
+	template<class X, class Y>
+	bool operator<( const __generic_iterator<X> & lhs, const __generic_iterator<Y> &rhs )
+	{
+		return lhs._it < rhs._it;
+	}
+	template<class X, class Y>
+	bool operator>( const __generic_iterator<X> & lhs, const __generic_iterator<Y> &rhs )
+	{
+		return lhs._it > rhs._it;
+	}
+	template<class X, class Y>
+	bool operator<=( const __generic_iterator<X> & lhs, const __generic_iterator<Y> &rhs )
+	{
+		return lhs._it <= rhs._it;
+	}
+	template<class X, class Y>
+	bool operator>=( const __generic_iterator<X> & lhs, const __generic_iterator<Y> &rhs)
+	{
+		return lhs._it >= rhs._it;
+	}
+
+
 
 	template <class InputIterator, class Distance>
 	void advance (InputIterator& it, Distance n)
 	{
-		it._it = it._it + n;
+		while(n)
+		{
+			it++;
+			n--;
+		}
 	}
 
 	template<class InputIterator>
 	typename iterator_traits<InputIterator>::difference_type distance (InputIterator first, InputIterator last)
 	{
-		std::ptrdiff_t d;
+		typename iterator_traits<InputIterator>::difference_type ret;
 
-		d = last._it - first._it;
-		if (d < 0)
-			d = d * -1;
-		return d;
+		ret = 0;
+		while (first != last)
+		{
+			first++;
+			ret++;
+		}
+		return ret;
 	}
 
 	template < class Iterator >
@@ -317,44 +383,44 @@ namespace ft
 		iterator_type _it;
 	}; //fin reverse_iterator
 
-	template <class Iterator>
-	bool operator== (const reverse_iterator<Iterator>& lhs,
-	const reverse_iterator<Iterator>& rhs)
+	template <class IteratorA , class IteratorB>
+	bool operator== (const reverse_iterator<IteratorA>& lhs,
+	const reverse_iterator<IteratorB>& rhs)
 	{
 		return (lhs.base() == rhs.base());
 	}
 
-	template <class Iterator>
-	bool operator!= (const reverse_iterator<Iterator>& lhs,
-	const reverse_iterator<Iterator>& rhs)
+	template <class IteratorA , class IteratorB>
+	bool operator!= (const reverse_iterator<IteratorA>& lhs,
+	const reverse_iterator<IteratorB>& rhs)
 	{
 		return (lhs.base() != rhs.base());
 	}
 
-	template <class Iterator>
-	bool operator<  (const reverse_iterator<Iterator>& lhs,
-	const reverse_iterator<Iterator>& rhs)
+	template <class IteratorA , class IteratorB>
+	bool operator<  (const reverse_iterator<IteratorA>& lhs,
+	const reverse_iterator<IteratorB>& rhs)
 	{
 		return (lhs.base() > rhs.base());
 	}
 
-	template <class Iterator>
-	bool operator<= (const reverse_iterator<Iterator>& lhs,
-	const reverse_iterator<Iterator>& rhs)
+	template <class IteratorA , class IteratorB>
+	bool operator<= (const reverse_iterator<IteratorA>& lhs,
+	const reverse_iterator<IteratorB>& rhs)
 	{
 		return (lhs.base() >= rhs.base());
 	}
 
-	template <class Iterator>
-	bool operator>  (const reverse_iterator<Iterator>& lhs,
-	const reverse_iterator<Iterator>& rhs)
+	template <class IteratorA , class IteratorB>
+	bool operator>  (const reverse_iterator<IteratorA>& lhs,
+	const reverse_iterator<IteratorB>& rhs)
 	{
 		return (lhs.base() < rhs.base());
 	}
 
-	template <class Iterator>
-	bool operator>= (const reverse_iterator<Iterator>& lhs,
-	const reverse_iterator<Iterator>& rhs)
+	template <class IteratorA , class IteratorB>
+	bool operator>= (const reverse_iterator<IteratorA>& lhs,
+	const reverse_iterator<IteratorB>& rhs)
 	{
 		return (lhs.base() <= rhs.base());
 	}
@@ -599,6 +665,7 @@ namespace ft
 			--( *this );
 			return tmp;
 		}
+
 	};
 
 	template < class T, class Treebase >
@@ -811,7 +878,6 @@ namespace ft
 			--( *this );
 			return tmp;
 		}
-
 	};
 
 	template <class T, class Treebase>
@@ -834,6 +900,30 @@ namespace ft
 
 	template <class T, class Treebase>
 	bool operator!=( const __const_tree_iterator<T , Treebase>  & lhs, const __const_tree_iterator<T , Treebase>  & rhs )
+	{
+		return (lhs.get_it() != rhs.get_it());
+	}
+
+	template <class T, class Treebase>
+	bool operator==( __tree_iterator<T , Treebase>  const & lhs, __const_tree_iterator<T , Treebase>  const & rhs )
+	{
+		return (lhs.get_it() == rhs.get_it());
+	}
+
+	template <class T, class Treebase>
+	bool operator!=( __tree_iterator<T , Treebase>  const & lhs, __const_tree_iterator<T , Treebase>  const & rhs )
+	{
+		return (lhs.get_it() != rhs.get_it());
+	}
+
+	template <class T, class Treebase>
+	bool operator==( __const_tree_iterator<T , Treebase>  const & lhs, __tree_iterator<T , Treebase>  const & rhs )
+	{
+		return (lhs.get_it() == rhs.get_it());
+	}
+
+	template <class T, class Treebase>
+	bool operator!=( __const_tree_iterator<T , Treebase>  const & lhs, __tree_iterator<T , Treebase>  const & rhs )
 	{
 		return (lhs.get_it() != rhs.get_it());
 	}

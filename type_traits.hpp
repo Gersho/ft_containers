@@ -6,13 +6,15 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/21 15:24:51 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/24 22:05:07 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/09/10 12:45:57 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #ifndef TYPE_TRAITS_HPP
 # define TYPE_TRAITS_HPP
+
+#include "iterator.hpp"
 
 namespace ft
 {

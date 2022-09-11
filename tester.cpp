@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/13 14:37:26 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/27 10:17:37 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/09/11 19:01:32 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -497,6 +497,50 @@ void map_tests_normal()
 	std::cout << "printing map e" << std::endl;
 	show_map(e);
 
+
+	a.clear();
+	e.clear();
+	e = a;
+	a = e;
+	a.insert( ft::make_pair<int, int>( 50, 5000 ) );
+	e.insert( ft::make_pair<int, int>( 80, 8000 ) );
+	e = a;
+	a = e;
+	e.clear();
+	e = a;
+	std::cout << "printing map a" << std::endl;
+	show_map(a);
+	std::cout << "printing map e" << std::endl;
+	show_map(e);
+
+
+	std::cout << "testing map iterators " << std::endl;
+	a.insert( ft::make_pair<int, int>( 50, 5000 ) );
+	a.insert( ft::make_pair<int, int>( 80, 8000 ) );
+	a.insert( ft::make_pair<int, int>( 30, 3000 ) );
+	a.insert( ft::make_pair<int, int>( 20, 2000 ) );
+
+	std::cout << "comparing iterator and const iterator" << std::endl;
+	ft::map<int, int >::iterator it_a = a.begin();
+	ft::map<int, int >::const_iterator cit_a = a.begin();
+
+	std::cout << std::boolalpha << (cit_a == it_a ) << std::endl;
+	std::cout << std::boolalpha << (cit_a != it_a ) << std::endl;
+
+	std::cout << std::boolalpha << (it_a == cit_a ) << std::endl;
+	std::cout << std::boolalpha << (it_a != cit_a ) << std::endl;
+
+
+	std::cout << "comparing reverse iterator and const reverse iterator" << std::endl;
+	ft::map<int, int >::reverse_iterator rit_a = a.rbegin();
+	ft::map<int, int >::const_reverse_iterator crit_a = a.rbegin();
+
+	std::cout << std::boolalpha << (crit_a == rit_a ) << std::endl;
+	std::cout << std::boolalpha << (crit_a != rit_a ) << std::endl;
+
+	std::cout << std::boolalpha << (rit_a == crit_a ) << std::endl;
+	std::cout << std::boolalpha << (rit_a != crit_a ) << std::endl;
+
 	std::cout << "############################ map complete" << std::endl;
 }
 
@@ -519,7 +563,8 @@ void map_tests_big()
 		a.insert( ft::make_pair<int, int>(r, r) );
 		i--;
 	}
-
+	//a.insert( a.begin(), ft::make_pair<int, int>( 2000, 2000 ) );
+	b.insert(a.begin(), a.end());
 	a.erase(3000);
 
 	ft::map<int, int >::iterator it = a.lower_bound(5000);
@@ -536,8 +581,8 @@ void map_tests_big()
 			<<  " keyB: " << pair_A.second->first << " valueB: " << pair_A.second->second << std::endl;
 
 	b = a;
-	show_map(a);
-	show_map(b);
+	// show_map(a);
+	// show_map(b);
 }
 
 void vector_tests()
@@ -726,6 +771,42 @@ void vector_tests()
 	std::cout << const_ref_d << std::endl;
 
 	test_vects(vects);
+
+	std::cout << "even more testing because why not" << std::endl;
+
+
+	std::cout << "testing distance and advance" << std::endl;
+	
+	fill_vect(vec_d, 50);
+	ft::vector<int>::iterator it_a = vec_d.begin();
+	ft::advance(it_a, 5);
+	std::cout << "advanced *it_a: " << *it_a << std::endl;
+
+	std::cout << "distance vec_d.begin() <-> it_a: " << ft::distance(vec_d.begin(), it_a);
+
+	std::cout << "comparing iterator and const iterator" << std::endl;
+	std::cout << std::boolalpha << (const_it == it_a ) << std::endl;
+	std::cout << std::boolalpha << (const_it != it_a ) << std::endl;
+	std::cout << std::boolalpha << (const_it <= it_a ) << std::endl;
+	std::cout << std::boolalpha << (const_it < it_a ) << std::endl;
+	std::cout << std::boolalpha << (const_it >= it_a ) << std::endl;
+	std::cout << std::boolalpha << (const_it > it_a ) << std::endl;
+
+
+
+
+	std::cout << "comparing reverse iterator and const reverse iterator" << std::endl;
+	ft::vector<int>::const_reverse_iterator rit_a = vec_d.rbegin();
+	ft::vector<int>::reverse_iterator crit_a = vec_d.rbegin();
+
+	std::cout << std::boolalpha << (rit_a == crit_a ) << std::endl;
+	std::cout << std::boolalpha << (rit_a != crit_a ) << std::endl;
+	std::cout << std::boolalpha << (rit_a <= crit_a ) << std::endl;
+	std::cout << std::boolalpha << (rit_a < crit_a ) << std::endl;
+	std::cout << std::boolalpha << (rit_a >= crit_a ) << std::endl;
+	std::cout << std::boolalpha << (rit_a > crit_a ) << std::endl;
+
+
 	std::cout << "############################ vector complete" << std::endl;
 }
 

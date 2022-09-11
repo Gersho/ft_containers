@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:47 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/24 22:03:38 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/09/11 17:22:09 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,12 +57,13 @@ namespace ft
 		explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator())
 		: _capacity(count), _size(0), _allocator(alloc)
 		{
-			if (!_try_alloc(&_ptr, count, "bad_alloc caught in explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()): " ))
-			{
-				_capacity = 0;
-				_ptr = NULL;
-				return;
-			}
+			// if (!_try_alloc(&_ptr, count, "bad_alloc caught in explicit vector( size_type count, const T& value = T(), const Allocator& alloc = Allocator()): " ))
+			// {
+			// 	_capacity = 0;
+			// 	_ptr = NULL;
+			// 	return;
+			// }
+			_ptr = _allocator.allocate(count);
 			for (size_type i = 0; i < count; i++)
 				push_back(value);
 		}
@@ -78,13 +79,15 @@ namespace ft
 			_capacity = diff;
 			if (diff > 0)
 			{
-				if (!_try_alloc(&_ptr, _capacity, "bad_alloc caught in vector( InputIt first, InputIt last, const Allocator& alloc = Allocator()): "))
-				{
-					_size = 0;
-					_capacity = 0;
-					_ptr = NULL;
-					return;		
-				}
+				// if (!_try_alloc(&_ptr, _capacity, "bad_alloc caught in vector( InputIt first, InputIt last, const Allocator& alloc = Allocator()): "))
+				// {
+				// 	_size = 0;
+				// 	_capacity = 0;
+				// 	_ptr = NULL;
+				// 	return;		
+				// }
+
+				_ptr = _allocator.allocate(_capacity);
 				for (size_type i = 0; i < diff; i++)
 				{
 					push_back(*first);
@@ -108,13 +111,14 @@ namespace ft
 				_allocator = src._allocator;
 				if (src._capacity > 0)
 				{
-					if (!_try_alloc(&_ptr, _capacity, "bad_alloc caught in vector( const vector& src ): "))
-					{
-						_size = 0;
-						_capacity = 0;
-						_ptr = NULL;
-						return;					
-					}
+					// if (!_try_alloc(&_ptr, _capacity, "bad_alloc caught in vector( const vector& src ): "))
+					// {
+					// 	_size = 0;
+					// 	_capacity = 0;
+					// 	_ptr = NULL;
+					// 	return;					
+					// }
+					_ptr = _allocator.allocate(_capacity);
 				}
 				for (size_type i = 0; i <_size; i++)
 				{
@@ -231,8 +235,9 @@ namespace ft
 				throw std::length_error("allocator<T>::allocate(size_t n) 'n' exceeds maximum supported size");
 			}
 			pointer tmp;
-			if(!_try_alloc(&tmp, n, "bad_alloc caught in void Vector::reserve (size_type n): "))
-				return;
+			// if(!_try_alloc(&tmp, n, "bad_alloc caught in void Vector::reserve (size_type n): "))
+			// 	return;
+			tmp = _allocator.allocate(n);
 			for (size_type i = 0; i < _size; i++)
 			{
 				_allocator.construct(&tmp[i], _ptr[i]);
@@ -349,11 +354,8 @@ namespace ft
 
 		void	pop_back()
 		{
-			if (_size > 0)
-			{
-				_allocator.destroy(&_ptr[_size - 1]);
-				_size--;
-			}
+			_allocator.destroy(&_ptr[_size - 1]);
+			_size--;
 		}
 
 		iterator insert (iterator position, const value_type& val)
@@ -372,23 +374,27 @@ namespace ft
 		{
 				size_type diff = position - begin();
 
-	 			if ( _size + n > _capacity*2)
+	 			// if ( _size + n > _capacity*2)
+ 				// 	reserve(_size + n);
+				// else
+				// {
+				// 	if(!_upgrade_capacity())
+				// 		return;
+				// }
+	 			if ( _size + n > _capacity)
  					reserve(_size + n);
-				else if ( _size + n > _capacity)
-				{
-					if(!_upgrade_capacity())
-						return;
-				}
+					
 				for (size_type i = _size + n - 1; i > diff + n; i--)
 				{
 					_allocator.construct(&_ptr[i], _ptr[i - n]);
 					_allocator.destroy(&_ptr[i - n]);
 				}
 				for (size_type i = 0; i < n; i++)
+				{
 					_allocator.construct(&_ptr[diff + i], val);
-				_size += n;
+					_size++;
+				}
 				return;
-
 		}
 
 		template <class InputIterator>
@@ -470,21 +476,11 @@ namespace ft
 		allocator_type	_allocator;
 		pointer			_ptr;
 	
-		bool _try_alloc(pointer *ptr,size_type count, std::string error)
-		{
-			try 
-			{
-				*ptr = _allocator.allocate(count);
-			}
-			catch (std::bad_alloc& ba)
-			{
-				std::cerr << error << ba.what() << '\n';
-				*ptr = NULL;
-				throw;
-				return false;
-			}
-			return true;
-		}
+		// bool _try_alloc(pointer *ptr,size_type count, std::string error)
+		// {
+		// 	*ptr = _allocator.allocate(count);
+		// 	return true;
+		// }
 
 		bool _upgrade_capacity()
 		{

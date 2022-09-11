@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 19:13:40 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/25 14:44:13 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/09/11 18:29:59 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ namespace ft
 		~Tree()
 		{
 			clear(_root);
+			_root = NULL;
 		}
 
 		int get_size() const { return _size; } 
@@ -76,12 +77,13 @@ namespace ft
 		tree_type &operator= (const tree_type & rhs)
 		{
 			clear(_root);
+			_root = NULL;
 			_allocator = rhs.get_allocator();
 			_compare = rhs.get_compare();
 
 			if(rhs.get_size() == 0)
 			{
-				_root = NULL;
+				//_root = NULL;
 				return *this;
 			}
 			const_iterator it = rhs.begin();

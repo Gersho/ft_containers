@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/15 15:21:52 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/08/27 10:15:45 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/09/11 18:59:34 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,10 @@ namespace ft
 
 		iterator insert (iterator position, const value_type& val)
 		{
+			//The versions with a hint (2) return an iterator pointing 
+			//to either the newly inserted element 
+			//or to the element that already had an equivalent key in the map.
+
 			(void)position;
 			_tree.set_root(_tree.insert(_tree.get_root(), val));
 			return find(val.first);

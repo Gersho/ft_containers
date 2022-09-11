@@ -6,7 +6,7 @@
 /*   By: kzennoun <kzennoun@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/19 21:02:55 by kzennoun          #+#    #+#             */
-/*   Updated: 2022/04/19 21:17:44 by kzennoun         ###   ########lyon.fr   */
+/*   Updated: 2022/08/28 10:28:29 by kzennoun         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ namespace ft
 	{
 		while (first1!=last1)
 		{
-			//essayer d'inverser les arguments de comp() si erreur
 			if (first2==last2 || comp(*first2,*first1)) return false;
 			else if (comp(*first1,*first2)) return true;
 			++first1; ++first2;
